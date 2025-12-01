@@ -35,8 +35,8 @@ const ProfitabilityCard = ({ importPrice, vehicleData }) => {
         // Use detected year or manual year
         const yearToUse = (vehicleData.year && vehicleData.year > 1900) ? vehicleData.year : manualYear;
 
-        // Format: "Make Model Year KM segunda mano"
-        const query = `site:coches.net OR site:wallapop.com ${vehicleData.make} ${vehicleData.model} ${yearToUse} ${vehicleData.mileage}km segunda mano`;
+        // Format: "Make Model Year KM segunda mano" (Simplified for better results)
+        const query = `${vehicleData.make} ${vehicleData.model} ${yearToUse} ${vehicleData.mileage}km segunda mano`;
 
         // Clean up double spaces if year was empty
         const cleanQuery = query.replace(/\s+/g, ' ').trim();
