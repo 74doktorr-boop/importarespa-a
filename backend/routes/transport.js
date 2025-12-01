@@ -34,7 +34,10 @@ router.post('/', async (req, res) => {
         const originUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(originQuery)}&limit=1`;
 
         const originRes = await axios.get(originUrl, {
-            headers: { 'User-Agent': 'VehicleAnalyzer/1.0' }
+            headers: {
+                'User-Agent': 'ImportarEspana/1.0 (contact@importarespana.com)',
+                'Referer': 'https://importarespana.com'
+            }
         });
 
         if (!originRes.data || originRes.data.length === 0) {
@@ -51,7 +54,10 @@ router.post('/', async (req, res) => {
         const destUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(destQuery)}&limit=1`;
 
         const destRes = await axios.get(destUrl, {
-            headers: { 'User-Agent': 'VehicleAnalyzer/1.0' }
+            headers: {
+                'User-Agent': 'ImportarEspana/1.0 (contact@importarespana.com)',
+                'Referer': 'https://importarespana.com'
+            }
         });
 
         if (!destRes.data || destRes.data.length === 0) {
@@ -89,7 +95,23 @@ router.post('/', async (req, res) => {
 
     } catch (error) {
         console.error('Transport calculation error:', error.message);
-        res.status(500).json({ error: 'Failed to calculate transport cost' });
+
+        // Fallback: If API fails (rate limit, IP block, etc.), return a generic estimation
+        // Average distance Germany -> Spain (Madrid) is approx 2100km
+        const fallbackDistance = 2100;
+        const baseFee = 350;
+        const costPerKm = 0.85;
+        const estimatedCost = Math.round(baseFee + (fallbackDistance * costPerKm));
+        const durationDays = Math.ceil(fallbackDistance / 500) + 2;
+
+        res.json({
+            origin: origin || 'Alemania',
+            destination: destination || 'España',
+            distanceKm: fallbackDistance,
+            cost: estimatedCost,
+            durationDays: durationDays,
+            isFallback: true
+        });
     }
 });
 
