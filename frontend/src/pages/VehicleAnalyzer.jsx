@@ -98,6 +98,11 @@ const VehicleAnalyzer = () => {
 
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
+    // Warm up the server on load (Render Free Tier Cold Start)
+    useEffect(() => {
+        axios.get(`${API_URL}/`).catch(() => { });
+    }, []);
+
     const handleAnalyze = async (e) => {
         e.preventDefault();
         if (!url) return;
