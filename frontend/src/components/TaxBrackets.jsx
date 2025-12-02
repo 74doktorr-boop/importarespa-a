@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check } from 'lucide-react';
 
 const TaxBrackets = ({ currentCo2 }) => {
     const brackets = [
@@ -29,31 +28,22 @@ const TaxBrackets = ({ currentCo2 }) => {
                             opacity: 1,
                             y: 0,
                             scale: isActive ? 1.05 : 1,
-                            borderColor: isActive ? 'rgba(59,130,246,0.5)' : 'rgba(255,255,255,0.05)'
+                            borderColor: isActive ? 'rgba(37, 99, 235, 0.5)' : 'rgba(226, 232, 240, 1)'
                         }}
                         transition={{ delay: index * 0.05 }}
                         className={`relative flex flex-col items-center justify-center p-2 rounded-lg border transition-colors duration-300 ${isActive
-                            ? 'bg-blue-500/20 shadow-[0_0_10px_rgba(59,130,246,0.2)] z-10'
-                            : 'bg-white/5 text-gray-500'
+                            ? 'bg-blue-50 text-blue-700 shadow-sm z-10'
+                            : 'bg-white text-slate-400'
                             }`}
                     >
-                        {isActive && (
-                            <motion.div
-                                layoutId="activeGlow"
-                                className="absolute inset-0 bg-blue-500/10 rounded-lg"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: [0.5, 0.8, 0.5] }}
-                                transition={{ duration: 2, repeat: Infinity }}
-                            />
-                        )}
-                        <span className={`text-[10px] font-bold mb-0.5 relative z-10 ${isActive ? 'text-white' : 'text-gray-500'}`}>
+                        <span className={`text-[10px] font-bold mb-0.5 relative z-10 ${isActive ? 'text-blue-700' : 'text-slate-400'}`}>
                             {bracket.label}
                         </span>
-                        <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden relative z-10">
+                        <div className="h-1 w-full bg-slate-100 rounded-full overflow-hidden relative z-10">
                             {isActive && (
                                 <motion.div
                                     layoutId="activeIndicator"
-                                    className="h-full bg-blue-500"
+                                    className="h-full bg-blue-600"
                                 />
                             )}
                         </div>

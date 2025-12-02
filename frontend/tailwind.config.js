@@ -7,13 +7,18 @@ export default {
     theme: {
         extend: {
             colors: {
-                primary: '#3B82F6', // Blue 500
-                secondary: '#10B981', // Emerald 500
-                dark: '#0F172A', // Slate 900
-                card: '#1E293B', // Slate 800
+                primary: '#0F172A', // Slate 900 (Navy)
+                secondary: '#64748B', // Slate 500
+                accent: '#2563EB', // Blue 600
+                background: '#F8FAFC', // Slate 50
+                surface: '#FFFFFF', // White
             },
             fontFamily: {
                 sans: ['Inter', 'sans-serif'],
+                serif: ['Playfair Display', 'serif'], // Optional for headings if added
+            },
+            boxShadow: {
+                'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
             }
         },
     },

@@ -19,7 +19,9 @@ export const getDgtLabel = (fuelType, year, isHybrid = false, isElectric = false
     if (isHybrid || fuel.includes('híbrido') || fuel.includes('hybrid')) {
         return 'ECO';
     }
-    if (fuel.includes('gas') || fuel.includes('glp') || fuel.includes('cng') || fuel.includes('lpg')) {
+    // Fixed: Removed broad 'gas' check that was catching 'gasolina'
+    // Added specific checks for CNG, LPG, GNC, GLP
+    if (fuel.includes('glp') || fuel.includes('gnc') || fuel.includes('gnl') || fuel.includes('lpg') || fuel.includes('cng') || fuel.includes('autogas')) {
         return 'ECO';
     }
 

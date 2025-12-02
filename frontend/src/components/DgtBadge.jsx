@@ -42,7 +42,7 @@ const DgtBadge = ({ label }) => {
     if (!style) return null;
 
     return (
-        <div className={`relative w-16 h-16 rounded-full ${style.bg} flex flex-col items-center justify-center border-2 border-white shadow-lg overflow-hidden group hover:scale-110 transition-transform duration-300`}>
+        <div className={`relative w-16 h-16 rounded-full ${style.bg} flex flex-col items-center justify-center border-2 border-white shadow-md overflow-hidden group hover:scale-110 transition-transform duration-300 ring-1 ring-slate-200`}>
             {/* Glossy Effect */}
             <div className="absolute top-0 left-0 w-full h-1/2 bg-white/20 rounded-t-full pointer-events-none"></div>
 

@@ -25,7 +25,7 @@ const AnimatedGauge = ({ value, max = 300, label, unit }) => {
                         stroke="currentColor"
                         strokeWidth="8"
                         fill="transparent"
-                        className="text-gray-700"
+                        className="text-slate-200"
                     />
                     {/* Animated Foreground Circle */}
                     <motion.circle
@@ -43,11 +43,11 @@ const AnimatedGauge = ({ value, max = 300, label, unit }) => {
                     />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-2xl font-bold">{value}</span>
-                    <span className="text-xs text-gray-400">{unit}</span>
+                    <span className="text-2xl font-bold text-slate-900">{value}</span>
+                    <span className="text-xs text-slate-400">{unit}</span>
                 </div>
             </div>
-            <p className="mt-2 text-sm font-medium text-gray-300">{label}</p>
+            <p className="mt-2 text-sm font-medium text-slate-500">{label}</p>
         </div>
     );
 };
