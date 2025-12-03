@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 
-export const generateVehicleReportV2 = async (data, transportCost = 0) => {
+export const generateVehicleReportV2 = async (data, transportCost = 0, isClientQuote = false) => {
     if (!data) return;
 
     const doc = new jsPDF();
@@ -59,7 +59,7 @@ export const generateVehicleReportV2 = async (data, transportCost = 0) => {
     // ==========================================
     // PAGE 1: VEHICLE DETAILS & TAX
     // ==========================================
-    addHeader('INFORME TÉCNICO & FISCAL');
+    addHeader(isClientQuote ? 'PRESUPUESTO DE IMPORTACIÓN' : 'INFORME TÉCNICO & FISCAL');
 
     let yPos = 50;
 
@@ -163,15 +163,22 @@ export const generateVehicleReportV2 = async (data, transportCost = 0) => {
     addFooter(1);
 
     // ==========================================
-    // PAGE 2: ADDITIONAL COSTS & CHECKLIST
+    // PAGE 2: COSTS & CHECKLIST
     // ==========================================
     doc.addPage();
-    addHeader('GASTOS ADICIONALES DE IMPORTACIÓN');
+    addHeader(isClientQuote ? 'PRESUPUESTO DETALLADO' : 'GASTOS ADICIONALES DE IMPORTACIÓN');
 
     yPos = 50;
-    addText('LA REALIDAD DE IMPORTAR', margin, yPos, 16, 'helvetica', 'bold', [0, 0, 0]);
-    yPos += 10;
-    addText('Más allá del precio del coche y el impuesto de matriculación, existen otros costes obligatorios que debes tener en cuenta para evitar sorpresas.', margin, yPos, 10, 'helvetica', 'normal', [80, 80, 80]);
+
+    if (isClientQuote) {
+        addText('RESUMEN DE COSTES LLAVE EN MANO', margin, yPos, 16, 'helvetica', 'bold', [0, 0, 0]);
+        yPos += 10;
+        addText('A continuación se detalla la propuesta económica completa para la importación y matriculación del vehículo.', margin, yPos, 10, 'helvetica', 'normal', [80, 80, 80]);
+    } else {
+        addText('LA REALIDAD DE IMPORTAR', margin, yPos, 16, 'helvetica', 'bold', [0, 0, 0]);
+        yPos += 10;
+        addText('Más allá del precio del coche y el impuesto de matriculación, existen otros costes obligatorios que debes tener en cuenta.', margin, yPos, 10, 'helvetica', 'normal', [80, 80, 80]);
+    }
 
     yPos += 20;
 
@@ -212,41 +219,61 @@ export const generateVehicleReportV2 = async (data, transportCost = 0) => {
 
     addCostItem(
         'Transporte y Logística Integral',
-        'Servicio completo de puerta a puerta: Recogida en origen, transporte en camión portavehículos (no rodado), seguro a todo riesgo (CMR) y entrega en España.',
+        'Servicio completo de puerta a puerta: Recogida en origen, transporte en camión portavehículos y entrega en España.',
         transportPriceDisplay
     );
 
-    addCostItem(
-        'Matrículas Provisionales (Rojas/Verdes)',
-        'Necesarias para circular legalmente mientras se tramita la matriculación definitiva.',
-        '150€ - 300€'
-    );
+    if (isClientQuote && data.fixedCostsTotal && data.commissionAmount) {
+        // CLIENT MODE: Grouped Costs
+        const totalManagement = data.fixedCostsTotal + data.commissionAmount;
+        addCostItem(
+            'Gestión Integral e Importación',
+            'Incluye: ITV de Importación, Tasas DGT, Placas Provisionales, Gestoría, Trámites Administrativos y Honorarios de Gestión.',
+            new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(totalManagement)
+        );
+    } else {
+        // STANDARD MODE: Detailed Breakdown (Estimates)
+        addCostItem(
+            'Matrículas Provisionales (Rojas/Verdes)',
+            'Necesarias para circular legalmente mientras se tramita la matriculación definitiva.',
+            '150€ - 300€'
+        );
 
-    addCostItem(
-        'ITV de Importación',
-        'Inspección técnica específica para vehículos importados (más exhaustiva).',
-        '120€ - 180€'
-    );
+        addCostItem(
+            'ITV de Importación',
+            'Inspección técnica específica para vehículos importados (más exhaustiva).',
+            '120€ - 180€'
+        );
 
-    addCostItem(
-        'Tasas de Tráfico (DGT)',
-        'Tasa administrativa para la expedición del permiso de circulación.',
-        '~99€'
-    );
+        addCostItem(
+            'Tasas de Tráfico (DGT)',
+            'Tasa administrativa para la expedición del permiso de circulación.',
+            '~99€'
+        );
 
-    addCostItem(
-        'Impuesto Municipal (IVTM)',
-        'Impuesto de Circulación (varía según ayuntamiento y trimestre).',
-        '20€ - 200€'
-    );
-
-    addCostItem(
-        'Gestoría / Ficha Reducida',
-        'Honorarios profesionales y certificado de características técnicas.',
-        '150€ - 400€'
-    );
+        addCostItem(
+            'Gestoría / Ficha Reducida',
+            'Honorarios profesionales y certificado de características técnicas.',
+            '150€ - 400€'
+        );
+    }
 
     yPos += 10;
+
+    // TOTAL PRICE BOX FOR CLIENT QUOTE
+    if (isClientQuote && data.totalClientPrice) {
+        yPos += 10;
+        doc.setFillColor(10, 25, 41); // Dark Blue
+        doc.roundedRect(margin, yPos, pageWidth - (margin * 2), 40, 3, 3, 'F');
+
+        addText('PRECIO TOTAL LLAVE EN MANO', margin + 10, yPos + 15, 12, 'helvetica', 'bold', [200, 200, 200]);
+        addText('(Incluye Vehículo, Impuestos, Transporte y Gestión)', margin + 10, yPos + 25, 9, 'helvetica', 'normal', [150, 150, 150]);
+
+        const totalStr = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(data.totalClientPrice);
+        addText(totalStr, pageWidth - margin - 10, yPos + 22, 24, 'helvetica', 'bold', [255, 255, 255], 'right');
+
+        yPos += 50;
+    }
 
     // Check for page overflow before Transport Note
     if (yPos + 50 > pageHeight - margin - 20) {
@@ -279,26 +306,6 @@ export const generateVehicleReportV2 = async (data, transportCost = 0) => {
     doc.text(splitTransportText, margin + 5, yPos + 16);
 
     yPos += 55;
-
-    yPos += 10;
-
-    if (yPos + 35 > pageHeight - margin - 20) {
-        doc.addPage();
-        yPos = 30;
-        addHeader('NOTAS IMPORTANTES');
-        currentPage++;
-        addFooter(currentPage);
-    }
-
-    doc.setFillColor(255, 252, 235);
-    doc.setDrawColor(250, 200, 50);
-    doc.roundedRect(margin, yPos, pageWidth - (margin * 2), 30, 2, 2, 'FD');
-
-    doc.setFontSize(9);
-    doc.setTextColor(100, 80, 0);
-    const warningText = "IMPORTANTE: Estos costes son estimaciones y pueden variar según la Comunidad Autónoma, el tipo de vehículo y las tarifas vigentes. Recomendamos consultar con un profesional para un presupuesto cerrado.";
-    const splitWarning = doc.splitTextToSize(warningText, pageWidth - (margin * 2) - 10);
-    doc.text(splitWarning, margin + 5, yPos + 10);
 
     addFooter(currentPage);
 
@@ -349,11 +356,9 @@ export const generateVehicleReportV2 = async (data, transportCost = 0) => {
     doc.link((pageWidth / 2) - 60, centerY - 10, 120, 20, { url: 'https://www.importarespaña.com' });
 
     // Save
-    // Save
     const sanitizedMake = data.make.replace(/[^a-z0-9]/gi, '_');
     const sanitizedModel = data.model.replace(/[^a-z0-9]/gi, '_');
-    const filename = `ImportarEspana_${sanitizedMake}_${sanitizedModel}.pdf`;
-
+    const filename = `ImportarEspana_${sanitizedMake}_${sanitizedModel}_${isClientQuote ? 'PRESUPUESTO' : 'INFORME'}.pdf`;
 
     // Manual save to ensure filename is respected
     const blob = doc.output('blob');

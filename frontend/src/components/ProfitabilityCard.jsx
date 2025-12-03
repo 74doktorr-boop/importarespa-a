@@ -8,10 +8,7 @@ const ProfitabilityCard = ({ importPrice, vehicleData }) => {
     const [savings, setSavings] = useState(null);
     const [roi, setRoi] = useState(0);
 
-    // Fixed estimated costs for realistic calculation
-    const FIXED_COSTS = 800; // ITV, DGT, Plates, Gestoría
-
-    const totalImportCost = importPrice + FIXED_COSTS;
+    const totalImportCost = importPrice;
 
     useEffect(() => {
         if (spainPrice && !isNaN(spainPrice)) {
@@ -91,19 +88,8 @@ const ProfitabilityCard = ({ importPrice, vehicleData }) => {
 
                 {/* Calculation Details */}
                 <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                    <div className="flex justify-between items-center text-sm mb-2">
-                        <span className="text-slate-500">Coste Importación</span>
-                        <span className="text-slate-900 font-mono">{formatCurrency(importPrice)}</span>
-                    </div>
-                    <div className="flex justify-between items-center text-sm mb-2">
-                        <span className="text-slate-500 flex items-center gap-1">
-                            Gastos Varios <Info size={12} />
-                        </span>
-                        <span className="text-slate-900 font-mono">{formatCurrency(FIXED_COSTS)}</span>
-                    </div>
-                    <div className="h-px bg-slate-200 my-2"></div>
                     <div className="flex justify-between items-center">
-                        <span className="text-sm font-bold text-slate-700">Total "Llave en Mano"</span>
+                        <span className="text-sm font-bold text-slate-700">Coste Total Importación</span>
                         <span className="font-bold text-slate-900 font-mono">{formatCurrency(totalImportCost)}</span>
                     </div>
                 </div>

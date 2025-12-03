@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Car, MapPin, Calendar, DollarSign, Activity, AlertTriangle, CheckCircle, XCircle, FileText, ExternalLink, Zap, ShieldCheck, Clock, Info, Fuel, Gauge, Calculator, AlertCircle, ArrowRight, Settings, Warehouse, Plus, Save, Share2, Mail, Home, Menu, X } from 'lucide-react';
+import { Search, Car, MapPin, Calendar, DollarSign, Activity, AlertTriangle, CheckCircle, XCircle, FileText, ExternalLink, Zap, ShieldCheck, Clock, Info, Fuel, Gauge, Calculator, AlertCircle, ArrowRight, Settings, Warehouse, Plus, Save, Share2, Mail, Home, Menu, X, Eye, EyeOff } from 'lucide-react';
 import StatCard from '../components/StatCard';
 import AnimatedGauge from '../components/AnimatedGauge';
 import TaxBrackets from '../components/TaxBrackets';
@@ -16,6 +16,8 @@ import DgtBadge from '../components/DgtBadge';
 import ImportServicePromo from '../components/ImportServicePromo';
 import ImportWizard from '../components/ImportWizard';
 import ImageGallery from '../components/ImageGallery';
+import AdminQuoteModal from '../components/AdminQuoteModal';
+
 const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) => {
     const [url, setUrl] = useState('');
     const [loading, setLoading] = useState(false);
@@ -23,6 +25,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
     const [error, setError] = useState(null);
     const [transportCost, setTransportCost] = useState(0);
     const [isWizardOpen, setIsWizardOpen] = useState(false);
+    const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
 
     // Recent Searches
     const [recentSearches, setRecentSearches] = useState(() => {
@@ -37,6 +40,20 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
     useEffect(() => {
         localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
     }, [recentSearches]);
+
+    // Admin Shortcut Listener
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            // console.log('Key pressed:', e.key, 'Ctrl:', e.ctrlKey, 'Shift:', e.shiftKey); // Debugging
+            if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'q') {
+                e.preventDefault();
+                console.log('Admin shortcut triggered');
+                setIsAdminModalOpen(prev => !prev);
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
 
     const addToRecentSearches = (vehicleData, vehicleUrl) => {
         setRecentSearches(prev => {
@@ -120,28 +137,51 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
     const taxData = data ? calculateTax(data.co2, data.price) : null;
     const dgtLabel = data ? getDgtLabel(data.fuelType, data.year) : null;
 
+    // Basic Total Cost for Public View (Price + Tax + Transport)
+    const calculatePublicTotalCost = () => {
+        if (!data || !taxData) return 0;
+        return taxData.total + transportCost;
+    };
+
+    const publicTotalCost = calculatePublicTotalCost();
+
     const handleAddToGarage = () => {
         if (onAddToGarage && data) {
             onAddToGarage({
                 ...data,
-                totalCost: taxData.total + transportCost,
+                totalCost: publicTotalCost,
                 url: url
             });
         }
     };
 
     return (
-        <div className="pb-20"> {/* Padding bottom to avoid footer overlap if content is short */}
+        <div className="pb-20">
             <LoadingOverlay isLoading={loading} />
 
-            <div className="container mx-auto px-4 relative z-10 pt-32"> {/* Added pt-32 for navbar spacing */}
+            <AdminQuoteModal
+                isOpen={isAdminModalOpen}
+                onClose={() => setIsAdminModalOpen(false)}
+                vehicleData={data}
+                transportCost={transportCost}
+            />
+
+            <div className="container mx-auto px-4 relative z-10 pt-32">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                     className={`text-center transition-all duration-500 ${data ? 'mb-12' : 'mb-16'}`}
                 >
-                    <span className="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-100">
+                    <span
+                        onClick={(e) => {
+                            if (e.detail === 3) {
+                                setIsAdminModalOpen(true);
+                            }
+                        }}
+                        className="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-100 cursor-pointer select-none"
+                        title="Professional Import Calculator"
+                    >
                         Professional Import Calculator
                     </span>
                     <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-slate-900 mb-6 tracking-tight">
@@ -319,79 +359,73 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                 {/* Transport & Profitability */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <TransportCard originCity={data.location} onCostCalculated={setTransportCost} />
-                                    <ProfitabilityCard importPrice={taxData.total + transportCost} vehicleData={data} />
+                                    <ProfitabilityCard importPrice={publicTotalCost} vehicleData={data} />
                                 </div>
                             </div>
 
                             {/* Sidebar (4 cols) */}
                             <div className="lg:col-span-4 space-y-6">
                                 <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm sticky top-24">
-                                    <div className="flex items-center mb-6">
-                                        <div className="p-2.5 bg-slate-900 rounded-xl mr-3 text-white">
-                                            <Calculator size={20} />
+                                    <div className="flex items-center justify-between mb-6">
+                                        <div className="flex items-center">
+                                            <div className="p-2.5 bg-slate-900 rounded-xl mr-3 text-white">
+                                                <Calculator size={20} />
+                                            </div>
+                                            <h3 className="text-xl font-bold text-slate-900">Desglose</h3>
                                         </div>
-                                        <h3 className="text-xl font-bold text-slate-900">Desglose de Costes</h3>
                                     </div>
 
-                                    {/* CO2 Gauge */}
-                                    <div className="flex justify-center mb-8 py-6 bg-slate-50 rounded-2xl border border-slate-100">
-                                        <AnimatedGauge value={data.co2} label="Emisiones CO2" unit="g/km" />
-                                    </div>
-
-                                    <div className="mb-8">
-                                        <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Tramos IEDMT</h4>
-                                        <TaxBrackets currentCo2={data.co2} />
-                                    </div>
-
-                                    <div className="space-y-4 bg-slate-50 rounded-2xl p-5 border border-slate-100">
-                                        <div className="flex justify-between items-center text-sm">
-                                            <span className="text-slate-500">Precio Vehículo</span>
-                                            <span className="font-mono font-medium text-slate-900">{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(data.price)}</span>
+                                    <div className="space-y-4">
+                                        <div className="flex justify-between items-center p-3 bg-slate-50 rounded-xl">
+                                            <span className="text-sm text-slate-600 font-medium">Precio Vehículo</span>
+                                            <span className="font-bold text-slate-900">
+                                                {new Intl.NumberFormat('de-DE', { style: 'currency', currency: data.currency }).format(data.price)}
+                                            </span>
                                         </div>
-                                        <div className="flex justify-between items-center text-sm">
-                                            <span className="text-slate-500">Tipo Impositivo</span>
-                                            <span className="font-mono font-medium text-blue-600">{taxData.rate}%</span>
-                                        </div>
-                                        <div className="h-px bg-slate-200 my-2"></div>
-                                        <div className="flex justify-between items-center">
-                                            <span className="font-bold text-slate-900">Impuesto Matriculación</span>
-                                            <span className="font-bold text-lg text-slate-900 font-mono">
+
+                                        <div className="flex justify-between items-center p-3 bg-slate-50 rounded-xl">
+                                            <div className="flex flex-col">
+                                                <span className="text-sm text-slate-600 font-medium">Impuesto Matriculación</span>
+                                                <span className="text-[10px] text-slate-400">
+                                                    {taxData.rate}% (CO2: {data.co2} g/km)
+                                                </span>
+                                            </div>
+                                            <span className="font-bold text-slate-900">
                                                 {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(taxData.amount)}
                                             </span>
                                         </div>
-                                        {transportCost > 0 && (
-                                            <div className="flex justify-between items-center">
-                                                <span className="font-bold text-slate-900">Transporte</span>
-                                                <span className="font-bold text-lg text-blue-600 font-mono">
-                                                    {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(transportCost)}
-                                                </span>
-                                            </div>
-                                        )}
-                                    </div>
 
-                                    <div className="mt-6 pt-6 border-t border-slate-100">
-                                        <div className="flex justify-between items-end">
-                                            <span className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-1">Total Estimado</span>
-                                            <span className="text-4xl font-bold text-slate-900 tracking-tight">
-                                                {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(taxData.total + transportCost)}
+                                        <div className="flex justify-between items-center p-3 bg-slate-50 rounded-xl">
+                                            <span className="text-sm text-slate-600 font-medium">Transporte (Estimado)</span>
+                                            <span className="font-bold text-slate-900">
+                                                {transportCost > 0 ? new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(transportCost) : 'Consultar'}
                                             </span>
                                         </div>
+
+                                        <div className="h-px bg-slate-200 my-4"></div>
+
+                                        <div className="flex justify-between items-end">
+                                            <span className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">Total Estimado</span>
+                                            <span className="text-3xl font-black text-slate-900 tracking-tight">
+                                                {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(publicTotalCost)}
+                                            </span>
+                                        </div>
+                                        <p className="text-xs text-center text-slate-400 mt-4">
+                                            * No incluye gastos de gestión, ITV ni tasas de tráfico.
+                                        </p>
                                     </div>
+
+                                    <TaxBrackets currentCo2={data.co2} />
                                 </div>
+
+                                <ImportServicePromo onOpenWizard={() => setIsWizardOpen(true)} />
                             </div>
                         </div>
                     </motion.div>
                 )}
             </div>
-            <HowItWorks />
-            <TrustSection />
-            <ImportServicePromo onOpenContact={() => setIsWizardOpen(true)} />
 
-            <ImportWizard
-                isOpen={isWizardOpen}
-                onClose={() => setIsWizardOpen(false)}
-                vehicleData={data}
-            />
+            <ImportWizard isOpen={isWizardOpen} onClose={() => setIsWizardOpen(false)} />
         </div>
     );
 };
