@@ -25,32 +25,50 @@ export const generateVehicleReportV2 = async (data, transportCost = 0) => {
         doc.setFillColor(10, 25, 41); // Dark blue/black
         doc.rect(0, 0, pageWidth, 30, 'F');
 
-        // Draw Luxury Logo Icon (Vector Shield)
+        // Draw Minimalist Supercar Logo (Vector)
         const logoX = margin;
         const logoY = 15;
-        const scale = 0.5;
+        const scale = 0.4;
 
-        doc.setDrawColor(212, 175, 55); // Gold
+        doc.setDrawColor(255, 255, 255);
         doc.setLineWidth(1.5 * scale);
 
-        // Shield Shape (Simplified for PDF robustness)
-        doc.line(30 * scale + logoX, 2 * scale + logoY, 58 * scale + logoX, 12 * scale + logoY);
-        doc.line(58 * scale + logoX, 12 * scale + logoY, 58 * scale + logoX, 30 * scale + logoY);
-        doc.line(58 * scale + logoX, 30 * scale + logoY, 30 * scale + logoX, 68 * scale + logoY);
-        doc.line(30 * scale + logoX, 68 * scale + logoY, 2 * scale + logoX, 30 * scale + logoY);
-        doc.line(2 * scale + logoX, 30 * scale + logoY, 2 * scale + logoX, 12 * scale + logoY);
-        doc.line(2 * scale + logoX, 12 * scale + logoY, 30 * scale + logoX, 2 * scale + logoY);
+        // Car Silhouette
+        // Roofline: M10 45 L15 35 C20 25 35 20 50 20 H70 C85 20 95 25 100 35 L105 45
+        doc.lines([
+            [5 * scale, -10 * scale], // L15 35
+            [35 * scale, -15 * scale], // C20 25 35 20 50 20 (approx line for now)
+            [20 * scale, 0], // H70
+            [30 * scale, 15 * scale], // C85 20 95 25 100 35 (approx)
+            [5 * scale, 10 * scale] // L105 45
+        ], 10 * scale + logoX, 45 * scale + logoY, [1, 1], 'S', false);
 
-        // Monogram "IE"
-        doc.setFont('times', 'bold');
-        doc.setFontSize(14);
-        doc.setTextColor(212, 175, 55); // Gold
-        doc.text('IE', 30 * scale + logoX, 45 * scale + logoY, { align: 'center' });
+        // Better Manual Drawing for Robustness
+        doc.setDrawColor(255, 255, 255);
+        doc.setLineWidth(2 * scale);
+
+        // Roof
+        doc.line(15 * scale + logoX, 35 * scale + logoY, 50 * scale + logoX, 20 * scale + logoY);
+        doc.line(50 * scale + logoX, 20 * scale + logoY, 70 * scale + logoX, 20 * scale + logoY);
+        doc.line(70 * scale + logoX, 20 * scale + logoY, 100 * scale + logoX, 35 * scale + logoY);
+
+        // Body
+        doc.line(5 * scale + logoX, 45 * scale + logoY, 110 * scale + logoX, 45 * scale + logoY);
+
+        // Wheels (Circles)
+        doc.setFillColor(10, 25, 41); // Dark fill (same as bg)
+        doc.setDrawColor(59, 130, 246); // Blue rim
+        doc.circle(25 * scale + logoX, 45 * scale + logoY, 8 * scale, 'FD');
+        doc.circle(90 * scale + logoX, 45 * scale + logoY, 8 * scale, 'FD');
+
+        // Speed Lines
+        doc.setDrawColor(59, 130, 246); // Blue
+        doc.line(115 * scale + logoX, 30 * scale + logoY, 130 * scale + logoX, 30 * scale + logoY);
+        doc.line(118 * scale + logoX, 35 * scale + logoY, 128 * scale + logoX, 35 * scale + logoY);
 
         // Text
-        addText('IMPORTAR', margin + (70 * scale), 18, 18, 'times', 'bold', [255, 255, 255]);
-        addText('ESPAÑA', margin + (70 * scale) + 35, 18, 18, 'helvetica', 'normal', [212, 175, 55]); // Gold
-        addText('PREMIUM AUTOMOTIVE SERVICES', margin + (70 * scale), 24, 6, 'helvetica', 'bold', [200, 200, 200]);
+        addText('IMPORTAR', margin + (60 * scale), 18, 18, 'helvetica', 'bold', [255, 255, 255]);
+        addText('ESPAÑA', margin + (60 * scale), 26, 18, 'helvetica', 'bold', [59, 130, 246]); // Blue
 
         addText(title, pageWidth - margin, 20, 10, 'helvetica', 'normal', [200, 200, 200], 'right');
     };
