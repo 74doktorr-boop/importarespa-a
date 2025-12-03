@@ -24,7 +24,27 @@ export const generateVehicleReportV2 = async (data, transportCost = 0) => {
     const addHeader = (title) => {
         doc.setFillColor(10, 25, 41); // Dark blue/black
         doc.rect(0, 0, pageWidth, 30, 'F');
-        addText('IMPORTAR ESPAÑA', margin, 20, 18, 'helvetica', 'bold', [255, 255, 255]);
+
+        // Draw Logo Icon (Vector)
+        const logoX = margin;
+        const logoY = 15;
+        const scale = 0.4;
+
+        doc.setDrawColor(255, 255, 255);
+        doc.setLineWidth(1.5 * scale);
+
+        // Circle
+        doc.circle(logoX + (30 * scale), logoY, 28 * scale, 'S');
+
+        // Arrow Path (Simplified for PDF)
+        doc.setLineWidth(2 * scale);
+        doc.setDrawColor(59, 130, 246); // Blue 500
+        doc.line(logoX + (15 * scale), logoY + (5 * scale), logoX + (25 * scale), logoY - (5 * scale)); // Up
+        doc.line(logoX + (25 * scale), logoY - (5 * scale), logoX + (45 * scale), logoY - (5 * scale)); // Flat
+        doc.line(logoX + (45 * scale), logoY - (5 * scale), logoX + (50 * scale), logoY); // Down tip
+
+        // Text
+        addText('IMPORTAR ESPAÑA', margin + (70 * scale), 20, 18, 'helvetica', 'bold', [255, 255, 255]);
         addText(title, pageWidth - margin, 20, 10, 'helvetica', 'normal', [200, 200, 200], 'right');
     };
 
