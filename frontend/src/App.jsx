@@ -14,6 +14,7 @@ import GarageDrawer from './components/GarageDrawer';
 import ContactModal from './components/ContactModal';
 import MonetizationModal from './components/MonetizationModal';
 import AboutModal from './components/AboutModal';
+import WhatsAppAgent from './components/WhatsAppAgent';
 
 // Wrapper component to use hooks like useLocation
 const AppContent = () => {
@@ -134,6 +135,9 @@ const AppContent = () => {
                 isOpen={isAboutOpen}
                 onClose={() => setIsAboutOpen(false)}
             />
+
+            {/* Global Floating Agent */}
+            <WhatsAppAgent />
 
         </div>
     );
