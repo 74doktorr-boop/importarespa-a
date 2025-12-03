@@ -11,7 +11,7 @@ import CookieBanner from './components/CookieBanner';
 function App() {
     return (
         <Router>
-            <div className="min-h-screen bg-gradient-to-br from-dark to-[#1a2c4e] text-white">
+            <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
                 <Routes>
                     <Route path="/" element={<VehicleAnalyzer />} />
                     <Route path="/success" element={<SuccessPage />} />
