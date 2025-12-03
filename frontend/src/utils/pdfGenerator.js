@@ -25,31 +25,26 @@ export const generateVehicleReportV2 = async (data, transportCost = 0) => {
         doc.setFillColor(10, 25, 41); // Dark blue/black
         doc.rect(0, 0, pageWidth, 30, 'F');
 
-        // Draw Abstract Premium Logo (Vector)
+        // Draw Logo Icon (Vector)
         const logoX = margin;
         const logoY = 15;
         const scale = 0.4;
 
         doc.setDrawColor(255, 255, 255);
-        doc.setLineWidth(2 * scale);
-
-        // Abstract Aerodynamic Flow (The "Cochazo" Essence)
-        // Path: M5 45 C 5 45, 20 20, 60 20 C 100 20, 110 35, 120 45
-        // Using bezier curves for smooth premium look
-        doc.lines([
-            [0, 0], // Start at M5 45 (relative to start point)
-            [15 * scale, -25 * scale, 55 * scale, -25 * scale, 115 * scale, 0] // Curve
-        ], 5 * scale + logoX, 45 * scale + logoY, [1, 1], 'S', false);
-
-        // Accent Line
-        doc.setDrawColor(59, 130, 246); // Blue
         doc.setLineWidth(1.5 * scale);
-        doc.line(10 * scale + logoX, 55 * scale + logoY, 115 * scale + logoX, 55 * scale + logoY);
+
+        // Circle
+        doc.circle(logoX + (30 * scale), logoY, 28 * scale, 'S');
+
+        // Arrow Path (Simplified for PDF)
+        doc.setLineWidth(2 * scale);
+        doc.setDrawColor(59, 130, 246); // Blue 500
+        doc.line(logoX + (15 * scale), logoY + (5 * scale), logoX + (25 * scale), logoY - (5 * scale)); // Up
+        doc.line(logoX + (25 * scale), logoY - (5 * scale), logoX + (45 * scale), logoY - (5 * scale)); // Flat
+        doc.line(logoX + (45 * scale), logoY - (5 * scale), logoX + (50 * scale), logoY); // Down tip
 
         // Text
-        addText('IMPORTAR', margin + (60 * scale), 18, 18, 'helvetica', 'bold', [255, 255, 255]);
-        addText('ESPAÑA', margin + (60 * scale), 26, 18, 'helvetica', 'bold', [59, 130, 246]); // Blue
-
+        addText('IMPORTAR ESPAÑA', margin + (70 * scale), 20, 18, 'helvetica', 'bold', [255, 255, 255]);
         addText(title, pageWidth - margin, 20, 10, 'helvetica', 'normal', [200, 200, 200], 'right');
     };
 
