@@ -196,23 +196,86 @@ router.post('/', async (req, res) => {
             }
         }
 
-        // --- IMPROVED YEAR EXTRACTION ---
-        if (vehicleData.year === 0) {
-            const dateString = findValueByLabel([
+        // --- IMPROVED YEAR EXTRACTION (DOM-BASED) ---
+        if (vehicleData.year === 0 || !vehicleData.firstRegistration) {
+            const dateKeywords = [
                 'EZ', 'Erstzulassung', 'First Registration', '1. Reg',
                 'Matriculación', 'Année', 'Year', 'Mise en circulation',
                 'Fecha de matriculación', 'Inverkehrssetzung', 'Registrazione',
                 'Primer registro', 'Primera matriculación'
-            ]);
+            ];
 
-            if (dateString) {
-                vehicleData.firstRegistration = dateString; // Store the full string
-                const dateMatch = dateString.match(/(\d{2})[\/.-](\d{4})/);
-                if (dateMatch) {
-                    vehicleData.year = parseInt(dateMatch[2]);
-                } else {
-                    const yearMatch = dateString.match(/(19|20)\d{2}/);
-                    if (yearMatch) vehicleData.year = parseInt(yearMatch[0]);
+            // 1. Search in specific data attributes first (High Precision)
+            const specificSelectors = [
+                '[data-testid="first-registration"]',
+                '[data-testid="vehicle-details-first-registration"]',
+                '.vehicle-data__item--first-registration',
+                '#firstRegistration'
+            ];
+
+            for (const selector of specificSelectors) {
+                const text = $(selector).text().trim();
+                const match = text.match(/(\d{2})[\/.-](\d{4})/);
+                if (match) {
+                    vehicleData.firstRegistration = match[0];
+                    vehicleData.year = parseInt(match[2]);
+                    break;
+                }
+            }
+
+            // 2. DOM Traversal for Keywords (Medium Precision)
+            if (!vehicleData.firstRegistration) {
+                // Find elements containing keywords
+                $('*').each((i, elem) => {
+                    // Skip script/style tags
+                    if (elem.tagName === 'script' || elem.tagName === 'style') return;
+
+                    // Check direct text of this element (not children)
+                    const ownText = $(elem).clone().children().remove().end().text().trim();
+
+                    for (const keyword of dateKeywords) {
+                        if (ownText.includes(keyword)) {
+                            // Case A: Date is in the SAME element text (e.g. "First Registration: 07/1996")
+                            let match = ownText.match(/(\d{2})[\/.-](\d{4})/);
+                            if (match) {
+                                vehicleData.firstRegistration = match[0];
+                                vehicleData.year = parseInt(match[2]);
+                                return false; // Break loop
+                            }
+
+                            // Case B: Date is in the NEXT sibling element (common in grids)
+                            const nextText = $(elem).next().text().trim();
+                            match = nextText.match(/(\d{2})[\/.-](\d{4})/);
+                            if (match) {
+                                vehicleData.firstRegistration = match[0];
+                                vehicleData.year = parseInt(match[2]);
+                                return false;
+                            }
+
+                            // Case C: Date is in the PARENT's text (if label is a span inside a div)
+                            const parentText = $(elem).parent().text().trim();
+                            match = parentText.match(/(\d{2})[\/.-](\d{4})/);
+                            if (match) {
+                                vehicleData.firstRegistration = match[0];
+                                vehicleData.year = parseInt(match[2]);
+                                return false;
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 3. Brute Force Regex on Body (Low Precision Fallback)
+            if (!vehicleData.firstRegistration) {
+                // Look for MM/YYYY pattern surrounded by word boundaries
+                const dateMatches = bodyText.matchAll(/\b(0[1-9]|1[0-2])[\/.-](19|20)\d{2}\b/g);
+                for (const match of dateMatches) {
+                    // Just take the first valid-looking date found in the text
+                    // This is risky but better than 0 for "Matriculación"
+                    vehicleData.firstRegistration = match[0];
+                    const yearPart = match[0].match(/(19|20)\d{2}/);
+                    if (yearPart) vehicleData.year = parseInt(yearPart[0]);
+                    break;
                 }
             }
         }
