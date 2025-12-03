@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, ChevronRight, Bot } from 'lucide-react';
+import { MessageCircle, X, ChevronRight, Bot } from 'lucide-react';
 
 const WhatsAppAgent = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -49,21 +49,30 @@ const WhatsAppAgent = () => {
         setTimeout(() => {
             setIsTyping(false);
 
-            // Construct WhatsApp URL
-            const text = encodeURIComponent(option.message);
-            const url = `https://wa.me/${BUSINESS_PHONE}?text=${text}`;
+            if (option.action === 'link') {
+                // Construct WhatsApp URL
+                const text = encodeURIComponent(option.message);
+                const url = `https://wa.me/${BUSINESS_PHONE}?text=${text}`;
 
-            // Add bot response
-            setMessages(prev => [...prev, {
-                id: Date.now() + 1,
-                type: 'bot',
-                text: "Perfecto, te redirijo a WhatsApp para que un agente humano te atienda personalmente. 🚀"
-            }]);
+                // Add bot response
+                setMessages(prev => [...prev, {
+                    id: Date.now() + 1,
+                    type: 'bot',
+                    text: "Perfecto, te redirijo a WhatsApp para que un agente humano te atienda personalmente. 🚀"
+                }]);
 
-            // Redirect after a short delay
-            setTimeout(() => {
-                window.open(url, '_blank');
-            }, 1000);
+                // Redirect after a short delay
+                setTimeout(() => {
+                    window.open(url, '_blank');
+                }, 1000);
+            } else {
+                // Local Response (Bot Answer)
+                setMessages(prev => [...prev, {
+                    id: Date.now() + 1,
+                    type: 'bot',
+                    text: option.response
+                }]);
+            }
 
         }, 1000);
     };
@@ -71,14 +80,22 @@ const WhatsAppAgent = () => {
     const options = [
         {
             label: "Quiero importar un coche 🚗",
+            action: 'link',
             message: "Hola, estoy interesado en importar un coche. ¿Podéis ayudarme con el proceso?"
         },
         {
-            label: "Tengo dudas sobre el servicio ❓",
-            message: "Hola, tengo algunas dudas sobre vuestro servicio de importación. ¿Me podéis informar?"
+            label: "¿Cómo funciona? ⚙️",
+            action: 'text',
+            response: "Es muy sencillo: 1. Buscas el coche en nuestra web (analizamos mobile.de). 2. Ves el precio final con todo incluido. 3. Si te encaja, nos encargamos de traerlo, matricularlo y entregártelo llave en mano. 🗝️"
+        },
+        {
+            label: "¿Quiénes somos? 🏢",
+            action: 'text',
+            response: "Somos expertos en importación de vehículos de Alemania a España. Nos encargamos de toda la burocracia, transporte y legalización para que tú solo disfrutes de tu nuevo coche. Máxima transparencia y seguridad. 🛡️"
         },
         {
             label: "Hablar con un humano 👤",
+            action: 'link',
             message: "Hola, me gustaría hablar directamente con un agente."
         }
     ];
