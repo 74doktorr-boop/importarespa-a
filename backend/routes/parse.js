@@ -65,55 +65,6 @@ router.post('/', async (req, res) => {
             if (!src) return true;
             // Removed risky keywords: static, map, advert, background, hero, seller
             if (src.match(/icon|logo|pixel|tracker|avatar|banner|profile|dealer|haendler|autohaus/i)) return true;
-            if (src.endsWith('.svg')) return true;
-            return false;
-        };
-
-        // ... (JSON-LD and OG strategies remain) ...
-
-        // STRATEGY 4: AGGRESSIVE IMAGE SEARCH
-        if (!vehicleData.imageUrl || vehicleData.imageUrl.includes('placeholder')) {
-            const gallerySelectors = [
-                '.gallery-image',
-                '.image-gallery-image',
-                'img[data-testid="main-image"]',
-                'img[class*="gallery"]',
-                '.cldt-gallery-img',
-                '#gallery-img-0',
-                '.gallery-component img'
-            ];
-
-            for (const selector of gallerySelectors) {
-                const src = $(selector).first().attr('src');
-                if (src && src.startsWith('http') && !isInvalidImage(src)) {
-                    vehicleData.imageUrl = src;
-                    break;
-                }
-            }
-
-            if (!vehicleData.imageUrl) {
-                $('img').each((i, elem) => {
-                    const $elem = $(elem);
-                    const src = $elem.attr('src');
-                    const alt = $elem.attr('alt') || '';
-
-                    // Skip images inside seller/dealer info containers
-                    if ($elem.closest('.seller-info, .dealer-info, .contact-box, .seller-box').length > 0) return;
-
-                    if (src && src.startsWith('http')) {
-                        if (isInvalidImage(src)) return;
-                        if (src.includes('vehicle') || src.includes('img') || alt.toLowerCase().includes(vehicleData.make.toLowerCase())) {
-                            if (!vehicleData.imageUrl) vehicleData.imageUrl = src;
-                        }
-                    }
-                });
-            }
-        }
-
-        // FINAL STEP: CO2 Estimation & Cleanup
-        if (!vehicleData.co2 || vehicleData.co2 === 0) {
-            vehicleData.co2 = estimateCO2(vehicleData.fuelType, vehicleData.year);
-            vehicleData.isEstimatedCO2 = true;
         }
 
         const currentYear = new Date().getFullYear();
