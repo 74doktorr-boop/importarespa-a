@@ -64,7 +64,7 @@ router.post('/', async (req, res) => {
         const isInvalidImage = (src) => {
             if (!src) return true;
             // Removed risky keywords: static, map, advert, background, hero, seller
-            if (src.match(/icon|logo|pixel|tracker|avatar|banner|profile|dealer|haendler|autohaus/i)) return true;
+            if (src.match(/icon|logo|pixel|tracker|avatar|banner|profile|dealer|haendler|autohaus|vendor/i)) return true;
             if (src.endsWith('.svg')) return true;
             return false;
         };
@@ -333,8 +333,24 @@ router.post('/', async (req, res) => {
         if (galleryImage) {
             vehicleData.imageUrl = galleryImage;
         } else if (!vehicleData.imageUrl || vehicleData.imageUrl.includes('placeholder')) {
-            // Fallback to searching all images
-            $('img').each((i, elem) => {
+            // Fallback: Search ONLY in main content areas to avoid headers/sidebars
+            const mainContentSelectors = [
+                '.cldt-detail-view',
+                '#ad-view',
+                'article',
+                '.main-content',
+                '[data-testid="content-page"]'
+            ];
+
+            let $searchContext = $('body'); // Default to body if no main container found
+            for (const selector of mainContentSelectors) {
+                if ($(selector).length > 0) {
+                    $searchContext = $(selector).first();
+                    break;
+                }
+            }
+
+            $searchContext.find('img').each((i, elem) => {
                 const $elem = $(elem);
                 const src = $elem.attr('src');
                 const alt = $elem.attr('alt') || '';
