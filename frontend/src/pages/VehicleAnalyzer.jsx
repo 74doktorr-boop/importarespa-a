@@ -471,7 +471,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                 )}
             </div>
 
-            <ImportWizard isOpen={isWizardOpen} onClose={() => setIsWizardOpen(false)} />
+            <ImportWizard isOpen={isWizardOpen} onClose={() => setIsWizardOpen(false)} vehicleData={data} />
         </div>
     );
 };
