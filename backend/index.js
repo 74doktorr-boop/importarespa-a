@@ -1,21 +1,21 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const parseRoute = require('./routes/parse');
-const transportRoute = require('./routes/transport');
+const parseRoutes = require('./routes/parse');
+const transportRoutes = require('./routes/transport');
+const contactRoutes = require('./routes/contact');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors({
-    origin: '*', // Allow all origins for now to avoid CORS issues
-    credentials: true
-}));
+app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/parse', parseRoute);
-app.use('/api/transport', transportRoute);
+app.use('/api/parse', parseRoutes);
+app.use('/api/transport', transportRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Health check
 app.get('/', (req, res) => {

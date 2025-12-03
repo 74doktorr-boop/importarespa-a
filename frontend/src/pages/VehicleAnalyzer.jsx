@@ -10,7 +10,11 @@ import GarageDrawer from '../components/GarageDrawer';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 import MonetizationModal from '../components/MonetizationModal';
-import { generateVehicleReport } from '../utils/pdfGenerator';
+import LoadingOverlay from '../components/LoadingOverlay';
+import ContactModal from '../components/ContactModal';
+import HowItWorks from '../components/HowItWorks';
+import TrustSection from '../components/TrustSection';
+import { generateVehicleReportV2 } from '../utils/pdfGenerator';
 import { getDgtLabel } from '../utils/dgtLogic';
 import DgtBadge from '../components/DgtBadge';
 
@@ -25,6 +29,7 @@ const VehicleAnalyzer = () => {
     const [isGarageOpen, setIsGarageOpen] = useState(false);
     const [isAboutOpen, setIsAboutOpen] = useState(false);
     const [isMonetizationOpen, setIsMonetizationOpen] = useState(false);
+    const [isContactOpen, setIsContactOpen] = useState(false);
 
     const [garageVehicles, setGarageVehicles] = useState(() => {
         try {
@@ -163,6 +168,7 @@ const VehicleAnalyzer = () => {
                 onOpenGarage={() => setIsGarageOpen(true)}
                 garageCount={garageVehicles.length}
                 onOpenAbout={() => setIsAboutOpen(true)}
+                onOpenContact={() => setIsContactOpen(true)}
                 onReset={() => {
                     setData(null);
                     setUrl('');
@@ -179,11 +185,18 @@ const VehicleAnalyzer = () => {
                 onClear={clearGarage}
             />
 
+            <LoadingOverlay isLoading={loading} />
+
             <MonetizationModal
                 isOpen={isMonetizationOpen}
                 onClose={() => setIsMonetizationOpen(false)}
-                onSelectFree={() => generateVehicleReport(data, taxData, transportCost)}
+                onSelectFree={() => generateVehicleReportV2(data, taxData, transportCost)}
                 onSelectPro={() => alert("¡Próximamente! Estamos integrando la pasarela de pago segura.")}
+            />
+
+            <ContactModal
+                isOpen={isContactOpen}
+                onClose={() => setIsContactOpen(false)}
             />
 
             {/* About Modal */}
@@ -211,8 +224,8 @@ const VehicleAnalyzer = () => {
                             </button>
 
                             <div className="flex items-center gap-3 mb-6">
-                                <div className="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center text-white shadow-lg">
-                                    <Car size={24} />
+                                <div className="w-16 h-16 rounded-xl flex items-center justify-center">
+                                    <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
                                 </div>
                                 <div>
                                     <h2 className="text-2xl font-bold text-slate-900">IMPORTAR ESPAÑA</h2>
@@ -523,6 +536,10 @@ const VehicleAnalyzer = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+
+            <HowItWorks />
+            <TrustSection />
         </div>
     );
 };

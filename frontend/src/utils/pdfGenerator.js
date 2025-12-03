@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 
-export const generateVehicleReport = async (data, transportCost = 0) => {
+export const generateVehicleReportV2 = async (data, transportCost = 0) => {
     if (!data) return;
 
     const doc = new jsPDF();
@@ -329,6 +329,20 @@ export const generateVehicleReport = async (data, transportCost = 0) => {
     doc.link((pageWidth / 2) - 60, centerY - 10, 120, 20, { url: 'https://www.importarespaña.com' });
 
     // Save
-    const filename = `ImportarEspana_${data.make}_${data.model.replace(/[^a-z0-9]/gi, '_')}.pdf`;
-    doc.save(filename);
+    // Save
+    const sanitizedMake = data.make.replace(/[^a-z0-9]/gi, '_');
+    const sanitizedModel = data.model.replace(/[^a-z0-9]/gi, '_');
+    const filename = `ImportarEspana_${sanitizedMake}_${sanitizedModel}.pdf`;
+
+
+    // Manual save to ensure filename is respected
+    const blob = doc.output('blob');
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
 };

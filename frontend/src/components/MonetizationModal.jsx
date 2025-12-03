@@ -6,11 +6,8 @@ const MonetizationModal = ({ isOpen, onClose, onSelectFree }) => {
     if (!isOpen) return null;
 
     const handleBuyPro = () => {
-        // Lemon Squeezy Test Link (Replace with real one)
-        // window.open('https://importarespana.lemonsqueezy.com/checkout/buy/variant_id', '_blank');
-
-        // Simulate success redirect for demo purposes
-        window.location.href = '/success';
+        // Lemon Squeezy Checkout
+        window.open('https://importarespana.lemonsqueezy.com/buy/4bb4bfaf-7af5-4a59-86e7-2dde42d7ea9a', '_blank');
     };
 
     return (
@@ -71,6 +68,7 @@ const MonetizationModal = ({ isOpen, onClose, onSelectFree }) => {
                         </div>
 
                         <div className="mb-6 relative z-10">
+                            <img src="/logo.png" alt="Logo" className="h-12 w-auto mb-4 opacity-90" />
                             <h3 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 mb-2 flex items-center gap-2">
                                 Pack Importador PRO <Star className="text-yellow-400 fill-yellow-400" size={24} />
                             </h3>
@@ -90,11 +88,11 @@ const MonetizationModal = ({ isOpen, onClose, onSelectFree }) => {
 
                         <div className="flex items-end gap-3 mb-2 relative z-10">
                             <div className="text-5xl font-black text-white">
-                                19.99€
+                                16.99€
                             </div>
                             <div className="flex flex-col mb-1">
                                 <span className="text-lg font-bold text-gray-400 line-through decoration-red-500/50 decoration-2">39.99€</span>
-                                <span className="text-xs font-bold text-green-400 bg-green-400/10 px-1.5 py-0.5 rounded border border-green-400/20">-50% OFERTA FLASH</span>
+                                <span className="text-xs font-bold text-green-400 bg-green-400/10 px-1.5 py-0.5 rounded border border-green-400/20">-58% OFERTA FLASH</span>
                             </div>
                         </div>
                         <p className="text-xs text-blue-300 mb-6 relative z-10">Pago único. Acceso de por vida.</p>
@@ -112,7 +110,7 @@ const MonetizationModal = ({ isOpen, onClose, onSelectFree }) => {
                             className="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold shadow-lg shadow-blue-900/50 transition-all relative z-10 transform hover:scale-[1.02] flex items-center justify-center gap-2"
                         >
                             <span>Comprar Pack Ahora</span>
-                            <span className="bg-white/20 px-2 py-0.5 rounded text-xs">19.99€</span>
+                            <span className="bg-white/20 px-2 py-0.5 rounded text-xs">16.99€</span>
                         </button>
 
                         {/* Background Decoration */}

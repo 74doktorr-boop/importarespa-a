@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Car, Info, Mail, Home, Warehouse, Menu, X } from 'lucide-react';
 
-const Navbar = ({ onOpenGarage, garageCount, onOpenAbout, onReset }) => {
+const Navbar = ({ onOpenGarage, garageCount, onOpenAbout, onReset, onOpenContact }) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -29,9 +29,7 @@ const Navbar = ({ onOpenGarage, garageCount, onOpenAbout, onReset }) => {
                         onClick={onReset}
                         className="flex items-center gap-3 group"
                     >
-                        <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-transform duration-300">
-                            <Car size={20} />
-                        </div>
+                        <img src="/logo.png" alt="Importar España" className="h-10 w-auto object-contain" />
                         <div className="flex flex-col items-start">
                             <span className={`font-serif font-bold text-lg tracking-tight leading-none ${isScrolled ? 'text-slate-900' : 'text-slate-900'}`}>
                                 IMPORTAR ESPAÑA
@@ -46,7 +44,7 @@ const Navbar = ({ onOpenGarage, garageCount, onOpenAbout, onReset }) => {
                     <div className="hidden md:flex items-center gap-1">
                         <NavButton icon={Home} label="Inicio" onClick={onReset} isScrolled={isScrolled} />
                         <NavButton icon={Info} label="Sobre Nosotros" onClick={onOpenAbout} isScrolled={isScrolled} />
-                        <NavButton icon={Mail} label="Contacto" onClick={() => window.location.href = 'mailto:74doktorr@gmail.com'} isScrolled={isScrolled} />
+                        <NavButton icon={Mail} label="Contacto" onClick={onOpenContact} isScrolled={isScrolled} />
 
                         <div className={`w-px h-6 mx-4 ${isScrolled ? 'bg-slate-200' : 'bg-slate-300'}`}></div>
 
@@ -87,7 +85,7 @@ const Navbar = ({ onOpenGarage, garageCount, onOpenAbout, onReset }) => {
                             <MobileNavButton icon={Home} label="Inicio" onClick={() => { onReset(); setIsMobileMenuOpen(false); }} />
                             <MobileNavButton icon={Warehouse} label={`Garaje (${garageCount})`} onClick={() => { onOpenGarage(); setIsMobileMenuOpen(false); }} active />
                             <MobileNavButton icon={Info} label="Sobre Nosotros" onClick={() => { onOpenAbout(); setIsMobileMenuOpen(false); }} />
-                            <MobileNavButton icon={Mail} label="Contacto" onClick={() => { window.location.href = 'mailto:74doktorr@gmail.com'; setIsMobileMenuOpen(false); }} />
+                            <MobileNavButton icon={Mail} label="Contacto" onClick={() => { onOpenContact(); setIsMobileMenuOpen(false); }} />
                         </div>
                     </motion.div>
                 )}
