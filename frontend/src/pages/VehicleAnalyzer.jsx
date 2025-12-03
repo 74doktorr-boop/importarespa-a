@@ -6,66 +6,20 @@ import AnimatedGauge from '../components/AnimatedGauge';
 import TaxBrackets from '../components/TaxBrackets';
 import TransportCard from '../components/TransportCard';
 import ProfitabilityCard from '../components/ProfitabilityCard';
-import GarageDrawer from '../components/GarageDrawer';
 import axios from 'axios';
-import Navbar from '../components/Navbar';
-import MonetizationModal from '../components/MonetizationModal';
 import LoadingOverlay from '../components/LoadingOverlay';
-import ContactModal from '../components/ContactModal';
 import HowItWorks from '../components/HowItWorks';
 import TrustSection from '../components/TrustSection';
-import Footer from '../components/Footer';
 import { generateVehicleReportV2 } from '../utils/pdfGenerator';
 import { getDgtLabel } from '../utils/dgtLogic';
 import DgtBadge from '../components/DgtBadge';
 
-const VehicleAnalyzer = () => {
+const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) => {
     const [url, setUrl] = useState('');
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [transportCost, setTransportCost] = useState(0);
-
-    // Garage State
-    const [isGarageOpen, setIsGarageOpen] = useState(false);
-    const [isAboutOpen, setIsAboutOpen] = useState(false);
-    const [isMonetizationOpen, setIsMonetizationOpen] = useState(false);
-    const [isContactOpen, setIsContactOpen] = useState(false);
-
-    const [garageVehicles, setGarageVehicles] = useState(() => {
-        try {
-            const saved = localStorage.getItem('garageVehicles');
-            return saved ? JSON.parse(saved) : [];
-        } catch (e) {
-            console.error("Failed to load garage from localStorage", e);
-            return [];
-        }
-    });
-
-    useEffect(() => {
-        localStorage.setItem('garageVehicles', JSON.stringify(garageVehicles));
-    }, [garageVehicles]);
-
-    const addToGarage = () => {
-        if (!data) return;
-        const newVehicle = {
-            id: Date.now(),
-            ...data,
-            totalCost: taxData.total + transportCost,
-            url: url,
-            addedAt: new Date().toISOString()
-        };
-        setGarageVehicles(prev => [newVehicle, ...prev]);
-        setIsGarageOpen(true);
-    };
-
-    const removeFromGarage = (id) => {
-        setGarageVehicles(prev => prev.filter(v => v.id !== id));
-    };
-
-    const clearGarage = () => {
-        setGarageVehicles([]);
-    };
 
     // Recent Searches
     const [recentSearches, setRecentSearches] = useState(() => {
@@ -163,105 +117,21 @@ const VehicleAnalyzer = () => {
     const taxData = data ? calculateTax(data.co2, data.price) : null;
     const dgtLabel = data ? getDgtLabel(data.fuelType, data.year) : null;
 
+    const handleAddToGarage = () => {
+        if (onAddToGarage && data) {
+            onAddToGarage({
+                ...data,
+                totalCost: taxData.total + transportCost,
+                url: url
+            });
+        }
+    };
+
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
-            <Navbar
-                onOpenGarage={() => setIsGarageOpen(true)}
-                garageCount={garageVehicles.length}
-                onOpenAbout={() => setIsAboutOpen(true)}
-                onOpenContact={() => setIsContactOpen(true)}
-                onReset={() => {
-                    setData(null);
-                    setUrl('');
-                    setError(null);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-            />
-
-            <GarageDrawer
-                isOpen={isGarageOpen}
-                onClose={() => setIsGarageOpen(false)}
-                savedVehicles={garageVehicles}
-                onRemove={removeFromGarage}
-                onClear={clearGarage}
-            />
-
+        <div className="pb-20"> {/* Padding bottom to avoid footer overlap if content is short */}
             <LoadingOverlay isLoading={loading} />
 
-            <MonetizationModal
-                isOpen={isMonetizationOpen}
-                onClose={() => setIsMonetizationOpen(false)}
-                onSelectFree={() => generateVehicleReportV2(data, taxData, transportCost)}
-                onSelectPro={() => alert("¡Próximamente! Estamos integrando la pasarela de pago segura.")}
-            />
-
-            <ContactModal
-                isOpen={isContactOpen}
-                onClose={() => setIsContactOpen(false)}
-            />
-
-            {/* About Modal */}
-            <AnimatePresence>
-                {isAboutOpen && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm"
-                        onClick={() => setIsAboutOpen(false)}
-                    >
-                        <motion.div
-                            initial={{ scale: 0.95, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.95, opacity: 0 }}
-                            className="bg-white rounded-2xl p-8 max-w-lg w-full shadow-2xl relative overflow-hidden"
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            <button
-                                onClick={() => setIsAboutOpen(false)}
-                                className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors"
-                            >
-                                <XCircle size={24} />
-                            </button>
-
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="w-16 h-16 rounded-xl flex items-center justify-center">
-                                    <img src="/logo.svg" alt="Logo" className="w-full h-full object-contain" />
-                                </div>
-                                <div>
-                                    <h2 className="text-2xl font-bold text-slate-900">IMPORTAR ESPAÑA</h2>
-                                    <p className="text-blue-600 text-sm font-bold uppercase tracking-wider">Premium Import Tool</p>
-                                </div>
-                            </div>
-
-                            <p className="text-slate-600 leading-relaxed mb-6">
-                                La herramienta definitiva para calcular los costes reales de importación de vehículos desde Alemania a España.
-                            </p>
-
-                            <div className="space-y-4 mb-8">
-                                <div className="flex items-start gap-3">
-                                    <CheckCircle className="text-green-500 mt-1 flex-shrink-0" size={18} />
-                                    <p className="text-sm text-slate-600">Cálculo preciso del Impuesto de Matriculación (IEDMT).</p>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <CheckCircle className="text-green-500 mt-1 flex-shrink-0" size={18} />
-                                    <p className="text-sm text-slate-600">Estimación de costes de transporte y logística.</p>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <CheckCircle className="text-green-500 mt-1 flex-shrink-0" size={18} />
-                                    <p className="text-sm text-slate-600">Generación de informes profesionales en PDF.</p>
-                                </div>
-                            </div>
-
-                            <div className="text-center text-xs text-slate-400">
-                                © 2025 Importar España. Todos los derechos reservados.
-                            </div>
-                        </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-
-            <div className="container mx-auto px-4 relative z-10">
+            <div className="container mx-auto px-4 relative z-10 pt-32"> {/* Added pt-32 for navbar spacing */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -321,8 +191,6 @@ const VehicleAnalyzer = () => {
                         </motion.div>
                     )}
                 </motion.div>
-
-
 
                 {/* Recent Searches */}
                 <AnimatePresence>
@@ -438,10 +306,10 @@ const VehicleAnalyzer = () => {
                                     <a href={url} target="_blank" rel="noopener noreferrer" className="btn-secondary flex items-center justify-center gap-2">
                                         <ExternalLink size={18} /> Ver Anuncio
                                     </a>
-                                    <button onClick={() => setIsMonetizationOpen(true)} className="btn-secondary flex items-center justify-center gap-2">
+                                    <button onClick={onOpenMonetization} className="btn-secondary flex items-center justify-center gap-2">
                                         <FileText size={18} /> PDF
                                     </button>
-                                    <button onClick={addToGarage} className="btn-secondary flex items-center justify-center gap-2">
+                                    <button onClick={handleAddToGarage} className="btn-secondary flex items-center justify-center gap-2">
                                         <Save size={18} /> Guardar
                                     </button>
                                     <button onClick={() => {
@@ -518,12 +386,9 @@ const VehicleAnalyzer = () => {
                         </div>
                     </motion.div>
                 )}
-
-
             </div>
             <HowItWorks />
             <TrustSection />
-            <Footer />
         </div>
     );
 };

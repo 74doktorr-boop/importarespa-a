@@ -9,7 +9,7 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
                     <div className="col-span-1 md:col-span-2">
                         <div className="flex items-center gap-3 mb-6">
-                            <img src="/logo.svg" alt="Importar España" className="h-10 w-auto brightness-0 invert opacity-90" />
+                            <img src="/logo.svg" alt="Importar España" className="h-10 w-auto" />
                             <div className="flex flex-col">
                                 <span className="font-serif font-bold text-white text-xl tracking-tight">IMPORTAR ESPAÑA</span>
                                 <span className="text-[10px] font-bold uppercase tracking-widest text-blue-500">Premium Services</span>
@@ -47,7 +47,7 @@ const Footer = () => {
                         <ul className="space-y-3 text-sm">
                             <li className="flex items-start gap-3">
                                 <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5"></span>
-                                Andoain, Kaleberria
+                                Donostia, Gipuzkoa
                             </li>
                             <li className="flex items-start gap-3">
                                 <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5"></span>

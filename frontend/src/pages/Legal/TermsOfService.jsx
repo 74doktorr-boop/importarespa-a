@@ -1,12 +1,7 @@
-import React from 'react';
-import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
-
 const TermsOfService = () => {
     return (
-        <div className="min-h-screen bg-slate-50">
-            <Navbar />
-            <div className="container mx-auto px-6 py-32 max-w-4xl">
+        <div className="min-h-screen bg-slate-50 pt-32">
+            <div className="container mx-auto px-6 max-w-4xl">
                 <h1 className="text-4xl font-bold text-slate-900 mb-8">Términos y Condiciones</h1>
 
                 <div className="bg-white p-8 rounded-3xl shadow-sm space-y-6 text-slate-600">
@@ -29,7 +24,6 @@ const TermsOfService = () => {
                     <p>Los cálculos de impuestos ofrecidos son estimaciones basadas en la normativa vigente, pero no constituyen asesoramiento fiscal vinculante.</p>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 };

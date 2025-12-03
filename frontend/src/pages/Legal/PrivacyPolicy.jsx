@@ -1,12 +1,7 @@
-import React from 'react';
-import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
-
 const PrivacyPolicy = () => {
     return (
-        <div className="min-h-screen bg-slate-50">
-            <Navbar />
-            <div className="container mx-auto px-6 py-32 max-w-4xl">
+        <div className="min-h-screen bg-slate-50 pt-32">
+            <div className="container mx-auto px-6 max-w-4xl">
                 <h1 className="text-4xl font-bold text-slate-900 mb-8">Política de Privacidad</h1>
 
                 <div className="bg-white p-8 rounded-3xl shadow-sm space-y-6 text-slate-600">
@@ -38,7 +33,6 @@ const PrivacyPolicy = () => {
                     <p>Cualquier persona tiene derecho a obtener confirmación sobre si estamos tratando datos personales que les conciernan, o no. Las personas interesadas tienen derecho a acceder a sus datos personales, así como a solicitar la rectificación de los datos inexactos o, en su caso, solicitar su supresión cuando, entre otros motivos, los datos ya no sean necesarios para los fines que fueron recogidos.</p>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 };
