@@ -1,21 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Car, MapPin, Calendar, DollarSign, Activity, AlertTriangle, CheckCircle, XCircle, FileText, ExternalLink, Zap, ShieldCheck, Clock, Info, Fuel, Gauge, Calculator, AlertCircle, ArrowRight, Settings, Warehouse, Plus, Save, Share2, Mail, Home, Menu, X } from 'lucide-react';
-import StatCard from '../components/StatCard';
-import AnimatedGauge from '../components/AnimatedGauge';
-import TaxBrackets from '../components/TaxBrackets';
-import TransportCard from '../components/TransportCard';
-import ProfitabilityCard from '../components/ProfitabilityCard';
-import axios from 'axios';
-import LoadingOverlay from '../components/LoadingOverlay';
-import HowItWorks from '../components/HowItWorks';
-import TrustSection from '../components/TrustSection';
-import { generateVehicleReportV2 } from '../utils/pdfGenerator';
-import { getDgtLabel } from '../utils/dgtLogic';
-import DgtBadge from '../components/DgtBadge';
-import ImportServicePromo from '../components/ImportServicePromo';
-import ImportWizard from '../components/ImportWizard';
-
 const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) => {
     const [url, setUrl] = useState('');
     const [loading, setLoading] = useState(false);
