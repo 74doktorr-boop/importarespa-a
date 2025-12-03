@@ -17,6 +17,7 @@ import ImportServicePromo from '../components/ImportServicePromo';
 import ImportWizard from '../components/ImportWizard';
 import ImageGallery from '../components/ImageGallery';
 import AdminQuoteModal from '../components/AdminQuoteModal';
+import AdminAuthModal from '../components/AdminAuthModal';
 
 const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) => {
     const [url, setUrl] = useState('');
@@ -24,8 +25,10 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [transportCost, setTransportCost] = useState(0);
+    const [transportDistance, setTransportDistance] = useState(0);
     const [isWizardOpen, setIsWizardOpen] = useState(false);
     const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
+    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
     // Recent Searches
     const [recentSearches, setRecentSearches] = useState(() => {
@@ -44,16 +47,22 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
     // Admin Shortcut Listener
     useEffect(() => {
         const handleKeyDown = (e) => {
-            // console.log('Key pressed:', e.key, 'Ctrl:', e.ctrlKey, 'Shift:', e.shiftKey); // Debugging
             if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'q') {
                 e.preventDefault();
                 console.log('Admin shortcut triggered');
-                setIsAdminModalOpen(prev => !prev);
+                // Check if already authenticated in this session could be an enhancement, 
+                // but for now always ask for password for max security as requested.
+                setIsAuthModalOpen(true);
             }
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
+
+    const handleAuthSuccess = () => {
+        setIsAuthModalOpen(false);
+        setIsAdminModalOpen(true);
+    };
 
     const addToRecentSearches = (vehicleData, vehicleUrl) => {
         setRecentSearches(prev => {
@@ -155,15 +164,33 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
         }
     };
 
+    // Update Transport Handler
+    const handleTransportCalculated = (result) => {
+        if (typeof result === 'object') {
+            setTransportCost(result.cost);
+            setTransportDistance(result.distance);
+        } else {
+            setTransportCost(result);
+            setTransportDistance(0);
+        }
+    };
+
     return (
         <div className="pb-20">
             <LoadingOverlay isLoading={loading} />
+
+            <AdminAuthModal
+                isOpen={isAuthModalOpen}
+                onClose={() => setIsAuthModalOpen(false)}
+                onSuccess={handleAuthSuccess}
+            />
 
             <AdminQuoteModal
                 isOpen={isAdminModalOpen}
                 onClose={() => setIsAdminModalOpen(false)}
                 vehicleData={data}
                 transportCost={transportCost}
+                transportDistance={transportDistance}
             />
 
             <div className="container mx-auto px-4 relative z-10 pt-32">
@@ -176,7 +203,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                     <span
                         onClick={(e) => {
                             if (e.detail === 3) {
-                                setIsAdminModalOpen(true);
+                                setIsAuthModalOpen(true);
                             }
                         }}
                         className="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-100 cursor-pointer select-none"
@@ -358,7 +385,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
 
                                 {/* Transport & Profitability */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <TransportCard originCity={data.location} onCostCalculated={setTransportCost} />
+                                    <TransportCard originCity={data.location} onCostCalculated={handleTransportCalculated} />
                                     <ProfitabilityCard importPrice={publicTotalCost} vehicleData={data} />
                                 </div>
                             </div>

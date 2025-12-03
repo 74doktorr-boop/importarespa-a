@@ -39,7 +39,10 @@ const TransportCard = ({ originCity, onCostCalculated }) => {
 
             setResult(response.data);
             if (onCostCalculated) {
-                onCostCalculated(response.data.cost);
+                onCostCalculated({
+                    cost: response.data.cost,
+                    distance: response.data.distanceKm
+                });
             }
         } catch (err) {
             console.error(err);
@@ -137,7 +140,7 @@ const TransportCard = ({ originCity, onCostCalculated }) => {
                     </div>
 
                     <button
-                        onClick={() => { setResult(null); if (onCostCalculated) onCostCalculated(0); }}
+                        onClick={() => { setResult(null); if (onCostCalculated) onCostCalculated({ cost: 0, distance: 0 }); }}
                         className="w-full py-3 rounded-xl border border-slate-200 text-xs font-bold text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-all uppercase tracking-wider"
                     >
                         Recalcular Ruta
