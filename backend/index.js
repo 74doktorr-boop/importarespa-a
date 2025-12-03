@@ -4,6 +4,7 @@ const cors = require('cors');
 const parseRoutes = require('./routes/parse');
 const transportRoutes = require('./routes/transport');
 const contactRoutes = require('./routes/contact');
+const leadsRoutes = require('./routes/leads');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use('/api/parse', parseRoutes);
 app.use('/api/transport', transportRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/submit-lead', leadsRoutes);
 
 // Health check
 app.get('/', (req, res) => {

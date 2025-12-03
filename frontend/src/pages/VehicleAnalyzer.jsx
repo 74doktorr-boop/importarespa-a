@@ -14,6 +14,7 @@ import { generateVehicleReportV2 } from '../utils/pdfGenerator';
 import { getDgtLabel } from '../utils/dgtLogic';
 import DgtBadge from '../components/DgtBadge';
 import ImportServicePromo from '../components/ImportServicePromo';
+import ImportWizard from '../components/ImportWizard';
 
 const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) => {
     const [url, setUrl] = useState('');
@@ -21,6 +22,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [transportCost, setTransportCost] = useState(0);
+    const [isWizardOpen, setIsWizardOpen] = useState(false);
 
     // Recent Searches
     const [recentSearches, setRecentSearches] = useState(() => {
@@ -316,8 +318,12 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                     <button onClick={() => {
                                         const message = `🚗 *${data.make} ${data.model}* (${data.year})\n💰 *Precio:* ${data.price}€\n🔗 ${url}`;
                                         window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
-                                    }} className="btn-primary flex items-center justify-center gap-2">
+                                    }} className="btn-secondary flex items-center justify-center gap-2">
                                         <Share2 size={18} /> Compartir
+                                    </button>
+
+                                    <button onClick={() => setIsWizardOpen(true)} className="col-span-2 md:col-span-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]">
+                                        <Car size={20} /> ¡Traédmelo! <span className="text-blue-200 text-sm font-normal">(Solicitar Importación)</span>
                                     </button>
                                 </div>
 
@@ -390,7 +396,13 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
             </div>
             <HowItWorks />
             <TrustSection />
-            <ImportServicePromo onOpenContact={onOpenContact} />
+            <ImportServicePromo onOpenContact={() => setIsWizardOpen(true)} />
+
+            <ImportWizard
+                isOpen={isWizardOpen}
+                onClose={() => setIsWizardOpen(false)}
+                vehicleData={data}
+            />
         </div>
     );
 };
