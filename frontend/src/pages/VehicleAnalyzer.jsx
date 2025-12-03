@@ -13,6 +13,7 @@ import TrustSection from '../components/TrustSection';
 import { generateVehicleReportV2 } from '../utils/pdfGenerator';
 import { getDgtLabel } from '../utils/dgtLogic';
 import DgtBadge from '../components/DgtBadge';
+import ImportServicePromo from '../components/ImportServicePromo';
 
 const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) => {
     const [url, setUrl] = useState('');
@@ -389,6 +390,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
             </div>
             <HowItWorks />
             <TrustSection />
+            <ImportServicePromo onOpenContact={onOpenContact} />
         </div>
     );
 };
