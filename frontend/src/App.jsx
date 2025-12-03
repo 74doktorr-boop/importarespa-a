@@ -72,7 +72,7 @@ const AppContent = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col">
+        <div className="min-h-screen bg-slate-950 text-white font-sans flex flex-col selection:bg-blue-500 selection:text-white">
             <Navbar
                 onOpenGarage={() => setIsGarageOpen(true)}
                 garageCount={garageVehicles.length}
@@ -115,26 +115,15 @@ const AppContent = () => {
                 onClose={() => setIsContactOpen(false)}
             />
 
-            {/* About Modal is currently inside VehicleAnalyzer, but should be global if possible. 
-                However, it relies on specific animations. For now, we'll keep it simple or move it if needed.
-                Actually, the user wants "Sobre Nosotros" to work everywhere. 
-                Let's assume we can render a global About modal or keep it simple.
-                The previous implementation had the About modal inside VehicleAnalyzer.
-                We need to decide if we move the About modal content here or keep it.
-                Given the complexity of the About modal (it was part of the main page render), 
-                let's see if we can extract it or if we just use a simple modal for now.
-                
-                Wait, the About Modal in VehicleAnalyzer was quite complex. 
-                Let's check if we can just pass the state down or if we need to move the component.
-                The About Modal was inline in VehicleAnalyzer. We should probably extract it to a component.
-                For this step, I will NOT include the About Modal in App.jsx yet, 
-                I will focus on the structure and then extract the About Modal from VehicleAnalyzer.
-            */}
             <AboutModal
                 isOpen={isAboutOpen}
                 onClose={() => setIsAboutOpen(false)}
             />
 
+            <MonetizationModal
+                isOpen={isMonetizationOpen}
+                onClose={() => setIsMonetizationOpen(false)}
+            />
         </div>
     );
 };

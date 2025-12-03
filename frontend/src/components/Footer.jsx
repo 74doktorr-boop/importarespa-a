@@ -4,7 +4,7 @@ import { Shield, FileText, Cookie } from 'lucide-react';
 
 const Footer = () => {
     return (
-        <footer className="bg-gradient-to-b from-slate-900 to-slate-950 text-slate-400 py-16 border-t border-slate-800">
+        <footer className="bg-slate-950 text-slate-400 py-16 border-t border-white/5">
             <div className="container mx-auto px-6 max-w-7xl">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
                     <div className="col-span-1 md:col-span-2">
