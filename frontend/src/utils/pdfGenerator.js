@@ -25,26 +25,33 @@ export const generateVehicleReportV2 = async (data, transportCost = 0) => {
         doc.setFillColor(10, 25, 41); // Dark blue/black
         doc.rect(0, 0, pageWidth, 30, 'F');
 
-        // Draw Logo Icon (Vector)
+        // Draw Luxury Logo Icon (Vector Shield)
         const logoX = margin;
         const logoY = 15;
-        const scale = 0.4;
+        const scale = 0.5;
 
-        doc.setDrawColor(255, 255, 255);
+        doc.setDrawColor(212, 175, 55); // Gold
         doc.setLineWidth(1.5 * scale);
 
-        // Circle
-        doc.circle(logoX + (30 * scale), logoY, 28 * scale, 'S');
+        // Shield Shape (Simplified for PDF robustness)
+        doc.line(30 * scale + logoX, 2 * scale + logoY, 58 * scale + logoX, 12 * scale + logoY);
+        doc.line(58 * scale + logoX, 12 * scale + logoY, 58 * scale + logoX, 30 * scale + logoY);
+        doc.line(58 * scale + logoX, 30 * scale + logoY, 30 * scale + logoX, 68 * scale + logoY);
+        doc.line(30 * scale + logoX, 68 * scale + logoY, 2 * scale + logoX, 30 * scale + logoY);
+        doc.line(2 * scale + logoX, 30 * scale + logoY, 2 * scale + logoX, 12 * scale + logoY);
+        doc.line(2 * scale + logoX, 12 * scale + logoY, 30 * scale + logoX, 2 * scale + logoY);
 
-        // Arrow Path (Simplified for PDF)
-        doc.setLineWidth(2 * scale);
-        doc.setDrawColor(59, 130, 246); // Blue 500
-        doc.line(logoX + (15 * scale), logoY + (5 * scale), logoX + (25 * scale), logoY - (5 * scale)); // Up
-        doc.line(logoX + (25 * scale), logoY - (5 * scale), logoX + (45 * scale), logoY - (5 * scale)); // Flat
-        doc.line(logoX + (45 * scale), logoY - (5 * scale), logoX + (50 * scale), logoY); // Down tip
+        // Monogram "IE"
+        doc.setFont('times', 'bold');
+        doc.setFontSize(14);
+        doc.setTextColor(212, 175, 55); // Gold
+        doc.text('IE', 30 * scale + logoX, 45 * scale + logoY, { align: 'center' });
 
         // Text
-        addText('IMPORTAR ESPAÑA', margin + (70 * scale), 20, 18, 'helvetica', 'bold', [255, 255, 255]);
+        addText('IMPORTAR', margin + (70 * scale), 18, 18, 'times', 'bold', [255, 255, 255]);
+        addText('ESPAÑA', margin + (70 * scale) + 35, 18, 18, 'helvetica', 'normal', [212, 175, 55]); // Gold
+        addText('PREMIUM AUTOMOTIVE SERVICES', margin + (70 * scale), 24, 6, 'helvetica', 'bold', [200, 200, 200]);
+
         addText(title, pageWidth - margin, 20, 10, 'helvetica', 'normal', [200, 200, 200], 'right');
     };
 
