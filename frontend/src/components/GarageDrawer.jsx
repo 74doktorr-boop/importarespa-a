@@ -122,9 +122,9 @@ const GarageDrawer = ({ isOpen, onClose, vehicles = [], onRemove, onClear }) => 
                                                 <div className="grid grid-cols-2 gap-3 text-sm">
                                                     <div className="bg-white/5 p-2 rounded-lg group-hover:bg-white/10 transition-colors">
                                                         <div className="text-gray-500 text-[10px] uppercase font-bold mb-1 flex items-center gap-1">
-                                                            <Settings size={10} /> Cambio
+                                                            <Calendar size={10} /> Fecha
                                                         </div>
-                                                        <div className="text-white font-mono truncate">{vehicle.transmission || 'N/A'}</div>
+                                                        <div className="text-white font-mono truncate">{vehicle.firstRegistration || vehicle.year}</div>
                                                     </div>
                                                     <div className="bg-white/5 p-2 rounded-lg group-hover:bg-white/10 transition-colors">
                                                         <div className="text-gray-500 text-[10px] uppercase font-bold mb-1 flex items-center gap-1">

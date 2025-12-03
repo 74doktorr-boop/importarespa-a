@@ -206,6 +206,7 @@ router.post('/', async (req, res) => {
             ]);
 
             if (dateString) {
+                vehicleData.firstRegistration = dateString; // Store the full string
                 const dateMatch = dateString.match(/(\d{2})[\/.-](\d{4})/);
                 if (dateMatch) {
                     vehicleData.year = parseInt(dateMatch[2]);

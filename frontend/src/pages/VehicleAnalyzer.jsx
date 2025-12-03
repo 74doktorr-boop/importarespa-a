@@ -292,10 +292,10 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                     </div>
 
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                        <StatCard icon={Settings} label="Cambio" value={data.transmission || 'Manual'} delay={0.1} />
+                                        <StatCard icon={Calendar} label="Matriculación" value={data.firstRegistration || data.year} delay={0.1} />
                                         <StatCard icon={Activity} label="Kilometraje" value={`${data.mileage.toLocaleString()} km`} delay={0.2} />
                                         <StatCard icon={Gauge} label="Potencia" value={data.power ? `${data.power} CV` : 'N/A'} delay={0.3} />
-                                        <StatCard icon={Fuel} label="Combustible" value={data.fuelType || 'N/A'} delay={0.4} />
+                                        <StatCard icon={Settings} label="Cambio" value={data.transmission || 'Manual'} delay={0.4} />
                                     </div>
                                 </div>
 
