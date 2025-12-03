@@ -305,7 +305,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                 </div>
 
                                 {/* Actions */}
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                     <a href={url} target="_blank" rel="noopener noreferrer" className="btn-secondary flex items-center justify-center gap-2">
                                         <ExternalLink size={18} /> Ver Anuncio
                                     </a>
@@ -315,14 +315,8 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                     <button onClick={handleAddToGarage} className="btn-secondary flex items-center justify-center gap-2">
                                         <Save size={18} /> Guardar
                                     </button>
-                                    <button onClick={() => {
-                                        const message = `🚗 *${data.make} ${data.model}* (${data.year})\n💰 *Precio:* ${data.price}€\n🔗 ${url}`;
-                                        window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
-                                    }} className="btn-secondary flex items-center justify-center gap-2">
-                                        <Share2 size={18} /> Compartir
-                                    </button>
 
-                                    <button onClick={() => setIsWizardOpen(true)} className="col-span-2 md:col-span-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]">
+                                    <button onClick={() => setIsWizardOpen(true)} className="col-span-2 md:col-span-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]">
                                         <Car size={20} /> ¡Traédmelo! <span className="text-blue-200 text-sm font-normal">(Solicitar Importación)</span>
                                     </button>
                                 </div>
