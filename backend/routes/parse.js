@@ -65,6 +65,295 @@ router.post('/', async (req, res) => {
             if (!src) return true;
             // Removed risky keywords: static, map, advert, background, hero, seller
             if (src.match(/icon|logo|pixel|tracker|avatar|banner|profile|dealer|haendler|autohaus/i)) return true;
+            if (src.endsWith('.svg')) return true;
+            return false;
+        };
+
+        // --- HELPER: Check if element is in an excluded container ---
+        const isExcluded = ($elem) => {
+            return $elem.closest('.seller-info, .dealer-info, .contact-box, .seller-box, .vip-seller, .vip-header, .dealer-header, .seller-branding, [data-testid="seller-branding"], .image-gallery-background').length > 0;
+        };
+
+        // STRATEGY 1: JSON-LD (Structured Data)
+        let jsonLd = null;
+        $('script[type="application/ld+json"]').each((i, elem) => {
+            try {
+                const data = JSON.parse($(elem).html());
+                if (data['@type'] === 'Product' || data['@type'] === 'Car' || data['@type'] === 'Vehicle') {
+                    jsonLd = data;
+                }
+                if (Array.isArray(data)) {
+                    const product = data.find(item => item['@type'] === 'Product' || item['@type'] === 'Car');
+                    if (product) jsonLd = product;
+                }
+            } catch (e) { /* ignore */ }
+        });
+
+        if (jsonLd) {
+            vehicleData.make = jsonLd.brand?.name || jsonLd.manufacturer || vehicleData.make;
+            vehicleData.model = jsonLd.model || vehicleData.model;
+
+            // Location Extraction from JSON-LD
+            if (jsonLd.offers && jsonLd.offers.availableAtOrFrom && jsonLd.offers.availableAtOrFrom.address) {
+                const address = jsonLd.offers.availableAtOrFrom.address;
+                if (address.addressLocality) {
+                    vehicleData.location = address.addressLocality;
+                }
+                if (address.addressCountry) {
+                    vehicleData.country = address.addressCountry;
+                }
+            }
+
+            // Handle Image Arrays (Metadata) - We store it but will prioritize gallery later
+            let candidateImage = '';
+            if (Array.isArray(jsonLd.image)) {
+                candidateImage = jsonLd.image[0];
+            } else if (jsonLd.image && typeof jsonLd.image === 'object' && jsonLd.image.url) {
+                candidateImage = jsonLd.image.url;
+            } else {
+                candidateImage = jsonLd.image;
+            }
+
+            if (!isInvalidImage(candidateImage)) {
+                vehicleData.imageUrl = candidateImage;
+            }
+
+            if (jsonLd.offers) {
+                const offer = Array.isArray(jsonLd.offers) ? jsonLd.offers[0] : jsonLd.offers;
+                vehicleData.price = Number(offer.price) || vehicleData.price;
+                vehicleData.currency = offer.priceCurrency || vehicleData.currency;
+            }
+
+            if (jsonLd.productionDate) {
+                vehicleData.year = new Date(jsonLd.productionDate).getFullYear();
+            } else if (jsonLd.modelDate) {
+                vehicleData.year = new Date(jsonLd.modelDate).getFullYear();
+            }
+
+            if (jsonLd.mileageFromOdometer) {
+                vehicleData.mileage = Number(jsonLd.mileageFromOdometer.value || jsonLd.mileageFromOdometer);
+            }
+
+            if (jsonLd.vehicleEngine && jsonLd.vehicleEngine.enginePower) {
+                const powerKw = Number(jsonLd.vehicleEngine.enginePower.value || jsonLd.vehicleEngine.enginePower);
+                if (powerKw) vehicleData.power = Math.round(powerKw * 1.36);
+            }
+
+            vehicleData.fuelType = jsonLd.fuelType || '';
+            vehicleData.transmission = jsonLd.vehicleTransmission || vehicleData.transmission;
+        }
+
+        // STRATEGY 2: OpenGraph & Meta Tags (Fallback)
+        if (vehicleData.make === 'Unknown') {
+            const title = $('meta[property="og:title"]').attr('content') || $('title').text();
+            const cleanTitle = title.replace(/\|.*/, '').trim();
+            const parts = cleanTitle.split(' ');
+            vehicleData.make = parts[0] || 'Unknown';
+            vehicleData.model = parts.slice(1).join(' ') || 'Unknown';
+        }
+
+        // Location Fallback (HTML Selectors)
+        if (vehicleData.location === 'Germany') {
+            const locationSelectors = [
+                '[data-testid="seller-address"]',
+                '.seller-address',
+                '.sc-grid-col-12.seller-info',
+                '#seller-address'
+            ];
+
+            for (const selector of locationSelectors) {
+                const text = $(selector).text().trim();
+                if (text) {
+                    const parts = text.split(',');
+                    if (parts.length > 0) {
+                        const cityMatch = text.match(/\d{4,5}\s+([a-zA-Z\u00C0-\u00FF\s-]+)/);
+                        if (cityMatch) {
+                            vehicleData.location = cityMatch[1].trim();
+                        } else {
+                            vehicleData.location = parts[parts.length - 1].trim();
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        if (!vehicleData.imageUrl) {
+            const ogImage = $('meta[property="og:image"]').attr('content');
+            if (!isInvalidImage(ogImage)) {
+                vehicleData.imageUrl = ogImage;
+            }
+        }
+
+        // STRATEGY 3: Text-Based & Specific Fallbacks
+        if (vehicleData.price === 0) {
+            const pageTitle = $('title').text();
+            const priceMatch = pageTitle.match(/(\d{1,3}(?:[.,]\d{3})*)\s*€/);
+            if (priceMatch) {
+                const rawPrice = priceMatch[1].replace(/[.,]/g, '');
+                vehicleData.price = parseInt(rawPrice);
+            }
+        }
+
+        // --- IMPROVED YEAR EXTRACTION ---
+        if (vehicleData.year === 0) {
+            const dateString = findValueByLabel([
+                'EZ', 'Erstzulassung', 'First Registration', '1. Reg',
+                'Matriculación', 'Année', 'Year', 'Mise en circulation',
+                'Fecha de matriculación', 'Inverkehrssetzung', 'Registrazione'
+            ]);
+
+            if (dateString) {
+                const dateMatch = dateString.match(/(\d{2})[\/.-](\d{4})/);
+                if (dateMatch) {
+                    vehicleData.year = parseInt(dateMatch[2]);
+                } else {
+                    const yearMatch = dateString.match(/(19|20)\d{2}/);
+                    if (yearMatch) vehicleData.year = parseInt(yearMatch[0]);
+                }
+            }
+        }
+
+        // Strategy 5: Data Attributes & Common Classes
+        if (vehicleData.year === 0) {
+            const specificSelectors = [
+                '[data-testid="first-registration"]',
+                '[data-testid="vehicle-details-first-registration"]',
+                '.vehicle-data__item--first-registration',
+                '#firstRegistration',
+                '.sc-grid-col-12:contains("First Registration")',
+                '.sc-grid-col-12:contains("Erstzulassung")'
+            ];
+
+            for (const selector of specificSelectors) {
+                const text = $(selector).text();
+                if (text) {
+                    const match = text.match(/(19|20)\d{2}/);
+                    if (match) {
+                        vehicleData.year = parseInt(match[0]);
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Strategy 6: Proximity Search (Find keywords and look for year nearby)
+        if (vehicleData.year === 0) {
+            const keywords = ['Erstzulassung', 'First Registration', 'Matriculación', 'Année', 'EZ'];
+            for (const keyword of keywords) {
+                const index = bodyText.indexOf(keyword);
+                if (index !== -1) {
+                    // Look at the next 50 chars
+                    const snippet = bodyText.substring(index, index + 50);
+                    const match = snippet.match(/(19|20)\d{2}/);
+                    if (match) {
+                        vehicleData.year = parseInt(match[0]);
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Fallback: Search in H1
+        if (vehicleData.year === 0) {
+            const h1Text = $('h1').text();
+            const h1YearMatch = h1Text.match(/(19|20)\d{2}/);
+            if (h1YearMatch) {
+                vehicleData.year = parseInt(h1YearMatch[0]);
+            }
+        }
+
+        // Fallback: Search for any MM/YYYY date pattern in the first 3000 chars of body
+        if (vehicleData.year === 0) {
+            const shortBody = bodyText.substring(0, 3000);
+            const datePatternMatch = shortBody.match(/(?:0[1-9]|1[0-2])[\/.-](19|20)\d{2}/);
+            if (datePatternMatch) {
+                const yearPart = datePatternMatch[0].match(/(19|20)\d{2}/);
+                if (yearPart) vehicleData.year = parseInt(yearPart[0]);
+            }
+        }
+
+        if (vehicleData.mileage === 0) {
+            const mileageMatch = bodyText.match(/(\d{1,3}(?:[.,]\d{3})*)\s*km/i);
+            if (mileageMatch) {
+                const rawMileage = mileageMatch[1].replace(/[.,]/g, '');
+                vehicleData.mileage = parseInt(rawMileage);
+            }
+        }
+
+        if (vehicleData.power === 0) {
+            const powerMatch = bodyText.match(/(\d+)\s*kW/i);
+            if (powerMatch) vehicleData.power = Math.round(parseInt(powerMatch[1]) * 1.36);
+        }
+
+        if (url.includes('mobile.de') || url.includes('autoscout24')) {
+            const co2Match = bodyText.match(/(\d{2,3})\s*g\/km/i);
+            if (co2Match && vehicleData.co2 === 0) vehicleData.co2 = parseInt(co2Match[1]);
+
+            if (!vehicleData.fuelType) {
+                if (bodyText.match(/Benzin|Gasoline|Petrol/i)) vehicleData.fuelType = 'Gasolina';
+                else if (bodyText.match(/Diesel/i)) vehicleData.fuelType = 'Diesel';
+                else if (bodyText.match(/Hybrid/i)) vehicleData.fuelType = 'Híbrido';
+                else if (bodyText.match(/Elektro|Electric/i)) vehicleData.fuelType = 'Eléctrico';
+            }
+
+            if (vehicleData.transmission === 'Unknown') {
+                if (bodyText.match(/Automatic|Automatik|Automático/i)) vehicleData.transmission = 'Automático';
+                else if (bodyText.match(/Manual|Schaltgetriebe|Manuelle/i)) vehicleData.transmission = 'Manual';
+            }
+        }
+
+        // STRATEGY 4: AGGRESSIVE IMAGE SEARCH (PRIORITY)
+        const gallerySelectors = [
+            '#gallery-img-0', // Mobile.de specific ID for first image
+            '.gallery-image',
+            '.image-gallery-image',
+            'img[data-testid="main-image"]',
+            '.cldt-gallery-img',
+            '.gallery-component img',
+            '.slick-slide img',
+            '.image-gallery-slide img',
+            'img[class*="gallery"]' // Broad selector last
+        ];
+
+        let galleryImage = null;
+        for (const selector of gallerySelectors) {
+            $(selector).each((i, elem) => {
+                const $elem = $(elem);
+                const src = $elem.attr('src');
+                // Check if valid AND not in an excluded container
+                if (src && src.startsWith('http') && !isInvalidImage(src) && !isExcluded($elem)) {
+                    galleryImage = src;
+                    return false; // Break cheerio loop
+                }
+            });
+            if (galleryImage) break;
+        }
+
+        if (galleryImage) {
+            vehicleData.imageUrl = galleryImage;
+        } else if (!vehicleData.imageUrl || vehicleData.imageUrl.includes('placeholder')) {
+            // Fallback to searching all images
+            $('img').each((i, elem) => {
+                const $elem = $(elem);
+                const src = $elem.attr('src');
+                const alt = $elem.attr('alt') || '';
+
+                if (isExcluded($elem)) return;
+
+                if (src && src.startsWith('http')) {
+                    if (isInvalidImage(src)) return;
+                    if (src.includes('vehicle') || src.includes('img') || alt.toLowerCase().includes(vehicleData.make.toLowerCase())) {
+                        if (!vehicleData.imageUrl) vehicleData.imageUrl = src;
+                    }
+                }
+            });
+        }
+
+        // FINAL STEP: CO2 Estimation & Cleanup
+        if (!vehicleData.co2 || vehicleData.co2 === 0) {
+            vehicleData.co2 = estimateCO2(vehicleData.fuelType, vehicleData.year);
+            vehicleData.isEstimatedCO2 = true;
         }
 
         const currentYear = new Date().getFullYear();
