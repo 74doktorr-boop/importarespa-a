@@ -14,6 +14,7 @@ import LoadingOverlay from '../components/LoadingOverlay';
 import ContactModal from '../components/ContactModal';
 import HowItWorks from '../components/HowItWorks';
 import TrustSection from '../components/TrustSection';
+import Footer from '../components/Footer';
 import { generateVehicleReportV2 } from '../utils/pdfGenerator';
 import { getDgtLabel } from '../utils/dgtLogic';
 import DgtBadge from '../components/DgtBadge';
@@ -225,7 +226,7 @@ const VehicleAnalyzer = () => {
 
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="w-16 h-16 rounded-xl flex items-center justify-center">
-                                    <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
+                                    <img src="/logo.svg" alt="Logo" className="w-full h-full object-contain" />
                                 </div>
                                 <div>
                                     <h2 className="text-2xl font-bold text-slate-900">IMPORTAR ESPAÑA</h2>
@@ -260,135 +261,117 @@ const VehicleAnalyzer = () => {
                 )}
             </AnimatePresence>
 
-            {/* Hero Section */}
-            <div className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-                <div className="absolute inset-0 z-0">
-                    <div className="absolute inset-0 bg-gradient-to-b from-slate-50 via-white to-slate-50"></div>
-                    {/* Subtle grid pattern */}
-                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5 mix-blend-multiply"></div>
-                </div>
+            <div className="container mx-auto px-4 relative z-10">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className={`text-center transition-all duration-500 ${data ? 'mb-12' : 'mb-16'}`}
+                >
+                    <span className="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-100">
+                        Professional Import Calculator
+                    </span>
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-slate-900 mb-6 tracking-tight">
+                        Importar España
+                    </h1>
+                    <p className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto font-light leading-relaxed">
+                        Calcula impuestos, transporte y costes de matriculación con precisión profesional.
+                    </p>
+                </motion.div>
 
-                <div className="container mx-auto px-4 relative z-10">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                        className={`text-center transition-all duration-500 ${data ? 'mb-12' : 'mb-16'}`}
-                    >
-                        <span className="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-100">
-                            Professional Import Calculator
-                        </span>
-                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-slate-900 mb-6 tracking-tight">
-                            Importar España
-                        </h1>
-                        <p className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto font-light leading-relaxed">
-                            Calcula impuestos, transporte y costes de matriculación con precisión profesional.
-                        </p>
-                    </motion.div>
-
-                    {/* Search Bar */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2, duration: 0.8 }}
-                        className="max-w-2xl mx-auto"
-                    >
-                        <form onSubmit={handleAnalyze} className="relative group">
-                            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
-                            <div className="relative flex items-center bg-white rounded-2xl p-2 shadow-xl border border-slate-100">
-                                <Search className="ml-4 text-slate-400 w-6 h-6" />
-                                <input
-                                    type="text"
-                                    placeholder="Pega el enlace de mobile.de o AutoScout24..."
-                                    className="w-full bg-transparent border-none focus:ring-0 text-slate-900 px-4 py-4 text-lg placeholder-slate-400 font-medium"
-                                    value={url}
-                                    onChange={(e) => setUrl(e.target.value)}
-                                />
-                                <button
-                                    type="submit"
-                                    disabled={loading}
-                                    className="bg-slate-900 text-white hover:bg-slate-800 font-medium py-3 px-8 rounded-xl transition-all duration-300 min-w-[140px] flex justify-center items-center shadow-lg shadow-slate-900/20"
-                                >
-                                    {loading ? (
-                                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                                    ) : (
-                                        <span className="flex items-center">Analizar <ArrowRight size={18} className="ml-2" /></span>
-                                    )}
-                                </button>
-                            </div>
-                        </form>
-                        {error && (
-                            <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="mt-4 p-4 bg-red-50 border border-red-100 rounded-xl text-red-600 flex items-center justify-center text-sm font-medium"
+                {/* Search Bar */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2, duration: 0.8 }}
+                    className="max-w-2xl mx-auto"
+                >
+                    <form onSubmit={handleAnalyze} className="relative group">
+                        <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+                        <div className="relative flex items-center bg-white rounded-2xl p-2 shadow-xl border border-slate-100">
+                            <Search className="ml-4 text-slate-400 w-6 h-6" />
+                            <input
+                                type="text"
+                                placeholder="Pega el enlace de mobile.de o AutoScout24..."
+                                className="w-full bg-transparent border-none focus:ring-0 text-slate-900 px-4 py-4 text-lg placeholder-slate-400 font-medium"
+                                value={url}
+                                onChange={(e) => setUrl(e.target.value)}
+                            />
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="bg-slate-900 text-white hover:bg-slate-800 font-medium py-3 px-8 rounded-xl transition-all duration-300 min-w-[140px] flex justify-center items-center shadow-lg shadow-slate-900/20"
                             >
-                                <AlertTriangle className="mr-2" size={18} />
-                                {error}
-                            </motion.div>
-                        )}
-                    </motion.div>
-
-                    {/* Recent Searches */}
-                    <AnimatePresence>
-                        {!data && recentSearches.length > 0 && (
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className="max-w-2xl mx-auto mt-8 flex flex-wrap justify-center gap-2"
-                            >
-                                {recentSearches.map((search, idx) => (
-                                    <button
-                                        key={search.timestamp}
-                                        onClick={() => loadRecentSearch(search.url)}
-                                        className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-full text-xs font-medium text-slate-600 hover:border-blue-300 hover:text-blue-600 transition-colors shadow-sm"
-                                    >
-                                        <Car size={12} />
-                                        {search.make} {search.model}
-                                    </button>
-                                ))}
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </div>
-            </div>
-
-            {/* Features Grid (Only when no data) */}
-            <AnimatePresence>
-                {!data && !loading && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="container mx-auto px-4 pb-20"
-                    >
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                            {[
-                                { icon: Zap, title: "Análisis Instantáneo", desc: "Extracción de datos en tiempo real mediante IA avanzada." },
-                                { icon: Calculator, title: "Impuestos Precisos", desc: "Cálculo del IEDMT basado en emisiones CO2 y tablas de Hacienda." },
-                                { icon: FileText, title: "Informes PDF", desc: "Genera dossiers profesionales listos para presentar." }
-                            ].map((item, index) => (
-                                <div key={index} className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-                                    <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-6 text-slate-900">
-                                        <item.icon size={24} />
-                                    </div>
-                                    <h3 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h3>
-                                    <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
-                                </div>
-                            ))}
+                                {loading ? (
+                                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                ) : (
+                                    <span className="flex items-center">Analizar <ArrowRight size={18} className="ml-2" /></span>
+                                )}
+                            </button>
                         </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                    </form>
+                    {error && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="mt-4 p-4 bg-red-50 border border-red-100 rounded-xl text-red-600 flex items-center justify-center text-sm font-medium"
+                        >
+                            <AlertTriangle className="mr-2" size={18} />
+                            {error}
+                        </motion.div>
+                    )}
+                </motion.div>
 
-            {/* Results Section */}
-            <AnimatePresence>
+
+
+                {/* Recent Searches */}
+                <AnimatePresence>
+                    {!data && recentSearches.length > 0 && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="max-w-2xl mx-auto mt-8 flex flex-wrap justify-center gap-2"
+                        >
+                            {recentSearches.map((search, idx) => (
+                                <button
+                                    key={search.timestamp}
+                                    onClick={() => loadRecentSearch(search.url)}
+                                    className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-full text-xs font-medium text-slate-600 hover:border-blue-300 hover:text-blue-600 transition-colors shadow-sm"
+                                >
+                                    <Car size={12} />
+                                    {search.make} {search.model}
+                                </button>
+                            ))}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                {/* Feature Cards */}
+                {!data && (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mt-16">
+                        {[
+                            { icon: Zap, title: "Análisis Instantáneo", desc: "Extracción de datos en tiempo real mediante IA avanzada." },
+                            { icon: Calculator, title: "Impuestos Precisos", desc: "Cálculo del IEDMT basado en emisiones CO2 y tablas de Hacienda." },
+                            { icon: FileText, title: "Informes PDF", desc: "Genera dossiers profesionales listos para presentar." }
+                        ].map((item, index) => (
+                            <div key={index} className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                                <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-6 text-slate-900">
+                                    <item.icon size={24} />
+                                </div>
+                                <h3 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h3>
+                                <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                {/* Vehicle Data Display */}
                 {data && (
                     <motion.div
-                        initial={{ opacity: 0, y: 40 }}
+                        initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0 }}
-                        className="container mx-auto px-4 pb-24 max-w-7xl"
+                        transition={{ duration: 0.5 }}
+                        className="mt-16"
                     >
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                             {/* Main Vehicle Info (8 cols) */}
@@ -535,11 +518,12 @@ const VehicleAnalyzer = () => {
                         </div>
                     </motion.div>
                 )}
-            </AnimatePresence>
 
 
+            </div>
             <HowItWorks />
             <TrustSection />
+            <Footer />
         </div>
     );
 };

@@ -29,7 +29,7 @@ const Navbar = ({ onOpenGarage, garageCount, onOpenAbout, onReset, onOpenContact
                         onClick={onReset}
                         className="flex items-center gap-3 group"
                     >
-                        <img src="/logo.png" alt="Importar España" className="h-10 w-auto object-contain" />
+                        <img src="/logo.svg" alt="Importar España" className="h-10 w-auto" />
                         <div className="flex flex-col items-start">
                             <span className={`font-serif font-bold text-lg tracking-tight leading-none ${isScrolled ? 'text-slate-900' : 'text-slate-900'}`}>
                                 IMPORTAR ESPAÑA
@@ -73,7 +73,7 @@ const Navbar = ({ onOpenGarage, garageCount, onOpenAbout, onReset, onOpenContact
             </motion.nav>
 
             {/* Mobile Menu Overlay */}
-            <AnimatePresence>
+            < AnimatePresence >
                 {isMobileMenuOpen && (
                     <motion.div
                         initial={{ opacity: 0, y: -20 }}
@@ -89,7 +89,7 @@ const Navbar = ({ onOpenGarage, garageCount, onOpenAbout, onReset, onOpenContact
                         </div>
                     </motion.div>
                 )}
-            </AnimatePresence>
+            </AnimatePresence >
         </>
     );
 };

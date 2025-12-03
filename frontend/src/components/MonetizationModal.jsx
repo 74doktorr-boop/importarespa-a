@@ -68,7 +68,7 @@ const MonetizationModal = ({ isOpen, onClose, onSelectFree }) => {
                         </div>
 
                         <div className="mb-6 relative z-10">
-                            <img src="/logo.png" alt="Logo" className="h-12 w-auto mb-4 opacity-90" />
+                            <img src="/logo.svg" alt="Logo" className="h-12 w-auto mb-4 opacity-90" />
                             <h3 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 mb-2 flex items-center gap-2">
                                 Pack Importador PRO <Star className="text-yellow-400 fill-yellow-400" size={24} />
                             </h3>
@@ -118,7 +118,7 @@ const MonetizationModal = ({ isOpen, onClose, onSelectFree }) => {
                     </div>
                 </motion.div>
             </motion.div>
-        </AnimatePresence>
+        </AnimatePresence >
     );
 };
 
