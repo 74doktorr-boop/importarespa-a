@@ -111,7 +111,7 @@ const ImportWizard = ({ isOpen, onClose, vehicleData }) => {
                             <button
                                 onClick={() => {
                                     const message = `Hola, estoy interesado en importar este ${vehicleData.make} ${vehicleData.model} (${vehicleData.year}) que he visto en la web. Precio estimado: ${new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(vehicleData.totalCost || vehicleData.price)}. ¿Me puedes confirmar viabilidad?`;
-                                    window.open(`https://wa.me/34600000000?text=${encodeURIComponent(message)}`, '_blank');
+                                    window.open(`https://wa.me/34666351319?text=${encodeURIComponent(message)}`, '_blank');
                                 }}
                                 className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg"
                             >
