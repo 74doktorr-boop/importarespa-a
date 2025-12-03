@@ -13,6 +13,7 @@ import Footer from './components/Footer';
 import GarageDrawer from './components/GarageDrawer';
 import ContactModal from './components/ContactModal';
 import MonetizationModal from './components/MonetizationModal';
+import AboutModal from './components/AboutModal';
 
 // Wrapper component to use hooks like useLocation
 const AppContent = () => {
@@ -129,20 +130,10 @@ const AppContent = () => {
                 For this step, I will NOT include the About Modal in App.jsx yet, 
                 I will focus on the structure and then extract the About Modal from VehicleAnalyzer.
             */}
-            <AnimatePresence>
-                {isAboutOpen && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setIsAboutOpen(false)}>
-                        <div className="bg-white rounded-2xl p-8 max-w-2xl w-full shadow-2xl" onClick={e => e.stopPropagation()}>
-                            <h2 className="text-2xl font-bold mb-4">Sobre Importar España</h2>
-                            <p className="text-slate-600 mb-6">
-                                Somos la herramienta líder para calcular los costes de importación de vehículos.
-                                Nuestra misión es simplificar el proceso y ofrecer transparencia total.
-                            </p>
-                            <button onClick={() => setIsAboutOpen(false)} className="bg-blue-600 text-white px-6 py-2 rounded-xl">Cerrar</button>
-                        </div>
-                    </div>
-                )}
-            </AnimatePresence>
+            <AboutModal
+                isOpen={isAboutOpen}
+                onClose={() => setIsAboutOpen(false)}
+            />
 
         </div>
     );
