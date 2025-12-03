@@ -1,6 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Car, MapPin, Calendar, DollarSign, Activity, AlertTriangle, CheckCircle, XCircle, FileText, ExternalLink, Zap, ShieldCheck, Clock, Info, Fuel, Gauge, Calculator, AlertCircle, ArrowRight, Settings, Warehouse, Plus, Save, Share2, Mail, Home, Menu, X } from 'lucide-react';
+import StatCard from '../components/StatCard';
+import AnimatedGauge from '../components/AnimatedGauge';
+import TaxBrackets from '../components/TaxBrackets';
+import TransportCard from '../components/TransportCard';
+import ProfitabilityCard from '../components/ProfitabilityCard';
+import axios from 'axios';
+import LoadingOverlay from '../components/LoadingOverlay';
+import HowItWorks from '../components/HowItWorks';
+import TrustSection from '../components/TrustSection';
+import { generateVehicleReportV2 } from '../utils/pdfGenerator';
+import { getDgtLabel } from '../utils/dgtLogic';
+import DgtBadge from '../components/DgtBadge';
+import ImportServicePromo from '../components/ImportServicePromo';
+import ImportWizard from '../components/ImportWizard';
+import ImageGallery from '../components/ImageGallery';
 const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) => {
     const [url, setUrl] = useState('');
     const [loading, setLoading] = useState(false);
@@ -267,18 +282,13 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                         </div>
                                     </div>
 
-                                    {/* Main Image */}
-                                    <div className="w-full h-[450px] rounded-2xl overflow-hidden mb-8 bg-slate-100 relative shadow-inner">
-                                        <img
-                                            src={data.imageUrl}
-                                            alt={`${data.make} ${data.model}`}
-                                            className="w-full h-full object-cover"
+                                    {/* Image Gallery Section */}
+                                    <div className="mb-8">
+                                        <ImageGallery
+                                            images={data.images && data.images.length > 0
+                                                ? data.images
+                                                : [data.imageUrl]}
                                         />
-                                        {!data.imageUrl && (
-                                            <div className="absolute inset-0 flex items-center justify-center text-slate-300">
-                                                <Car size={64} />
-                                            </div>
-                                        )}
                                     </div>
 
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
