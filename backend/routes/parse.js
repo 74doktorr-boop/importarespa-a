@@ -45,6 +45,7 @@ router.post('/', async (req, res) => {
             fuelType: '',
             currency: 'EUR',
             imageUrl: '',
+            images: [], // Array to store multiple images
             isEstimatedCO2: false
         };
 
@@ -316,24 +317,34 @@ router.post('/', async (req, res) => {
             'img[class*="gallery"]' // Broad selector last
         ];
 
-        let galleryImage = null;
-        for (const selector of gallerySelectors) {
-            $(selector).each((i, elem) => {
-                const $elem = $(elem);
-                const src = $elem.attr('src');
-                // Check if valid AND not in an excluded container
-                if (src && src.startsWith('http') && !isInvalidImage(src) && !isExcluded($elem)) {
-                    galleryImage = src;
-                    return false; // Break cheerio loop
+        let galleryImages = new Set();
+
+        // 1. Try to find specific gallery containers first
+        const $galleryContainer = $('.gallery-component, .cldt-gallery-data, #gallery-component, .image-gallery');
+        if ($galleryContainer.length > 0) {
+            $galleryContainer.find('img').each((i, elem) => {
+                const src = $(elem).attr('src') || $(elem).attr('data-src') || $(elem).attr('data-lazy');
+                if (src && src.startsWith('http') && !isInvalidImage(src) && !isExcluded($(elem))) {
+                    galleryImages.add(src);
                 }
             });
-            if (galleryImage) break;
         }
 
-        if (galleryImage) {
-            vehicleData.imageUrl = galleryImage;
-        } else if (!vehicleData.imageUrl || vehicleData.imageUrl.includes('placeholder')) {
-            // Fallback: Search ONLY in main content areas to avoid headers/sidebars
+        // 2. Fallback to individual selectors if container didn't yield results
+        if (galleryImages.size === 0) {
+            for (const selector of gallerySelectors) {
+                $(selector).each((i, elem) => {
+                    const $elem = $(elem);
+                    const src = $elem.attr('src') || $elem.attr('data-src');
+                    if (src && src.startsWith('http') && !isInvalidImage(src) && !isExcluded($elem)) {
+                        galleryImages.add(src);
+                    }
+                });
+            }
+        }
+
+        // 3. Last resort: Main content images (Restricted Scope)
+        if (galleryImages.size === 0) {
             const mainContentSelectors = [
                 '.cldt-detail-view',
                 '#ad-view',
@@ -342,7 +353,7 @@ router.post('/', async (req, res) => {
                 '[data-testid="content-page"]'
             ];
 
-            let $searchContext = $('body'); // Default to body if no main container found
+            let $searchContext = $('body');
             for (const selector of mainContentSelectors) {
                 if ($(selector).length > 0) {
                     $searchContext = $(selector).first();
@@ -360,10 +371,16 @@ router.post('/', async (req, res) => {
                 if (src && src.startsWith('http')) {
                     if (isInvalidImage(src)) return;
                     if (src.includes('vehicle') || src.includes('img') || alt.toLowerCase().includes(vehicleData.make.toLowerCase())) {
-                        if (!vehicleData.imageUrl) vehicleData.imageUrl = src;
+                        galleryImages.add(src);
                     }
                 }
             });
+        }
+
+        vehicleData.images = Array.from(galleryImages);
+        // Set the main image to the first one found, or keep existing if valid
+        if (vehicleData.images.length > 0) {
+            vehicleData.imageUrl = vehicleData.images[0];
         }
 
         // FINAL STEP: CO2 Estimation & Cleanup
