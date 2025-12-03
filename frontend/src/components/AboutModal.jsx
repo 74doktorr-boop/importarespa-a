@@ -89,7 +89,7 @@ const AboutModal = ({ isOpen, onClose }) => {
                                         <Globe size={18} className="text-blue-400" />
                                         <span className="text-blue-400 font-bold text-sm tracking-wider uppercase">Servicio Integral</span>
                                     </div>
-                                    <h3 className="text-2xl font-bold mb-2">¿No quieres complicaciones?</h3>
+                                    <h3 className="text-2xl font-bold mb-2 text-white">¿No quieres complicaciones?</h3>
                                     <p className="text-slate-300 max-w-md">
                                         Ofrecemos un servicio "Llave en Mano". Nosotros negociamos, transportamos, homologamos y matriculamos tu coche.
                                     </p>
