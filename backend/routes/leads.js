@@ -6,8 +6,8 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: '74doktorr@gmail.com',
-        pass: process.env.EMAIL_PASSWORD // Ensure this env var is set
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
     }
 });
 
@@ -20,8 +20,8 @@ router.post('/', async (req, res) => {
 
     // Email content for the Admin (You)
     const adminMailOptions = {
-        from: '74doktorr@gmail.com',
-        to: '74doktorr@gmail.com', // Send to yourself
+        from: process.env.EMAIL_USER,
+        to: process.env.EMAIL_USER, // Send to yourself
         subject: `🔥 NUEVO LEAD: ${vehicle.make} ${vehicle.model} - ${customer.name}`,
         html: `
             <div style="font-family: Arial, sans-serif; max-w: 600px; margin: 0 auto;">
