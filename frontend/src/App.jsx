@@ -15,6 +15,7 @@ import ContactModal from './components/ContactModal';
 import AboutModal from './components/AboutModal';
 import WhatsAppAgent from './components/WhatsAppAgent';
 import ScrollToTop from './components/ScrollToTop';
+import LeadMagnetModal from './components/LeadMagnetModal';
 
 // Wrapper component to use hooks like useLocation
 const AppContent = () => {
@@ -137,6 +138,7 @@ const AppContent = () => {
             {/* Global Floating Agent */}
             <WhatsAppAgent />
             <ScrollToTop />
+            <LeadMagnetModal />
 
         </div>
     );
