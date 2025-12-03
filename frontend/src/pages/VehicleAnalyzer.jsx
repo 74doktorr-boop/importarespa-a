@@ -18,6 +18,7 @@ import ImportWizard from '../components/ImportWizard';
 import ImageGallery from '../components/ImageGallery';
 import AdminQuoteModal from '../components/AdminQuoteModal';
 import AdminAuthModal from '../components/AdminAuthModal';
+import MonetizationModal from '../components/MonetizationModal';
 
 const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) => {
     const [url, setUrl] = useState('');
@@ -29,6 +30,8 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
     const [isWizardOpen, setIsWizardOpen] = useState(false);
     const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+    const [isMonetizationOpen, setIsMonetizationOpen] = useState(false);
 
     // Recent Searches
     const [recentSearches, setRecentSearches] = useState(() => {
@@ -175,6 +178,18 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
         }
     };
 
+    const handleDownloadPdf = () => {
+        if (data && taxData) {
+            const reportData = {
+                ...data,
+                taxAmount: taxData.amount,
+                transportCost: transportCost,
+                totalCost: publicTotalCost
+            };
+            generateVehicleReportV2(reportData, transportCost);
+        }
+    };
+
     return (
         <div className="pb-20">
             <LoadingOverlay isLoading={loading} />
@@ -191,6 +206,12 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                 vehicleData={data}
                 transportCost={transportCost}
                 transportDistance={transportDistance}
+            />
+
+            <MonetizationModal
+                isOpen={isMonetizationOpen}
+                onClose={() => setIsMonetizationOpen(false)}
+                onSelectFree={handleDownloadPdf}
             />
 
             <div className="container mx-auto px-4 relative z-10 pt-32">
@@ -371,7 +392,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                     <a href={url} target="_blank" rel="noopener noreferrer" className="btn-secondary flex items-center justify-center gap-2">
                                         <ExternalLink size={18} /> Ver Anuncio
                                     </a>
-                                    <button onClick={onOpenMonetization} className="btn-secondary flex items-center justify-center gap-2">
+                                    <button onClick={() => setIsMonetizationOpen(true)} className="btn-secondary flex items-center justify-center gap-2">
                                         <FileText size={18} /> PDF
                                     </button>
                                     <button onClick={handleAddToGarage} className="btn-secondary flex items-center justify-center gap-2">
@@ -444,8 +465,6 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
 
                                     <TaxBrackets currentCo2={data.co2} />
                                 </div>
-
-                                <ImportServicePromo onOpenWizard={() => setIsWizardOpen(true)} />
                             </div>
                         </div>
                     </motion.div>

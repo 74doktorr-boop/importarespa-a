@@ -12,7 +12,6 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import GarageDrawer from './components/GarageDrawer';
 import ContactModal from './components/ContactModal';
-import MonetizationModal from './components/MonetizationModal';
 import AboutModal from './components/AboutModal';
 import WhatsAppAgent from './components/WhatsAppAgent';
 
@@ -35,7 +34,6 @@ const AppContent = () => {
     const [isGarageOpen, setIsGarageOpen] = useState(false);
     const [isAboutOpen, setIsAboutOpen] = useState(false);
     const [isContactOpen, setIsContactOpen] = useState(false);
-    const [isMonetizationOpen, setIsMonetizationOpen] = useState(false);
     const [resetKey, setResetKey] = useState(0);
 
     // Persist Garage
@@ -89,7 +87,6 @@ const AppContent = () => {
                             key={resetKey}
                             onAddToGarage={addToGarage}
                             onOpenContact={() => setIsContactOpen(true)}
-                            onOpenMonetization={() => setIsMonetizationOpen(true)}
                         />
                     } />
                     <Route path="/success" element={<SuccessPage />} />
