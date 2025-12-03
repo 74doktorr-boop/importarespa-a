@@ -109,6 +109,7 @@ const Testimonials = () => {
                                         <img
                                             src={reviews[currentIndex].image}
                                             alt={reviews[currentIndex].model}
+                                            loading="lazy"
                                             className="absolute inset-0 w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
                                         />
                                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6">
