@@ -16,7 +16,6 @@ import DgtBadge from '../components/DgtBadge';
 import ImportServicePromo from '../components/ImportServicePromo';
 import ImportWizard from '../components/ImportWizard';
 import ImageGallery from '../components/ImageGallery';
-
 const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) => {
     const [url, setUrl] = useState('');
     const [loading, setLoading] = useState(false);
@@ -142,13 +141,13 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                     transition={{ duration: 0.8 }}
                     className={`text-center transition-all duration-500 ${data ? 'mb-12' : 'mb-16'}`}
                 >
-                    <span className="inline-block py-1 px-3 rounded-full bg-blue-500/10 text-blue-400 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-500/20">
+                    <span className="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-100">
                         Professional Import Calculator
                     </span>
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-6 tracking-tight">
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-slate-900 mb-6 tracking-tight">
                         Importar España
                     </h1>
-                    <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-light leading-relaxed">
+                    <p className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto font-light leading-relaxed">
                         Calcula impuestos, transporte y costes de matriculación con precisión profesional.
                     </p>
                 </motion.div>
@@ -162,19 +161,19 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                 >
                     <form onSubmit={handleAnalyze} className="relative group">
                         <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
-                        <div className="relative flex items-center bg-white/5 backdrop-blur-xl rounded-2xl p-2 shadow-2xl border border-white/10">
+                        <div className="relative flex items-center bg-white rounded-2xl p-2 shadow-xl border border-slate-100">
                             <Search className="ml-4 text-slate-400 w-6 h-6" />
                             <input
                                 type="text"
                                 placeholder="Pega el enlace de mobile.de o AutoScout24..."
-                                className="w-full bg-transparent border-none focus:ring-0 text-white px-4 py-4 text-lg placeholder-slate-500 font-medium"
+                                className="w-full bg-transparent border-none focus:ring-0 text-slate-900 px-4 py-4 text-lg placeholder-slate-400 font-medium"
                                 value={url}
                                 onChange={(e) => setUrl(e.target.value)}
                             />
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="bg-blue-600 text-white hover:bg-blue-500 font-medium py-3 px-8 rounded-xl transition-all duration-300 min-w-[140px] flex justify-center items-center shadow-lg shadow-blue-900/20"
+                                className="bg-slate-900 text-white hover:bg-slate-800 font-medium py-3 px-8 rounded-xl transition-all duration-300 min-w-[140px] flex justify-center items-center shadow-lg shadow-slate-900/20"
                             >
                                 {loading ? (
                                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
@@ -188,7 +187,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center justify-center text-sm font-medium"
+                            className="mt-4 p-4 bg-red-50 border border-red-100 rounded-xl text-red-600 flex items-center justify-center text-sm font-medium"
                         >
                             <AlertTriangle className="mr-2" size={18} />
                             {error}
@@ -208,7 +207,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                 <button
                                     key={search.timestamp}
                                     onClick={() => loadRecentSearch(search.url)}
-                                    className="flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs font-medium text-slate-400 hover:border-blue-500/50 hover:text-blue-400 transition-colors shadow-sm hover:bg-white/10"
+                                    className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-full text-xs font-medium text-slate-600 hover:border-blue-300 hover:text-blue-600 transition-colors shadow-sm"
                                 >
                                     <Car size={12} />
                                     {search.make} {search.model}
@@ -226,12 +225,12 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                             { icon: Calculator, title: "Impuestos Precisos", desc: "Cálculo del IEDMT basado en emisiones CO2 y tablas de Hacienda." },
                             { icon: FileText, title: "Informes PDF", desc: "Genera dossiers profesionales listos para presentar." }
                         ].map((item, index) => (
-                            <div key={index} className="bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10 shadow-lg hover:bg-white/10 transition-all duration-300 group">
-                                <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6 text-blue-400 group-hover:scale-110 transition-transform">
+                            <div key={index} className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                                <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-6 text-slate-900">
                                     <item.icon size={24} />
                                 </div>
-                                <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
-                                <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+                                <h3 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h3>
+                                <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -248,27 +247,27 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                             {/* Main Vehicle Info (8 cols) */}
                             <div className="lg:col-span-8 space-y-6">
-                                <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-8 shadow-2xl">
+                                <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
                                     <div className="flex flex-col md:flex-row justify-between items-start mb-8 gap-4">
                                         <div>
                                             <div className="flex items-center space-x-2 mb-3">
-                                                <span className="px-2.5 py-1 rounded-md bg-white/10 text-[10px] font-bold uppercase tracking-widest text-slate-300">
+                                                <span className="px-2.5 py-1 rounded-md bg-slate-100 text-[10px] font-bold uppercase tracking-widest text-slate-600">
                                                     {data.make}
                                                 </span>
-                                                <span className="px-2.5 py-1 rounded-md bg-blue-500/20 text-[10px] font-bold uppercase tracking-widest text-blue-400">
+                                                <span className="px-2.5 py-1 rounded-md bg-blue-50 text-[10px] font-bold uppercase tracking-widest text-blue-600">
                                                     Importación
                                                 </span>
                                             </div>
-                                            <h2 className="text-3xl md:text-4xl font-bold text-white mb-2 leading-tight">
+                                            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2 leading-tight">
                                                 {data.model}
                                             </h2>
-                                            <div className="flex items-center gap-4 text-slate-400 text-sm font-medium">
+                                            <div className="flex items-center gap-4 text-slate-500 text-sm font-medium">
                                                 <div className="flex items-center">
-                                                    <MapPin size={16} className="mr-1.5 text-slate-500" />
+                                                    <MapPin size={16} className="mr-1.5 text-slate-400" />
                                                     {data.location}, {data.country}
                                                 </div>
                                                 {dgtLabel && (
-                                                    <div className="flex items-center gap-2 pl-4 border-l border-white/10">
+                                                    <div className="flex items-center gap-2 pl-4 border-l border-slate-200">
                                                         <span className="text-[10px] uppercase tracking-wider font-bold">Etiqueta</span>
                                                         <DgtBadge label={dgtLabel} />
                                                     </div>
@@ -276,10 +275,10 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                             </div>
                                         </div>
                                         <div className="text-right">
-                                            <div className="text-3xl font-bold text-white tracking-tight">
+                                            <div className="text-3xl font-bold text-slate-900 tracking-tight">
                                                 {new Intl.NumberFormat('de-DE', { style: 'currency', currency: data.currency }).format(data.price)}
                                             </div>
-                                            <div className="text-xs text-slate-500 uppercase tracking-widest mt-1 font-bold">Precio Origen</div>
+                                            <div className="text-xs text-slate-400 uppercase tracking-widest mt-1 font-bold">Precio Origen</div>
                                         </div>
                                     </div>
 
@@ -302,13 +301,13 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
 
                                 {/* Actions */}
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                    <a href={url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white py-4 rounded-xl font-bold text-sm uppercase tracking-wider transition-all border border-white/10 hover:border-white/20">
+                                    <a href={url} target="_blank" rel="noopener noreferrer" className="btn-secondary flex items-center justify-center gap-2">
                                         <ExternalLink size={18} /> Ver Anuncio
                                     </a>
-                                    <button onClick={onOpenMonetization} className="flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white py-4 rounded-xl font-bold text-sm uppercase tracking-wider transition-all border border-white/10 hover:border-white/20">
+                                    <button onClick={onOpenMonetization} className="btn-secondary flex items-center justify-center gap-2">
                                         <FileText size={18} /> PDF
                                     </button>
-                                    <button onClick={handleAddToGarage} className="flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white py-4 rounded-xl font-bold text-sm uppercase tracking-wider transition-all border border-white/10 hover:border-white/20">
+                                    <button onClick={handleAddToGarage} className="btn-secondary flex items-center justify-center gap-2">
                                         <Save size={18} /> Guardar
                                     </button>
 
@@ -326,54 +325,54 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
 
                             {/* Sidebar (4 cols) */}
                             <div className="lg:col-span-4 space-y-6">
-                                <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-6 shadow-2xl sticky top-24">
+                                <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm sticky top-24">
                                     <div className="flex items-center mb-6">
-                                        <div className="p-2.5 bg-blue-500/20 rounded-xl mr-3 text-blue-400">
+                                        <div className="p-2.5 bg-slate-900 rounded-xl mr-3 text-white">
                                             <Calculator size={20} />
                                         </div>
-                                        <h3 className="text-xl font-bold text-white">Desglose de Costes</h3>
+                                        <h3 className="text-xl font-bold text-slate-900">Desglose de Costes</h3>
                                     </div>
 
                                     {/* CO2 Gauge */}
-                                    <div className="flex justify-center mb-8 py-6 bg-white/5 rounded-2xl border border-white/5">
+                                    <div className="flex justify-center mb-8 py-6 bg-slate-50 rounded-2xl border border-slate-100">
                                         <AnimatedGauge value={data.co2} label="Emisiones CO2" unit="g/km" />
                                     </div>
 
                                     <div className="mb-8">
-                                        <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Tramos IEDMT</h4>
+                                        <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Tramos IEDMT</h4>
                                         <TaxBrackets currentCo2={data.co2} />
                                     </div>
 
-                                    <div className="space-y-4 bg-white/5 rounded-2xl p-5 border border-white/5">
+                                    <div className="space-y-4 bg-slate-50 rounded-2xl p-5 border border-slate-100">
                                         <div className="flex justify-between items-center text-sm">
-                                            <span className="text-slate-400">Precio Vehículo</span>
-                                            <span className="font-mono font-medium text-white">{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(data.price)}</span>
+                                            <span className="text-slate-500">Precio Vehículo</span>
+                                            <span className="font-mono font-medium text-slate-900">{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(data.price)}</span>
                                         </div>
                                         <div className="flex justify-between items-center text-sm">
-                                            <span className="text-slate-400">Tipo Impositivo</span>
-                                            <span className="font-mono font-medium text-blue-400">{taxData.rate}%</span>
+                                            <span className="text-slate-500">Tipo Impositivo</span>
+                                            <span className="font-mono font-medium text-blue-600">{taxData.rate}%</span>
                                         </div>
-                                        <div className="h-px bg-white/10 my-2"></div>
+                                        <div className="h-px bg-slate-200 my-2"></div>
                                         <div className="flex justify-between items-center">
-                                            <span className="font-bold text-white">Impuesto Matriculación</span>
-                                            <span className="font-bold text-lg text-white font-mono">
+                                            <span className="font-bold text-slate-900">Impuesto Matriculación</span>
+                                            <span className="font-bold text-lg text-slate-900 font-mono">
                                                 {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(taxData.amount)}
                                             </span>
                                         </div>
                                         {transportCost > 0 && (
                                             <div className="flex justify-between items-center">
-                                                <span className="font-bold text-white">Transporte</span>
-                                                <span className="font-bold text-lg text-blue-400 font-mono">
+                                                <span className="font-bold text-slate-900">Transporte</span>
+                                                <span className="font-bold text-lg text-blue-600 font-mono">
                                                     {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(transportCost)}
                                                 </span>
                                             </div>
                                         )}
                                     </div>
 
-                                    <div className="mt-6 pt-6 border-t border-white/10">
+                                    <div className="mt-6 pt-6 border-t border-slate-100">
                                         <div className="flex justify-between items-end">
-                                            <span className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">Total Estimado</span>
-                                            <span className="text-4xl font-bold text-white tracking-tight">
+                                            <span className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-1">Total Estimado</span>
+                                            <span className="text-4xl font-bold text-slate-900 tracking-tight">
                                                 {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(taxData.total + transportCost)}
                                             </span>
                                         </div>
