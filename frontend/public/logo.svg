@@ -1,20 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80" fill="none">
   <!-- Icon Section -->
   <g transform="translate(10, 15)">
-    <!-- Minimalist Supercar Silhouette -->
-    <!-- Roofline and Rear -->
-    <path d="M10 45 L15 35 C20 25 35 20 50 20 H70 C85 20 95 25 100 35 L105 45" stroke="#0F172A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- Abstract Aerodynamic Flow (The "Cochazo" Essence) -->
+    <!-- A single, powerful, fluid line representing the roofline and rear of a GT car -->
+    <path d="M5 45 C 5 45, 20 20, 60 20 C 100 20, 110 35, 120 45" stroke="#0F172A" stroke-width="4" stroke-linecap="round" fill="none"/>
     
-    <!-- Body Line / Shoulder -->
-    <path d="M5 45 H110" stroke="#0F172A" stroke-width="3" stroke-linecap="round"/>
+    <!-- A second accent line for speed/ground effect -->
+    <path d="M10 55 H 115" stroke="#3B82F6" stroke-width="3" stroke-linecap="round"/>
     
-    <!-- Wheels (Abstract) -->
-    <circle cx="25" cy="45" r="8" stroke="#3B82F6" stroke-width="3" fill="white"/>
-    <circle cx="90" cy="45" r="8" stroke="#3B82F6" stroke-width="3" fill="white"/>
-    
-    <!-- Speed Lines -->
-    <path d="M115 30 L130 30" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
-    <path d="M118 35 L128 35" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+    <!-- Subtle "Headlight" or "Reflection" accent -->
+    <circle cx="115" cy="45" r="2" fill="#3B82F6"/>
   </g>
 
   <!-- Text Section -->

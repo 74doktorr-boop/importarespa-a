@@ -25,46 +25,26 @@ export const generateVehicleReportV2 = async (data, transportCost = 0) => {
         doc.setFillColor(10, 25, 41); // Dark blue/black
         doc.rect(0, 0, pageWidth, 30, 'F');
 
-        // Draw Minimalist Supercar Logo (Vector)
+        // Draw Abstract Premium Logo (Vector)
         const logoX = margin;
         const logoY = 15;
         const scale = 0.4;
 
         doc.setDrawColor(255, 255, 255);
-        doc.setLineWidth(1.5 * scale);
-
-        // Car Silhouette
-        // Roofline: M10 45 L15 35 C20 25 35 20 50 20 H70 C85 20 95 25 100 35 L105 45
-        doc.lines([
-            [5 * scale, -10 * scale], // L15 35
-            [35 * scale, -15 * scale], // C20 25 35 20 50 20 (approx line for now)
-            [20 * scale, 0], // H70
-            [30 * scale, 15 * scale], // C85 20 95 25 100 35 (approx)
-            [5 * scale, 10 * scale] // L105 45
-        ], 10 * scale + logoX, 45 * scale + logoY, [1, 1], 'S', false);
-
-        // Better Manual Drawing for Robustness
-        doc.setDrawColor(255, 255, 255);
         doc.setLineWidth(2 * scale);
 
-        // Roof
-        doc.line(15 * scale + logoX, 35 * scale + logoY, 50 * scale + logoX, 20 * scale + logoY);
-        doc.line(50 * scale + logoX, 20 * scale + logoY, 70 * scale + logoX, 20 * scale + logoY);
-        doc.line(70 * scale + logoX, 20 * scale + logoY, 100 * scale + logoX, 35 * scale + logoY);
+        // Abstract Aerodynamic Flow (The "Cochazo" Essence)
+        // Path: M5 45 C 5 45, 20 20, 60 20 C 100 20, 110 35, 120 45
+        // Using bezier curves for smooth premium look
+        doc.lines([
+            [0, 0], // Start at M5 45 (relative to start point)
+            [15 * scale, -25 * scale, 55 * scale, -25 * scale, 115 * scale, 0] // Curve
+        ], 5 * scale + logoX, 45 * scale + logoY, [1, 1], 'S', false);
 
-        // Body
-        doc.line(5 * scale + logoX, 45 * scale + logoY, 110 * scale + logoX, 45 * scale + logoY);
-
-        // Wheels (Circles)
-        doc.setFillColor(10, 25, 41); // Dark fill (same as bg)
-        doc.setDrawColor(59, 130, 246); // Blue rim
-        doc.circle(25 * scale + logoX, 45 * scale + logoY, 8 * scale, 'FD');
-        doc.circle(90 * scale + logoX, 45 * scale + logoY, 8 * scale, 'FD');
-
-        // Speed Lines
+        // Accent Line
         doc.setDrawColor(59, 130, 246); // Blue
-        doc.line(115 * scale + logoX, 30 * scale + logoY, 130 * scale + logoX, 30 * scale + logoY);
-        doc.line(118 * scale + logoX, 35 * scale + logoY, 128 * scale + logoX, 35 * scale + logoY);
+        doc.setLineWidth(1.5 * scale);
+        doc.line(10 * scale + logoX, 55 * scale + logoY, 115 * scale + logoX, 55 * scale + logoY);
 
         // Text
         addText('IMPORTAR', margin + (60 * scale), 18, 18, 'helvetica', 'bold', [255, 255, 255]);
