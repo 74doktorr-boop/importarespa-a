@@ -201,7 +201,8 @@ router.post('/', async (req, res) => {
             const dateString = findValueByLabel([
                 'EZ', 'Erstzulassung', 'First Registration', '1. Reg',
                 'Matriculación', 'Année', 'Year', 'Mise en circulation',
-                'Fecha de matriculación', 'Inverkehrssetzung', 'Registrazione'
+                'Fecha de matriculación', 'Inverkehrssetzung', 'Registrazione',
+                'Primer registro', 'Primera matriculación'
             ]);
 
             if (dateString) {
