@@ -2,7 +2,7 @@ import React from 'react';
 import { X, Trash2, ExternalLink, TrendingUp, TrendingDown, Car, Calendar, Gauge, Euro, Settings } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const GarageDrawer = ({ isOpen, onClose, savedVehicles, onRemove, onClear }) => {
+const GarageDrawer = ({ isOpen, onClose, vehicles = [], onRemove, onClear }) => {
     const formatCurrency = (val) => {
         return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(val);
     };
@@ -35,11 +35,11 @@ const GarageDrawer = ({ isOpen, onClose, savedVehicles, onRemove, onClear }) => 
                                         Mi Garaje
                                     </h2>
                                     <p className="text-gray-400 text-sm">
-                                        Comparando {savedVehicles.length} vehículo{savedVehicles.length !== 1 ? 's' : ''}
+                                        Comparando {vehicles.length} vehículo{vehicles.length !== 1 ? 's' : ''}
                                     </p>
                                 </div>
                                 <div className="flex gap-2">
-                                    {savedVehicles.length > 0 && (
+                                    {vehicles.length > 0 && (
                                         <button
                                             onClick={onClear}
                                             className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors text-xs font-bold uppercase tracking-wider flex items-center gap-1"
@@ -56,7 +56,7 @@ const GarageDrawer = ({ isOpen, onClose, savedVehicles, onRemove, onClear }) => 
                                 </div>
                             </div>
 
-                            {savedVehicles.length === 0 ? (
+                            {vehicles.length === 0 ? (
                                 <div className="flex flex-col items-center justify-center h-[60vh] text-center opacity-50">
                                     <Car size={64} className="text-gray-600 mb-4" />
                                     <h3 className="text-xl font-bold text-white mb-2">Tu garaje está vacío</h3>
@@ -79,7 +79,7 @@ const GarageDrawer = ({ isOpen, onClose, savedVehicles, onRemove, onClear }) => 
                                     initial="hidden"
                                     animate="show"
                                 >
-                                    {savedVehicles.map((vehicle, index) => (
+                                    {vehicles.map((vehicle, index) => (
                                         <motion.div
                                             key={vehicle.id || index}
                                             layout
