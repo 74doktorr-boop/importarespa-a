@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Check, ArrowRight, User, Phone, Mail, MapPin, Car, ShieldCheck, Loader2 } from 'lucide-react';
+import { X, Check, ArrowRight, User, Phone, Mail, MapPin, Car, ShieldCheck, Loader2, MessageCircle } from 'lucide-react';
 import axios from 'axios';
 
 const ImportWizard = ({ isOpen, onClose, vehicleData }) => {
@@ -97,9 +97,28 @@ const ImportWizard = ({ isOpen, onClose, vehicleData }) => {
                             </div>
                         </div>
 
-                        <button onClick={nextStep} className="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-900/20">
-                            Continuar <ArrowRight size={20} />
-                        </button>
+                        <div className="grid grid-cols-1 gap-3">
+                            <button onClick={nextStep} className="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-900/20">
+                                Continuar <ArrowRight size={20} />
+                            </button>
+
+                            <div className="relative flex py-2 items-center">
+                                <div className="flex-grow border-t border-slate-200"></div>
+                                <span className="flex-shrink-0 mx-4 text-slate-400 text-xs font-bold uppercase tracking-wider">O habla con un experto</span>
+                                <div className="flex-grow border-t border-slate-200"></div>
+                            </div>
+
+                            <button
+                                onClick={() => {
+                                    const message = `Hola, estoy interesado en importar este ${vehicleData.make} ${vehicleData.model} (${vehicleData.year}) que he visto en la web. Precio estimado: ${new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(vehicleData.totalCost || vehicleData.price)}. ¿Me puedes confirmar viabilidad?`;
+                                    window.open(`https://wa.me/34600000000?text=${encodeURIComponent(message)}`, '_blank');
+                                }}
+                                className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg"
+                            >
+                                <MessageCircle size={20} />
+                                Hablar por WhatsApp
+                            </button>
+                        </div>
                     </div>
                 );
             case 2:
