@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from
 import { AnimatePresence } from 'framer-motion';
 import VehicleAnalyzer from './pages/VehicleAnalyzer';
 import SuccessPage from './pages/SuccessPage';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 
 import PrivacyPolicy from './pages/Legal/PrivacyPolicy';
 import TermsOfService from './pages/Legal/TermsOfService';
@@ -92,6 +94,8 @@ const AppContent = () => {
                         />
                     } />
                     <Route path="/success" element={<SuccessPage />} />
+                    <Route path="/blog" element={<Blog />} />
+                    <Route path="/blog/:slug" element={<BlogPost />} />
                     <Route path="/privacy" element={<PrivacyPolicy />} />
                     <Route path="/terms" element={<TermsOfService />} />
                     <Route path="/cookies" element={<CookiesPolicy />} />
