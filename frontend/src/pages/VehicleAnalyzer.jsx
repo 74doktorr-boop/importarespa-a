@@ -491,21 +491,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                             </div>
                                         </div>
 
-                                        {/* Action Buttons inside Tax Section for better accessibility */}
-                                        <div className="grid grid-cols-2 gap-3 mb-4 -mt-2">
-                                            <button
-                                                onClick={() => setIsMonetizationOpen(true)}
-                                                className="flex items-center justify-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold py-2 px-4 rounded-xl transition-colors text-sm"
-                                            >
-                                                <FileText size={16} /> PDF
-                                            </button>
-                                            <button
-                                                onClick={handleAddToGarage}
-                                                className="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 px-4 rounded-xl transition-colors text-sm"
-                                            >
-                                                <Save size={16} /> Guardar
-                                            </button>
-                                        </div>
+
 
 
 
@@ -527,6 +513,22 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                         <p className="text-xs text-center text-slate-400 mt-4">
                                             * Tasas de tráfico e ITV no incluidas. <button onClick={() => setIsMonetizationOpen(true)} className="text-blue-500 hover:underline font-bold">Descarga el PDF GRATIS</button> para ver el desglose completo.
                                         </p>
+
+                                        {/* Action Buttons at the bottom */}
+                                        <div className="grid grid-cols-2 gap-3 mt-6">
+                                            <button
+                                                onClick={() => setIsMonetizationOpen(true)}
+                                                className="flex items-center justify-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold py-2 px-4 rounded-xl transition-colors text-sm"
+                                            >
+                                                <FileText size={16} /> PDF
+                                            </button>
+                                            <button
+                                                onClick={handleAddToGarage}
+                                                className="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 px-4 rounded-xl transition-colors text-sm"
+                                            >
+                                                <Save size={16} /> Guardar
+                                            </button>
+                                        </div>
                                     </div>
 
                                     {/* CarVertical CTA */}
