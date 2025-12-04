@@ -5,6 +5,7 @@ import VehicleAnalyzer from './pages/VehicleAnalyzer';
 import SuccessPage from './pages/SuccessPage';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
+import Services from './pages/Services';
 
 import PrivacyPolicy from './pages/Legal/PrivacyPolicy';
 import TermsOfService from './pages/Legal/TermsOfService';
@@ -96,6 +97,7 @@ const AppContent = () => {
                     <Route path="/success" element={<SuccessPage />} />
                     <Route path="/blog" element={<Blog />} />
                     <Route path="/blog/:slug" element={<BlogPost />} />
+                    <Route path="/servicios" element={<Services />} />
                     <Route path="/privacy" element={<PrivacyPolicy />} />
                     <Route path="/terms" element={<TermsOfService />} />
                     <Route path="/cookies" element={<CookiesPolicy />} />

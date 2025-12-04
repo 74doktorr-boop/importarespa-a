@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Car, Info, Mail, Home, Warehouse, Menu, X, BookOpen } from 'lucide-react';
+import { Car, Info, Mail, Home, Warehouse, Menu, X, BookOpen, ShieldCheck } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = ({ onOpenGarage, garageCount, onOpenAbout, onReset, onOpenContact }) => {
@@ -47,6 +47,9 @@ const Navbar = ({ onOpenGarage, garageCount, onOpenAbout, onReset, onOpenContact
                         <Link to="/blog">
                             <NavButton icon={BookOpen} label="Blog" onClick={() => { }} isScrolled={isScrolled} />
                         </Link>
+                        <Link to="/servicios">
+                            <NavButton icon={ShieldCheck} label="Servicios" onClick={() => { }} isScrolled={isScrolled} />
+                        </Link>
                         <NavButton icon={Info} label="Sobre Nosotros" onClick={onOpenAbout} isScrolled={isScrolled} />
                         <NavButton icon={Mail} label="Contacto" onClick={onOpenContact} isScrolled={isScrolled} />
 
@@ -89,6 +92,9 @@ const Navbar = ({ onOpenGarage, garageCount, onOpenAbout, onReset, onOpenContact
                             <MobileNavButton icon={Home} label="Inicio" onClick={() => { onReset(); setIsMobileMenuOpen(false); }} />
                             <Link to="/blog" onClick={() => setIsMobileMenuOpen(false)}>
                                 <MobileNavButton icon={BookOpen} label="Blog" onClick={() => { }} />
+                            </Link>
+                            <Link to="/servicios" onClick={() => setIsMobileMenuOpen(false)}>
+                                <MobileNavButton icon={ShieldCheck} label="Servicios" onClick={() => { }} />
                             </Link>
                             <MobileNavButton icon={Warehouse} label={`Garaje (${garageCount})`} onClick={() => { onOpenGarage(); setIsMobileMenuOpen(false); }} active />
                             <MobileNavButton icon={Info} label="Sobre Nosotros" onClick={() => { onOpenAbout(); setIsMobileMenuOpen(false); }} />
