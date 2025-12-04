@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Mail, Download, Check } from 'lucide-react';
+import { X, Mail, Download, Check, AlertCircle } from 'lucide-react';
+import axios from 'axios';
 
 const LeadMagnetModal = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [email, setEmail] = useState('');
     const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
     useEffect(() => {
         // Show modal after 15 seconds
@@ -24,15 +28,23 @@ const LeadMagnetModal = () => {
         localStorage.setItem('hasSeenLeadMagnet', 'true');
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (email) {
-            // Here you would typically send the email to your backend or newsletter service
-            console.log("Email captured:", email);
-            setSubmitted(true);
-            setTimeout(() => {
-                handleClose();
-            }, 3000);
+            setLoading(true);
+            setError(null);
+            try {
+                await axios.post(`${API_URL}/api/subscribe`, { email });
+                setSubmitted(true);
+                setTimeout(() => {
+                    handleClose();
+                }, 5000);
+            } catch (err) {
+                console.error(err);
+                setError('Hubo un error al suscribirte. Inténtalo de nuevo.');
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
@@ -88,10 +100,20 @@ const LeadMagnetModal = () => {
                                         </div>
                                         <button
                                             type="submit"
-                                            className="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold text-lg transition-all shadow-lg shadow-blue-900/20"
+                                            className="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold text-lg transition-all shadow-lg shadow-blue-900/20 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
+                                            disabled={loading}
                                         >
-                                            ¡Quiero la Guía!
+                                            {loading ? (
+                                                <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                            ) : (
+                                                "¡Quiero la Guía!"
+                                            )}
                                         </button>
+                                        {error && (
+                                            <p className="text-xs text-red-500 text-center flex items-center justify-center gap-1">
+                                                <AlertCircle size={12} /> {error}
+                                            </p>
+                                        )}
                                     </form>
                                     <p className="text-xs text-center text-slate-400 mt-4">
                                         Te enviaremos la guía al instante. Sin spam.
@@ -110,9 +132,9 @@ const LeadMagnetModal = () => {
                             )}
                         </div>
                     </motion.div>
-                </div>
+                </div >
             )}
-        </AnimatePresence>
+        </AnimatePresence >
     );
 };
 

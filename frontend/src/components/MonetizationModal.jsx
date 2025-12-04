@@ -61,7 +61,7 @@ const MonetizationModal = ({ isOpen, onClose, onSelectFree }) => {
                         </button>
                     </div>
 
-                    {/* Pro Tier */}
+                    {/* Pro Tier - TEMPORARILY HIDDEN
                     <div className="flex-[1.3] p-8 bg-gradient-to-br from-slate-900 to-slate-800 relative overflow-hidden flex flex-col border-l border-white/10">
                         <div className="absolute top-0 right-0 bg-gradient-to-l from-blue-500 to-purple-500 text-white text-xs font-bold px-3 py-1 rounded-bl-xl z-20">
                             OFERTA LANZAMIENTO
@@ -75,9 +75,7 @@ const MonetizationModal = ({ isOpen, onClose, onSelectFree }) => {
                             <p className="text-blue-200 text-sm">La Biblia del Importador + Herramientas Profesionales.</p>
                         </div>
 
-                        {/* Visuals */}
                         <div className="flex justify-center -space-x-4 mb-6 relative z-10">
-                            {/* Placeholder for Book Image - In real app use <img> */}
                             <div className="w-24 h-32 bg-blue-900/50 rounded border border-blue-500/30 flex items-center justify-center transform -rotate-6 shadow-lg backdrop-blur-sm">
                                 <BookOpen className="text-blue-400" size={32} />
                             </div>
@@ -113,9 +111,9 @@ const MonetizationModal = ({ isOpen, onClose, onSelectFree }) => {
                             <span className="bg-white/20 px-2 py-0.5 rounded text-xs">16.99€</span>
                         </button>
 
-                        {/* Background Decoration */}
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gradient-to-b from-blue-500/10 to-purple-500/10 blur-3xl pointer-events-none"></div>
                     </div>
+                    */}
                 </motion.div>
             </motion.div>
         </AnimatePresence >

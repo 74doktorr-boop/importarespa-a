@@ -19,6 +19,7 @@ import ImageGallery from '../components/ImageGallery';
 import AdminQuoteModal from '../components/AdminQuoteModal';
 import AdminAuthModal from '../components/AdminAuthModal';
 import MonetizationModal from '../components/MonetizationModal';
+import FinancingModal from '../components/FinancingModal';
 
 const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) => {
     const [url, setUrl] = useState('');
@@ -32,6 +33,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
     const [isMonetizationOpen, setIsMonetizationOpen] = useState(false);
+    const [isFinancingOpen, setIsFinancingOpen] = useState(false);
 
     // Recent Searches
     const [recentSearches, setRecentSearches] = useState(() => {
@@ -134,16 +136,28 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
             .finally(() => setLoading(false));
     };
 
+    const [boeBaseValue, setBoeBaseValue] = useState(null);
+
     const calculateTax = (co2, price) => {
-        if (!co2 || !price) return { rate: 0, amount: 0, total: 0 };
+        if (!co2) return { rate: 0, amount: 0, total: 0 };
+
+        // Use BOE Base Value if provided, otherwise use estimated price (fallback)
+        // Ideally, price should be the depreciated value, but without BOE tables we estimate.
+        // If user provides BOE Base Value (New Value), we need to apply depreciation.
+        // BUT, usually users will find the "Valor Venal" directly or the "Valor Nuevo".
+        // Let's assume the user inputs the FINAL depreciated value found in a calculator or the BOE table result.
+        // OR, simpler: The user inputs the "Valor Hacienda" directly.
+
+        const baseForTax = boeBaseValue || price;
+
         let rate = 0;
         if (co2 <= 120) rate = 0;
         else if (co2 <= 159) rate = 4.75;
         else if (co2 <= 199) rate = 9.75;
         else rate = 14.75;
 
-        const amount = (price * rate) / 100;
-        return { rate, amount, total: price + amount };
+        const amount = (baseForTax * rate) / 100;
+        return { rate, amount, total: price + amount }; // Total cost is Price (Germany) + Tax (Spain)
     };
 
     const taxData = data ? calculateTax(data.co2, data.price) : null;
@@ -212,6 +226,12 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                 isOpen={isMonetizationOpen}
                 onClose={() => setIsMonetizationOpen(false)}
                 onSelectFree={handleDownloadPdf}
+            />
+
+            <FinancingModal
+                isOpen={isFinancingOpen}
+                onClose={() => setIsFinancingOpen(false)}
+                vehiclePrice={publicTotalCost}
             />
 
             <div className="container mx-auto px-4 relative z-10 pt-32">
@@ -392,11 +412,8 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                     <a href={url} target="_blank" rel="noopener noreferrer" className="btn-secondary flex items-center justify-center gap-2">
                                         <ExternalLink size={18} /> Ver Anuncio
                                     </a>
-                                    <button onClick={() => setIsMonetizationOpen(true)} className="btn-secondary flex items-center justify-center gap-2">
-                                        <FileText size={18} /> PDF
-                                    </button>
-                                    <button onClick={handleAddToGarage} className="btn-secondary flex items-center justify-center gap-2">
-                                        <Save size={18} /> Guardar
+                                    <button onClick={() => setIsFinancingOpen(true)} className="btn-secondary flex items-center justify-center gap-2 text-blue-600 bg-blue-50 border-blue-100 hover:bg-blue-100">
+                                        <DollarSign size={18} /> Financiar
                                     </button>
 
                                     <button onClick={() => setIsWizardOpen(true)} className="col-span-2 md:col-span-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]">
@@ -433,15 +450,64 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
 
                                         <div className="flex justify-between items-center p-3 bg-slate-50 rounded-xl">
                                             <div className="flex flex-col">
-                                                <span className="text-sm text-slate-600 font-medium">Impuesto Matriculación</span>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-sm text-slate-600 font-medium">Impuesto Matriculación</span>
+                                                    <button
+                                                        onClick={() => {
+                                                            const query = `site:boe.es valor venal ${data.make} ${data.model} 2025`;
+                                                            window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+                                                        }}
+                                                        className="text-blue-500 hover:text-blue-700 transition-colors"
+                                                        title="Buscar Valor Venal Oficial en BOE"
+                                                    >
+                                                        <Search size={14} />
+                                                    </button>
+                                                </div>
                                                 <span className="text-[10px] text-slate-400">
                                                     {taxData.rate}% (CO2: {data.co2} g/km)
                                                 </span>
                                             </div>
-                                            <span className="font-bold text-slate-900">
-                                                {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(taxData.amount)}
-                                            </span>
+                                            <div className="flex flex-col items-end">
+                                                <span className="font-bold text-slate-900">
+                                                    {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(taxData.amount)}
+                                                </span>
+                                                {/* Manual BOE Value Input */}
+                                                <div className="flex items-center gap-1 mt-1">
+                                                    <span className="text-[10px] text-slate-400">Base:</span>
+                                                    <input
+                                                        type="number"
+                                                        placeholder="Valor BOE"
+                                                        className="w-20 text-[10px] p-1 border border-slate-200 rounded bg-white text-right focus:ring-1 focus:ring-blue-500 outline-none"
+                                                        onChange={(e) => {
+                                                            const val = parseFloat(e.target.value);
+                                                            if (!isNaN(val)) {
+                                                                setBoeBaseValue(val);
+                                                            } else {
+                                                                setBoeBaseValue(null);
+                                                            }
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
+
+                                        {/* Action Buttons inside Tax Section for better accessibility */}
+                                        <div className="grid grid-cols-2 gap-3 mb-4 -mt-2">
+                                            <button
+                                                onClick={() => setIsMonetizationOpen(true)}
+                                                className="flex items-center justify-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold py-2 px-4 rounded-xl transition-colors text-sm"
+                                            >
+                                                <FileText size={16} /> PDF
+                                            </button>
+                                            <button
+                                                onClick={handleAddToGarage}
+                                                className="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 px-4 rounded-xl transition-colors text-sm"
+                                            >
+                                                <Save size={16} /> Guardar
+                                            </button>
+                                        </div>
+
+
 
                                         <div className="flex justify-between items-center p-3 bg-slate-50 rounded-xl">
                                             <span className="text-sm text-slate-600 font-medium">Transporte (Estimado)</span>
@@ -459,8 +525,31 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                             </span>
                                         </div>
                                         <p className="text-xs text-center text-slate-400 mt-4">
-                                            * No incluye gastos de gestión, ITV ni tasas de tráfico.
+                                            * Tasas de tráfico e ITV no incluidas. <button onClick={() => setIsMonetizationOpen(true)} className="text-blue-500 hover:underline font-bold">Descarga el PDF GRATIS</button> para ver el desglose completo.
                                         </p>
+                                    </div>
+
+                                    {/* CarVertical CTA */}
+                                    <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 mt-6">
+                                        <div className="flex items-start gap-3">
+                                            <div className="bg-amber-100 p-2 rounded-lg text-amber-600 shrink-0">
+                                                <AlertTriangle size={20} />
+                                            </div>
+                                            <div>
+                                                <h4 className="font-bold text-amber-900 text-sm mb-1">¿Seguro que los KM son reales?</h4>
+                                                <p className="text-xs text-amber-800 mb-3 leading-relaxed">
+                                                    Evita estafas y averías ocultas. Comprueba el historial del bastidor antes de comprar.
+                                                </p>
+                                                <a
+                                                    href="https://www.carvertical.com/es"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="block w-full bg-amber-500 hover:bg-amber-600 text-white text-center text-sm font-bold py-2.5 rounded-xl transition-colors shadow-sm"
+                                                >
+                                                    Ver Informe del Vehículo
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <TaxBrackets currentCo2={data.co2} />
@@ -472,7 +561,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
             </div>
 
             <ImportWizard isOpen={isWizardOpen} onClose={() => setIsWizardOpen(false)} vehicleData={data} />
-        </div>
+        </div >
     );
 };
 

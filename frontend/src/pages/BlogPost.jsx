@@ -1,80 +1,88 @@
-import React, { useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React from 'react';
+import { useParams, Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Calendar } from 'lucide-react';
-import { blogPosts } from '../data/blogData';
+import { Helmet } from 'react-helmet-async';
+import { blogPosts } from '../data/blogPosts';
+import { ArrowLeft, Calendar, Clock, Share2, User } from 'lucide-react';
 
 const BlogPost = () => {
     const { slug } = useParams();
     const post = blogPosts.find(p => p.slug === slug);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-        if (post) {
-            document.title = `${post.title} - Importar España`;
-            // Here we could update meta tags dynamically if we had a helmet library, 
-            // but for now title is good for user experience.
-        }
-    }, [post]);
-
     if (!post) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="text-center">
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">Artículo no encontrado</h2>
-                    <Link to="/blog" className="text-blue-600 hover:underline">Volver al blog</Link>
-                </div>
-            </div>
-        );
+        return <Navigate to="/blog" replace />;
     }
 
     return (
-        <div className="min-h-screen bg-white pt-24 pb-12">
-            <article className="max-w-3xl mx-auto px-4 sm:px-6">
-                <Link to="/blog" className="inline-flex items-center text-slate-500 hover:text-slate-900 mb-8 transition-colors">
-                    <ArrowLeft size={20} className="mr-2" /> Volver a noticias
+        <div className="min-h-screen bg-white pt-32 pb-20">
+            <Helmet>
+                <title>{post.title} | ImportarEspaña</title>
+                <meta name="description" content={post.metaDescription} />
+                <meta name="keywords" content={post.keywords} />
+                <meta property="og:title" content={post.title} />
+                <meta property="og:description" content={post.metaDescription} />
+                <meta property="og:image" content={post.image} />
+                <meta property="og:type" content="article" />
+            </Helmet>
+
+            <article className="container mx-auto px-4 max-w-4xl">
+                <Link
+                    to="/blog"
+                    className="inline-flex items-center text-slate-500 hover:text-blue-600 transition-colors mb-8 font-medium"
+                >
+                    <ArrowLeft size={20} className="mr-2" /> Volver al Blog
                 </Link>
 
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                 >
-                    <h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-6 leading-tight">
+                    <h1 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 mb-6 leading-tight">
                         {post.title}
                     </h1>
 
-                    <div className="flex items-center text-slate-500 mb-8 border-b border-slate-100 pb-8">
-                        <Calendar size={18} className="mr-2" />
-                        <span>{post.date}</span>
-                        <span className="mx-2">•</span>
-                        <span className="text-blue-600 font-medium">Guía de Importación</span>
+                    <div className="flex flex-wrap items-center gap-6 text-slate-500 text-sm mb-8 border-b border-slate-100 pb-8">
+                        <span className="flex items-center gap-2">
+                            <Calendar size={16} /> {post.date}
+                        </span>
+                        <span className="flex items-center gap-2">
+                            <Clock size={16} /> {post.readTime} lectura
+                        </span>
+                        <span className="flex items-center gap-2">
+                            <User size={16} /> Equipo ImportarEspaña
+                        </span>
                     </div>
 
-                    <img
-                        src={post.image}
-                        alt={post.title}
-                        className="w-full h-64 md:h-96 object-cover rounded-2xl mb-10 shadow-lg"
-                    />
+                    <div className="relative h-[400px] w-full rounded-3xl overflow-hidden mb-12 shadow-lg">
+                        <img
+                            src={post.image}
+                            alt={post.title}
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
 
                     <div
-                        className="prose prose-lg prose-slate max-w-none"
+                        className="prose prose-lg prose-slate max-w-none prose-headings:font-serif prose-headings:font-bold prose-a:text-blue-600 hover:prose-a:text-blue-800 prose-img:rounded-2xl"
                         dangerouslySetInnerHTML={{ __html: post.content }}
                     />
 
-                    {/* CTA Section */}
-                    <div className="mt-16 bg-slate-50 rounded-2xl p-8 border border-slate-200 text-center">
-                        <h3 className="text-2xl font-bold text-slate-900 mb-4">
-                            ¿Quieres saber el precio exacto para tu coche?
-                        </h3>
-                        <p className="text-slate-600 mb-6">
-                            Nuestra calculadora tiene en cuenta el CO2, la antigüedad y las tablas de Hacienda actualizadas.
-                        </p>
-                        <Link
-                            to="/"
-                            className="inline-block bg-blue-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-blue-700 transition-colors shadow-lg hover:shadow-blue-500/30"
+                    {/* Share Section */}
+                    <div className="mt-16 pt-8 border-t border-slate-100 flex items-center justify-between">
+                        <span className="font-bold text-slate-900">¿Te ha sido útil?</span>
+                        <button
+                            onClick={() => {
+                                if (navigator.share) {
+                                    navigator.share({
+                                        title: post.title,
+                                        text: post.excerpt,
+                                        url: window.location.href,
+                                    });
+                                }
+                            }}
+                            className="flex items-center gap-2 bg-blue-50 text-blue-600 px-4 py-2 rounded-xl font-bold hover:bg-blue-100 transition-colors"
                         >
-                            Calcular Impuestos Ahora
-                        </Link>
+                            <Share2 size={18} /> Compartir
+                        </button>
                     </div>
                 </motion.div>
             </article>
