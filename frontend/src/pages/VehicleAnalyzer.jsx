@@ -412,9 +412,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                     <a href={url} target="_blank" rel="noopener noreferrer" className="btn-secondary flex items-center justify-center gap-2">
                                         <ExternalLink size={18} /> Ver Anuncio
                                     </a>
-                                    <button onClick={() => setIsFinancingOpen(true)} className="btn-secondary flex items-center justify-center gap-2 text-blue-600 bg-blue-50 border-blue-100 hover:bg-blue-100">
-                                        <DollarSign size={18} /> Financiar
-                                    </button>
+
 
                                     <button onClick={() => setIsWizardOpen(true)} className="col-span-2 md:col-span-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]">
                                         <Car size={20} /> ¡Traédmelo! <span className="text-blue-200 text-sm font-normal">(Solicitar Importación)</span>
@@ -510,25 +508,18 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                                 {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(publicTotalCost)}
                                             </span>
                                         </div>
+
+                                        <button
+                                            onClick={() => setIsFinancingOpen(true)}
+                                            className="w-full mt-3 bg-slate-900 text-white text-sm font-bold py-2.5 rounded-xl hover:bg-slate-800 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-slate-900/20"
+                                        >
+                                            <DollarSign size={16} /> Calcular Financiación
+                                        </button>
                                         <p className="text-xs text-center text-slate-400 mt-4">
                                             * Tasas de tráfico e ITV no incluidas. <button onClick={() => setIsMonetizationOpen(true)} className="text-blue-500 hover:underline font-bold">Descarga el PDF GRATIS</button> para ver el desglose completo.
                                         </p>
 
-                                        {/* Action Buttons at the bottom */}
-                                        <div className="grid grid-cols-2 gap-3 mt-6">
-                                            <button
-                                                onClick={() => setIsMonetizationOpen(true)}
-                                                className="flex items-center justify-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold py-2 px-4 rounded-xl transition-colors text-sm"
-                                            >
-                                                <FileText size={16} /> PDF
-                                            </button>
-                                            <button
-                                                onClick={handleAddToGarage}
-                                                className="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 px-4 rounded-xl transition-colors text-sm"
-                                            >
-                                                <Save size={16} /> Guardar
-                                            </button>
-                                        </div>
+
                                     </div>
 
                                     {/* CarVertical CTA */}
@@ -555,6 +546,22 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                     </div>
 
                                     <TaxBrackets currentCo2={data.co2} />
+
+                                    {/* Action Buttons at the bottom */}
+                                    <div className="grid grid-cols-2 gap-3 mt-6">
+                                        <button
+                                            onClick={() => setIsMonetizationOpen(true)}
+                                            className="flex items-center justify-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold py-2 px-4 rounded-xl transition-colors text-sm"
+                                        >
+                                            <FileText size={16} /> PDF
+                                        </button>
+                                        <button
+                                            onClick={handleAddToGarage}
+                                            className="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 px-4 rounded-xl transition-colors text-sm"
+                                        >
+                                            <Save size={16} /> Guardar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
