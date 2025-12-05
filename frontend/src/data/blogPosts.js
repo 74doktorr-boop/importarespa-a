@@ -92,7 +92,7 @@ export const blogPosts = [
         excerpt: 'No seas la próxima víctima. Descubre los trucos que usan los estafadores en mobile.de y cómo detectar un coche con "afeitado" de kilómetros.',
         date: '2025-01-22',
         readTime: '8 min',
-        image: 'https://images.unsplash.com/photo-1599256621730-d3269cc1d205?auto=format&fit=crop&q=80&w=1000',
+        image: 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&q=80&w=1000',
         content: `
             <h2>El lado oscuro de la importación</h2>
             <p>Alemania es segura, pero internet no siempre lo es. Cada año, cientos de españoles pierden dinero al intentar importar un coche por su cuenta sin tomar precauciones.</p>
