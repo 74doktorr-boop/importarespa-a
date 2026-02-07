@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Importar España - Calculadora de Impuestos</title>
+  <meta name="description"
+    content="Calcula el Impuesto de Matriculación y costes de importación de vehículos en España. Herramienta profesional para importar coches de Alemania." />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://importarespana.com/" />
+  <meta property="og:title" content="Importar España - Calculadora de Impuestos y Trámites" />
+  <meta property="og:description"
+    content="Calcula al céntimo cuánto cuesta traer un coche de Alemania. Impuesto de matriculación, transporte y trámites DGT." />
+  <meta property="og:image" content="https://importarespana.com/og-image.jpg" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://importarespana.com/" />
+  <meta property="twitter:title" content="Importar España - Calculadora de Impuestos" />
+  <meta property="twitter:description" content="Calcula al céntimo cuánto cuesta traer un coche de Alemania." />
+  <meta property="twitter:image" content="https://importarespana.com/og-image.jpg" />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AutoDealer",
+      "name": "Importar España",
+      "image": "https://importarespana.com/logo.png",
+      "description": "Servicio profesional de importación de vehículos y calculadora de impuestos.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Donostia",
+        "addressRegion": "Gipuzkoa",
+        "addressCountry": "ES"
+      },
+      "url": "https://importarespana.com",
+      "telephone": "+34666351319",
+      "priceRange": "$$"
+    }
+  </script>
+
+  <!-- Google Analytics (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BJ0DVV7N9Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-BJ0DVV7N9Q');
+  </script>
+</head>
+
+<body class="bg-slate-50 text-slate-900">
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>

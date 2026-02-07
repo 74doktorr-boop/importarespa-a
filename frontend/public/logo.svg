@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80" fill="none">
+  <!-- Icon Section -->
+  <g transform="translate(10, 10)">
+    <!-- Outer Circle/Shield -->
+    <circle cx="30" cy="30" r="28" stroke="#0F172A" stroke-width="3" fill="none"/>
+    
+    <!-- Abstract Car / Arrow Shape -->
+    <path d="M15 35 L25 25 L45 25 L50 30" stroke="#3B82F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M18 35 A 4 4 0 1 0 26 35" stroke="#0F172A" stroke-width="2" fill="none"/>
+    <path d="M39 35 A 4 4 0 1 0 47 35" stroke="#0F172A" stroke-width="2" fill="none"/>
+    
+    <!-- Motion Lines -->
+    <path d="M10 25 L20 25" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+    <path d="M8 30 L15 30" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+  </g>
+
+  <!-- Text Section -->
+  <g transform="translate(80, 28)">
+    <text x="0" y="0" font-family="Arial, sans-serif" font-weight="bold" font-size="28" fill="#0F172A" letter-spacing="1">IMPORTAR</text>
+    <text x="160" y="0" font-family="Arial, sans-serif" font-weight="bold" font-size="28" fill="#3B82F6" letter-spacing="1">ESPAÑA</text>
+    <text x="2" y="20" font-family="Arial, sans-serif" font-weight="bold" font-size="10" fill="#64748B" letter-spacing="4" text-transform="uppercase">Premium Services</text>
+  </g>
+</svg>
