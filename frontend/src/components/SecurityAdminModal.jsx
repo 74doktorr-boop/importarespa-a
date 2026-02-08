@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Lock, X, ArrowRight, ShieldAlert } from 'lucide-react';
 
-const AdminAuthModal = ({ isOpen, onClose, onSuccess }) => {
+const SecurityAdminModal = ({ isOpen, onClose, onSuccess }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
 
@@ -55,8 +55,8 @@ const AdminAuthModal = ({ isOpen, onClose, onSuccess }) => {
                                         onChange={(e) => setPassword(e.target.value)}
                                         placeholder="Contraseña..."
                                         className={`w-full px-4 py-4 bg-slate-50 border-2 rounded-xl text-center text-lg font-bold tracking-widest outline-none transition-all ${error
-                                                ? 'border-red-300 focus:border-red-500 text-red-900 placeholder-red-300'
-                                                : 'border-slate-200 focus:border-slate-900 text-slate-900'
+                                            ? 'border-red-300 focus:border-red-500 text-red-900 placeholder-red-300'
+                                            : 'border-slate-200 focus:border-slate-900 text-slate-900'
                                             }`}
                                         autoFocus
                                     />
@@ -84,4 +84,4 @@ const AdminAuthModal = ({ isOpen, onClose, onSuccess }) => {
     );
 };
 
-export default AdminAuthModal;
+export default SecurityAdminModal;

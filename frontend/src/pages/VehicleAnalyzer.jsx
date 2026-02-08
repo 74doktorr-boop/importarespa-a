@@ -17,12 +17,11 @@ import ImportServicePromo from '../components/ImportServicePromo';
 import ImportWizard from '../components/ImportWizard';
 import ImageGallery from '../components/ImageGallery';
 import AdminQuoteModal from '../components/AdminQuoteModal';
-import AdminAuthModal from '../components/AdminAuthModal';
+import SecurityAdminModal from '../components/SecurityAdminModal';
 import MonetizationModal from '../components/MonetizationModal';
 import FinancingModal from '../components/FinancingModal';
 import RedirectModal from '../components/RedirectModal';
 import InsurancePromo from '../components/InsurancePromo';
-import TaxBrackets from '../components/TaxBrackets';
 
 const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) => {
     const [url, setUrl] = useState('');
@@ -212,7 +211,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
         <div className="pb-20">
             <LoadingOverlay isLoading={loading} />
 
-            <AdminAuthModal
+            <SecurityAdminModal
                 isOpen={isAuthModalOpen}
                 onClose={() => setIsAuthModalOpen(false)}
                 onSuccess={handleAuthSuccess}
