@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSearchParams } from 'react-router-dom';
 import { Search, Car, MapPin, Calendar, DollarSign, Activity, AlertTriangle, CheckCircle, XCircle, FileText, ExternalLink, Zap, ShieldCheck, Clock, Info, Fuel, Gauge, Calculator, AlertCircle, ArrowRight, Settings, Warehouse, Plus, Save, Share2, Mail, Home, Menu, X, Eye, EyeOff } from 'lucide-react';
 import StatCard from '../components/StatCard';
 import AnimatedGauge from '../components/AnimatedGauge';
@@ -23,6 +24,7 @@ import FinancingModal from '../components/FinancingModal';
 import RedirectModal from '../components/RedirectModal';
 
 const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) => {
+    const [searchParams, setSearchParams] = useSearchParams();
     const [url, setUrl] = useState('');
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState(null);
@@ -96,27 +98,27 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
         const targetUrl = forcedUrl || url;
         if (!targetUrl) return;
 
+        console.log('Analizando vehículo:', targetUrl);
         setLoading(true);
         setError(null);
         setData(null);
 
-        // Sync URL for persistence
+        // Sync URL for persistence only if not already from URL
         if (!forcedUrl) {
-            const newUrl = new URL(window.location.href);
-            newUrl.searchParams.set('url', targetUrl);
-            window.history.pushState({}, '', newUrl);
+            setSearchParams({ url: targetUrl });
         }
 
         try {
             const response = await axios.post(`${API_URL}/api/parse`, { url: targetUrl });
             if (response.data.error) {
+                console.error('API Error:', response.data.error);
                 setError('No se pudieron cargar los datos. Por favor, verifica el enlace.');
             } else {
                 setData(response.data);
                 addToRecentSearches(response.data, targetUrl);
             }
         } catch (err) {
-            console.error(err);
+            console.error('Fetch Error:', err);
             setError('Error al analizar el vehículo. Verifica la URL o inténtalo de nuevo.');
         } finally {
             setLoading(false);
@@ -125,8 +127,8 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
 
     // Load from URL on mount
     useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        const urlParam = params.get('url');
+        const urlParam = searchParams.get('url');
+        console.log('URL de persistencia detectada:', urlParam);
         if (urlParam) {
             setUrl(urlParam);
             handleAnalyze(null, urlParam);
