@@ -67,11 +67,9 @@ const AppContent = () => {
 
     // Navigation Handlers
     const handleReset = () => {
-        if (location.pathname !== '/') {
-            navigate('/');
-        } else {
-            setResetKey(prev => prev + 1);
-        }
+        // Navigate to / without parameters to clear the state
+        navigate('/', { replace: true });
+        setResetKey(prev => prev + 1);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
