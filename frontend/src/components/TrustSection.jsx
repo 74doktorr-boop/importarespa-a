@@ -18,7 +18,7 @@ const Testimonials = () => {
         {
             name: "Carlos M.",
             role: "Importó un Audi A4",
-            text: "Me ahorré más de 4.000€ trayendo el coche yo mismo. La guía y los cálculos fueron exactos al céntimo. Imprescindible.",
+            text: "Me ahorré más de 4.000€ trayendo el coche yo mismo. Los cálculos y el análisis fueron exactos al céntimo. Imprescindible.",
             stars: 5,
             image: "/images/audi_a4.png",
             model: "Audi A4 Avant (2020)"
@@ -26,7 +26,7 @@ const Testimonials = () => {
         {
             name: "Laura G.",
             role: "Importó un VW California",
-            text: "Tenía miedo con el papeleo de la DGT, pero con el checklist y los modelos de contrato fue facilísimo. Muy recomendado.",
+            text: "Tenía miedo con el papeleo de la DGT, pero con la ayuda del equipo y el informe detallado fue facilísimo. Muy recomendado.",
             stars: 5,
             image: "/images/vw_california.png",
             model: "VW California Ocean"
@@ -170,15 +170,15 @@ const FAQ = () => {
     const faqs = [
         {
             question: "¿Es difícil importar un coche desde Alemania?",
-            answer: "No es difícil, pero requiere seguir unos pasos concretos. Con nuestra guía y herramientas, simplificamos el proceso burocrático (ITV, DGT, Hacienda) para que cualquiera pueda hacerlo sin experiencia previa."
+            answer: "No es difícil, pero requiere seguir unos pasos concretos. Con nuestra herramienta y asesoramiento, simplificamos el proceso burocrático (ITV, DGT, Hacienda) para que cualquiera pueda hacerlo sin experiencia previa."
         },
         {
             question: "¿Cuánto dinero me puedo ahorrar?",
             answer: "Depende del modelo, pero el ahorro medio suele estar entre 3.000€ y 6.000€ respecto a comprar el mismo coche en España. Nuestra herramienta te calcula el ahorro exacto antes de que muevas un dedo."
         },
         {
-            question: "¿Qué incluye el Pack Importador PRO?",
-            answer: "Incluye todo lo necesario: La guía completa paso a paso, calculadora de costes en Excel, contratos bilingües (ES/DE) revisados por abogados, checklist de inspección mecánica y soporte para dudas."
+            question: "¿Qué incluye el informe de análisis?",
+            answer: "Incluye el cálculo exacto del IEDMT (Impuesto de Matriculación), una estimación realista del transporte por carretera y un análisis de rentabilidad comparando con el mercado español."
         },
         {
             question: "¿Sirve para cualquier país?",

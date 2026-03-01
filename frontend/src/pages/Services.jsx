@@ -1,33 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, FileText, Wrench, Truck } from 'lucide-react';
+import { Truck } from 'lucide-react';
 import ServiceCard from '../components/ServiceCard';
 
 const Services = () => {
     const services = [
-        {
-            icon: ShieldCheck,
-            title: "Informe CarVertical",
-            description: "¿Kilómetros reales? ¿Accidentes ocultos? No te la juegues. Saca el informe oficial con el VIN del coche.",
-            buttonText: "Obtener Informe",
-            link: "https://www.carvertical.com/es/land/vin-check?utm_source=affiliate&utm_medium=importarespana", // Affiliate Placeholder
-            recommended: true
-        },
-        {
-            icon: FileText,
-            title: "Seguro de Coche",
-            description: "Compara entre más de 20 aseguradoras y encuentra la póliza perfecta para tu coche importado con el mejor precio.",
-            buttonText: "Comparar Seguros",
-            link: "https://www.rastreator.com/seguros-coche?utm_source=importarespana", // Affiliate Placeholder
-            recommended: false
-        },
         {
             icon: Truck,
             title: "Transporte a España",
             description: "¿Necesitas traerlo? Gestionamos el transporte en camión portacoches desde cualquier punto de Alemania.",
             buttonText: "Pedir Presupuesto",
             link: "/#contact", // Internal link
-            recommended: false
+            recommended: true
         }
     ];
 

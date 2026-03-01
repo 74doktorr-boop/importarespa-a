@@ -17,7 +17,7 @@ const HowItWorks = () => {
         {
             icon: FileCheck,
             title: "3. Importa con Seguridad",
-            description: "Descarga el informe completo, la guía de trámites y el contrato bilingüe. Compra sin miedos."
+            description: "Descarga el informe profesional y solicita nuestra gestión si no quieres complicaciones. Importa con seguridad."
         }
     ];
 

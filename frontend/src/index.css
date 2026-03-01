@@ -21,28 +21,38 @@
 
   /* Modern Card Style - Clean & Professional */
   .premium-card {
-    @apply bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300;
+    @apply bg-white border border-slate-200/60 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-1;
   }
 
   .glass-panel {
-    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-xl;
+    @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)];
   }
 
   .input-field {
-    @apply w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all;
+    @apply w-full bg-white/80 border border-slate-200 rounded-xl px-5 py-4 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-medium;
   }
 
   .btn-primary {
-    @apply bg-slate-900 hover:bg-slate-800 text-white font-medium py-3 px-6 rounded-xl transition-all active:scale-95 shadow-lg shadow-slate-900/20 flex items-center justify-center;
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-xl transition-all active:scale-95 shadow-xl shadow-blue-600/20 flex items-center justify-center;
   }
 
   .btn-secondary {
-    @apply bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-medium py-3 px-6 rounded-xl transition-all active:scale-95 shadow-sm flex items-center justify-center;
+    @apply bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold py-4 px-8 rounded-xl transition-all active:scale-95 shadow-sm flex items-center justify-center;
   }
 
   .badge {
-    @apply px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider;
+    @apply px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest;
   }
+}
+
+/* Custom Animations */
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(1.05); }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 /* Smooth Scrolling */
@@ -52,13 +62,13 @@ html {
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-slate-100;
+  @apply bg-slate-50;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 rounded-full hover:bg-slate-400 transition-colors;
+  @apply bg-slate-300 rounded-full border-4 border-transparent bg-clip-content hover:bg-slate-400 transition-colors;
 }

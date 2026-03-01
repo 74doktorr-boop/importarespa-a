@@ -21,7 +21,6 @@ import SecurityAdminModal from '../components/SecurityAdminModal';
 import MonetizationModal from '../components/MonetizationModal';
 import FinancingModal from '../components/FinancingModal';
 import RedirectModal from '../components/RedirectModal';
-import InsurancePromo from '../components/InsurancePromo';
 
 const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) => {
     const [url, setUrl] = useState('');
@@ -249,7 +248,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    className={`text-center transition-all duration-500 ${data ? 'mb-12' : 'mb-16'}`}
+                    className={`text-center transition-all duration-500 ${data ? 'mb-12' : 'mb-20'}`}
                 >
                     <span
                         onClick={(e) => {
@@ -257,16 +256,16 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                 setIsAuthModalOpen(true);
                             }
                         }}
-                        className="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-widest mb-4 border border-blue-100 cursor-pointer select-none"
+                        className="inline-block py-1.5 px-4 rounded-full bg-blue-600/10 text-blue-600 text-[10px] font-bold uppercase tracking-[0.2em] mb-6 border border-blue-200/50 cursor-pointer select-none backdrop-blur-sm"
                         title="Professional Import Calculator"
                     >
-                        Professional Import Calculator
+                        Herramienta de Importación Profesional
                     </span>
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-slate-900 mb-6 tracking-tight">
-                        Importar España
+                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-black text-slate-900 mb-8 tracking-tighter leading-tight">
+                        Importar <span className="text-blue-600">España</span>
                     </h1>
-                    <p className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto font-light leading-relaxed">
-                        Calcula impuestos, transporte y costes de matriculación con precisión profesional.
+                    <p className="text-lg md:text-2xl text-slate-500 max-w-3xl mx-auto font-medium leading-relaxed opacity-80">
+                        Analiza impuestos, calcula transporte y gestiona tu importación con precisión absoluta y rapidez.
                     </p>
                 </motion.div>
 
@@ -278,25 +277,25 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                     className="max-w-2xl mx-auto"
                 >
                     <form onSubmit={handleAnalyze} className="relative group">
-                        <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
-                        <div className="relative flex items-center bg-white rounded-2xl p-2 shadow-xl border border-slate-100">
-                            <Search className="ml-4 text-slate-400 w-6 h-6" />
+                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition duration-700 animate-pulse-slow"></div>
+                        <div className="relative flex items-center bg-white/80 backdrop-blur-xl rounded-2xl p-2.5 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] border border-slate-200/50">
+                            <Search className="ml-5 text-slate-400 w-6 h-6" />
                             <input
                                 type="text"
                                 placeholder="Pega el enlace de mobile.de o AutoScout24..."
-                                className="w-full bg-transparent border-none focus:ring-0 text-slate-900 px-4 py-4 text-lg placeholder-slate-400 font-medium"
+                                className="w-full bg-transparent border-none focus:ring-0 text-slate-900 px-5 py-5 text-xl placeholder-slate-400 font-semibold"
                                 value={url}
                                 onChange={(e) => setUrl(e.target.value)}
                             />
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="bg-slate-900 text-white hover:bg-slate-800 font-medium py-3 px-8 rounded-xl transition-all duration-300 min-w-[140px] flex justify-center items-center shadow-lg shadow-slate-900/20"
+                                className="bg-blue-600 text-white hover:bg-blue-700 font-bold py-4 px-10 rounded-xl transition-all duration-500 min-w-[160px] flex justify-center items-center shadow-xl shadow-blue-600/20 active:scale-95"
                             >
                                 {loading ? (
-                                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                    <div className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
                                 ) : (
-                                    <span className="flex items-center">Analizar <ArrowRight size={18} className="ml-2" /></span>
+                                    <span className="flex items-center text-lg">Analizar <ArrowRight size={20} className="ml-2" /></span>
                                 )}
                             </button>
                         </div>
@@ -427,8 +426,11 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                     </button>
 
 
-                                    <button onClick={() => setIsWizardOpen(true)} className="col-span-2 md:col-span-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]">
-                                        <Car size={20} /> ¡Traédmelo! <span className="text-blue-200 text-sm font-normal">(Solicitar Importación)</span>
+                                    <button onClick={() => setIsWizardOpen(true)} className="col-span-2 md:col-span-3 bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-600 hover:to-indigo-600 text-white py-5 rounded-2xl font-black text-xl shadow-2xl shadow-blue-900/40 flex flex-col items-center justify-center gap-1 transition-all transform hover:scale-[1.03] ring-4 ring-blue-600/10">
+                                        <div className="flex items-center gap-3">
+                                            <Car size={24} /> ¡TRAÉDMELO A CASA!
+                                        </div>
+                                        <span className="text-blue-200 text-xs font-bold uppercase tracking-widest opacity-80">Solicitar Gestión de Importación Premium</span>
                                     </button>
                                 </div>
 
@@ -528,47 +530,23 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                         >
                                             <DollarSign size={16} /> Calcular Financiación
                                         </button>
-                                        <p className="text-xs text-center text-slate-400 mt-4">
-                                            * Tasas de tráfico e ITV no incluidas. <button onClick={() => setIsMonetizationOpen(true)} className="text-blue-500 hover:underline font-bold">Descarga el PDF GRATIS</button> para ver el desglose completo.
+                                        <p className="text-xs text-center text-slate-400 mt-4 leading-relaxed">
+                                            * Tasas de tráfico e ITV no incluidas. <button onClick={handleDownloadPdf} className="text-blue-600 hover:text-blue-700 font-bold decoration-blue-600/30 underline underline-offset-4">Descarga el Informe PDF Gratis</button>
                                         </p>
 
 
                                     </div>
 
-                                    {/* CarVertical CTA */}
-                                    <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 mt-6">
-                                        <div className="flex items-start gap-3">
-                                            <div className="bg-amber-100 p-2 rounded-lg text-amber-600 shrink-0">
-                                                <AlertTriangle size={20} />
-                                            </div>
-                                            <div>
-                                                <h4 className="font-bold text-amber-900 text-sm mb-1">¿Seguro que los KM son reales?</h4>
-                                                <p className="text-xs text-amber-800 mb-3 leading-relaxed">
-                                                    Evita estafas y averías ocultas. Comprueba el historial del bastidor antes de comprar.
-                                                </p>
-                                                <a
-                                                    href="https://www.carvertical.com/es"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="block w-full bg-amber-500 hover:bg-amber-600 text-white text-center text-sm font-bold py-2.5 rounded-xl transition-colors shadow-sm"
-                                                >
-                                                    Ver Informe del Vehículo
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <InsurancePromo vehicleData={data} />
 
                                     <TaxBrackets currentCo2={data.co2} />
 
                                     {/* Action Buttons at the bottom */}
                                     <div className="grid grid-cols-2 gap-3 mt-6">
                                         <button
-                                            onClick={() => setIsMonetizationOpen(true)}
-                                            className="flex items-center justify-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold py-2 px-4 rounded-xl transition-colors text-sm"
+                                            onClick={handleDownloadPdf}
+                                            className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition-all text-sm shadow-lg shadow-blue-600/20"
                                         >
-                                            <FileText size={16} /> PDF
+                                            <FileText size={16} /> DESCARGAR PDF
                                         </button>
                                         <button
                                             onClick={handleAddToGarage}
