@@ -97,7 +97,7 @@ const AppContent = () => {
                     <Route path="/success" element={<SuccessPage />} />
                     <Route path="/blog" element={<Blog />} />
                     <Route path="/blog/:slug" element={<BlogPost />} />
-                    <Route path="/servicios" element={<Services />} />
+                    <Route path="/servicios" element={<Services onOpenContact={() => setIsContactOpen(true)} />} />
                     <Route path="/privacy" element={<PrivacyPolicy />} />
                     <Route path="/terms" element={<TermsOfService />} />
                     <Route path="/cookies" element={<CookiesPolicy />} />

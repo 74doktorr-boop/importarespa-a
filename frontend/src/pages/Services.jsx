@@ -3,14 +3,15 @@ import { motion } from 'framer-motion';
 import { Truck } from 'lucide-react';
 import ServiceCard from '../components/ServiceCard';
 
-const Services = () => {
+const Services = ({ onOpenContact }) => {
     const services = [
         {
             icon: Truck,
             title: "Transporte a España",
             description: "¿Necesitas traerlo? Gestionamos el transporte en camión portacoches desde cualquier punto de Alemania.",
             buttonText: "Pedir Presupuesto",
-            link: "/#contact", // Internal link
+            link: "#",
+            onClick: onOpenContact,
             recommended: true
         }
     ];
@@ -44,7 +45,10 @@ const Services = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
                         >
-                            <ServiceCard {...service} />
+                            <ServiceCard
+                                {...service}
+                                onClick={service.onClick}
+                            />
                         </motion.div>
                     ))}
                 </div>
@@ -54,12 +58,12 @@ const Services = () => {
                     <p className="text-blue-100 mb-8 max-w-2xl mx-auto text-lg">
                         Si prefieres que nos encarguemos de todo (negociación, transporte, matriculación), contrata nuestro servicio llave en mano.
                     </p>
-                    <a
-                        href="/#contact"
+                    <button
+                        onClick={onOpenContact}
                         className="inline-block bg-white text-blue-600 font-bold py-3 px-8 rounded-xl hover:bg-blue-50 transition-colors shadow-lg"
                     >
                         Contactar con el Equipo
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>

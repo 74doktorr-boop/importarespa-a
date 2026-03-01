@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 
-const ServiceCard = ({ icon: Icon, title, description, buttonText, link, recommended }) => {
+const ServiceCard = ({ icon: Icon, title, description, buttonText, link, recommended, onClick }) => {
     return (
         <div className={`relative bg-white rounded-2xl p-8 border ${recommended ? 'border-blue-500 shadow-blue-100' : 'border-slate-200'} shadow-sm hover:shadow-md transition-all duration-300 flex flex-col h-full`}>
             {recommended && (
@@ -19,17 +19,29 @@ const ServiceCard = ({ icon: Icon, title, description, buttonText, link, recomme
                 {description}
             </p>
 
-            <a
-                href={link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`flex items-center justify-center w-full py-3 px-4 rounded-xl font-bold transition-colors ${recommended
+            {onClick ? (
+                <button
+                    onClick={onClick}
+                    className={`flex items-center justify-center w-full py-3 px-4 rounded-xl font-bold transition-colors ${recommended
                         ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/30'
                         : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
-                    }`}
-            >
-                {buttonText} <ArrowRight size={18} className="ml-2" />
-            </a>
+                        }`}
+                >
+                    {buttonText} <ArrowRight size={18} className="ml-2" />
+                </button>
+            ) : (
+                <a
+                    href={link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`flex items-center justify-center w-full py-3 px-4 rounded-xl font-bold transition-colors ${recommended
+                        ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/30'
+                        : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
+                        }`}
+                >
+                    {buttonText} <ArrowRight size={18} className="ml-2" />
+                </a>
+            )}
         </div>
     );
 };
