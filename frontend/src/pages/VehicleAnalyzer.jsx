@@ -91,21 +91,29 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
         axios.get(`${API_URL}/`).catch(() => { });
     }, []);
 
-    const handleAnalyze = async (e) => {
-        e.preventDefault();
-        if (!url) return;
+    const handleAnalyze = async (e, forcedUrl = null) => {
+        if (e) e.preventDefault();
+        const targetUrl = forcedUrl || url;
+        if (!targetUrl) return;
 
         setLoading(true);
         setError(null);
         setData(null);
 
+        // Sync URL for persistence
+        if (!forcedUrl) {
+            const newUrl = new URL(window.location.href);
+            newUrl.searchParams.set('url', targetUrl);
+            window.history.pushState({}, '', newUrl);
+        }
+
         try {
-            const response = await axios.post(`${API_URL}/api/parse`, { url });
+            const response = await axios.post(`${API_URL}/api/parse`, { url: targetUrl });
             if (response.data.error) {
                 setError('No se pudieron cargar los datos. Por favor, verifica el enlace.');
             } else {
                 setData(response.data);
-                addToRecentSearches(response.data, url);
+                addToRecentSearches(response.data, targetUrl);
             }
         } catch (err) {
             console.error(err);
@@ -115,25 +123,19 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
         }
     };
 
+    // Load from URL on mount
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const urlParam = params.get('url');
+        if (urlParam) {
+            setUrl(urlParam);
+            handleAnalyze(null, urlParam);
+        }
+    }, []);
+
     const loadRecentSearch = (searchUrl) => {
         setUrl(searchUrl);
-        setLoading(true);
-        setError(null);
-        setData(null);
-
-        axios.post(`${API_URL}/api/parse`, { url: searchUrl })
-            .then(response => {
-                if (response.data.error) {
-                    setError('No se pudieron cargar los datos.');
-                } else {
-                    setData(response.data);
-                    addToRecentSearches(response.data, searchUrl);
-                }
-            })
-            .catch(err => {
-                setError('Error al recargar el vehículo.');
-            })
-            .finally(() => setLoading(false));
+        handleAnalyze(null, searchUrl);
     };
 
     const [boeBaseValue, setBoeBaseValue] = useState(null);
