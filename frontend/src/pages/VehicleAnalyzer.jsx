@@ -217,12 +217,6 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                     onSelectFree={handleDownloadPdf}
                 />
 
-                <FinancingModal
-                    isOpen={isFinancingOpen}
-                    onClose={() => setIsFinancingOpen(false)}
-                    vehiclePrice={publicTotalCost}
-                />
-
                 <RedirectModal
                     isOpen={isRedirectOpen}
                     onClose={() => setIsRedirectOpen(false)}
@@ -392,12 +386,6 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                             </span>
                                         </div>
 
-                                        <button
-                                            onClick={() => setIsFinancingOpen(true)}
-                                            className="w-full mt-3 bg-slate-900 text-white text-sm font-bold py-2.5 rounded-xl hover:bg-slate-800 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-slate-900/20"
-                                        >
-                                            <DollarSign size={16} /> Calcular Financiación
-                                        </button>
                                         <p className="text-xs text-center text-slate-400 mt-4 leading-relaxed">
                                             * Tasas de tráfico e ITV no incluidas. <button onClick={handleDownloadPdf} className="text-blue-600 hover:text-blue-700 font-bold decoration-blue-600/30 underline underline-offset-4">Descarga el Informe PDF Gratis</button>
                                         </p>
