@@ -29,7 +29,9 @@ const AppContent = () => {
     const [garageVehicles, setGarageVehicles] = useState(() => {
         try {
             const saved = localStorage.getItem('garageVehicles');
-            return saved ? JSON.parse(saved) : [];
+            const data = saved ? JSON.parse(saved) : [];
+            console.log('DEBUG: Garaje cargado:', data.length, 'vehículos');
+            return data;
         } catch (e) {
             console.error("Failed to load garage from localStorage", e);
             return [];

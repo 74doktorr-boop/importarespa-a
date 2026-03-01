@@ -127,9 +127,14 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
 
     // Load from URL on mount
     useEffect(() => {
-        const urlParam = searchParams.get('url');
-        console.log('URL de persistencia detectada:', urlParam);
-        if (urlParam) {
+        // More robust check: useSearchParams might be delayed
+        const queryParams = new URLSearchParams(window.location.search);
+        const urlParam = queryParams.get('url');
+
+        console.log('DEBUG: URL Param detectado en montura:', urlParam);
+
+        if (urlParam && !data && !loading) {
+            console.log('DEBUG: Iniciando auto-análisis para:', urlParam);
             setUrl(urlParam);
             handleAnalyze(null, urlParam);
         }
@@ -451,6 +456,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                     </h1>
                     <p className="text-lg md:text-2xl text-slate-500 max-w-3xl mx-auto font-medium leading-relaxed opacity-80">
                         Analiza impuestos, calcula transporte y gestiona tu importación con precisión absoluta y rapidez.
+                        <span className="block text-[10px] text-slate-300 mt-2 font-mono">v2.2 - Persistence Active</span>
                     </p>
                 </motion.div>
 
