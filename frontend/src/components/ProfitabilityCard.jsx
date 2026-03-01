@@ -127,23 +127,6 @@ const ProfitabilityCard = ({ importPrice, vehicleData }) => {
                 }
             </div >
 
-            {/* CarVertical upsell */}
-            <div className="mt-6 pt-6 border-t border-slate-100">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Verificación de Seguridad</p>
-                <div className="bg-slate-50 rounded-2xl p-4 flex items-center justify-between group/cv cursor-pointer hover:bg-slate-100 transition-colors"
-                    onClick={() => window.open('https://www.carvertical.com/es/land/vin-check?utm_source=affiliate&utm_medium=importarespana', '_blank')}>
-                    <div className="flex items-center gap-3">
-                        <div className="bg-white p-2 rounded-lg shadow-sm">
-                            <ShieldAlert className="text-blue-600" size={18} />
-                        </div>
-                        <div>
-                            <p className="text-xs font-bold text-slate-900 leading-tight">¿Kilometraje real?</p>
-                            <p className="text-[10px] text-slate-500">Historial completo con CarVertical</p>
-                        </div>
-                    </div>
-                    <ExternalLink size={14} className="text-slate-300 group-hover/cv:text-blue-500 group-hover/cv:translate-x-0.5 transition-all" />
-                </div>
-            </div>
         </div >
     );
 };

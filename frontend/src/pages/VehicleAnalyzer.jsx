@@ -98,7 +98,6 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
         const targetUrl = forcedUrl || url;
         if (!targetUrl) return;
 
-        console.log('Analizando vehículo:', targetUrl);
         setLoading(true);
         setError(null);
         setData(null);
@@ -111,14 +110,12 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
         try {
             const response = await axios.post(`${API_URL}/api/parse`, { url: targetUrl });
             if (response.data.error) {
-                console.error('API Error:', response.data.error);
                 setError('No se pudieron cargar los datos. Por favor, verifica el enlace.');
             } else {
                 setData(response.data);
                 addToRecentSearches(response.data, targetUrl);
             }
         } catch (err) {
-            console.error('Fetch Error:', err);
             setError('Error al analizar el vehículo. Verifica la URL o inténtalo de nuevo.');
         } finally {
             setLoading(false);
@@ -131,10 +128,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
         const queryParams = new URLSearchParams(window.location.search);
         const urlParam = queryParams.get('url');
 
-        console.log('DEBUG: URL Param detectado en montura:', urlParam);
-
         if (urlParam && !data && !loading) {
-            console.log('DEBUG: Iniciando auto-análisis para:', urlParam);
             setUrl(urlParam);
             handleAnalyze(null, urlParam);
         }
@@ -456,7 +450,6 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                     </h1>
                     <p className="text-lg md:text-2xl text-slate-500 max-w-3xl mx-auto font-medium leading-relaxed opacity-80">
                         Analiza impuestos, calcula transporte y gestiona tu importación con precisión absoluta y rapidez.
-                        <span className="block text-[10px] text-slate-300 mt-2 font-mono">v2.2 - Persistence Active</span>
                     </p>
                 </motion.div>
 
