@@ -1,8 +1,10 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { X, ShieldCheck, Zap, Heart, Globe, Users, ArrowRight } from 'lucide-react';
 
 const AboutModal = ({ isOpen, onClose }) => {
+    const navigate = useNavigate();
     if (!isOpen) return null;
 
     return (
@@ -95,7 +97,10 @@ const AboutModal = ({ isOpen, onClose }) => {
                                     </p>
                                 </div>
                                 <button
-                                    onClick={onClose}
+                                    onClick={() => {
+                                        navigate('/servicios');
+                                        onClose();
+                                    }}
                                     className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-900/20 flex items-center whitespace-nowrap"
                                 >
                                     Ver Servicios <ArrowRight size={18} className="ml-2" />
