@@ -57,8 +57,6 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
             if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'q') {
                 e.preventDefault();
                 console.log('Admin shortcut triggered');
-                // Check if already authenticated in this session could be an enhancement, 
-                // but for now always ask for password for max security as requested.
                 setIsAuthModalOpen(true);
             }
         };
@@ -142,30 +140,19 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
 
     const calculateTax = (co2, price) => {
         if (!co2) return { rate: 0, amount: 0, total: 0 };
-
-        // Use BOE Base Value if provided, otherwise use estimated price (fallback)
-        // Ideally, price should be the depreciated value, but without BOE tables we estimate.
-        // If user provides BOE Base Value (New Value), we need to apply depreciation.
-        // BUT, usually users will find the "Valor Venal" directly or the "Valor Nuevo".
-        // Let's assume the user inputs the FINAL depreciated value found in a calculator or the BOE table result.
-        // OR, simpler: The user inputs the "Valor Hacienda" directly.
-
         const baseForTax = boeBaseValue || price;
-
         let rate = 0;
         if (co2 <= 120) rate = 0;
         else if (co2 <= 159) rate = 4.75;
         else if (co2 <= 199) rate = 9.75;
         else rate = 14.75;
-
         const amount = (baseForTax * rate) / 100;
-        return { rate, amount, total: price + amount }; // Total cost is Price (Germany) + Tax (Spain)
+        return { rate, amount, total: price + amount };
     };
 
     const taxData = data ? calculateTax(data.co2, data.price) : null;
     const dgtLabel = data ? getDgtLabel(data.fuelType, data.year) : null;
 
-    // Basic Total Cost for Public View (Price + Tax + Transport)
     const calculatePublicTotalCost = () => {
         if (!data || !taxData) return 0;
         return taxData.total + transportCost;
@@ -183,7 +170,6 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
         }
     };
 
-    // Update Transport Handler
     const handleTransportCalculated = (result) => {
         if (typeof result === 'object') {
             setTransportCost(result.cost);
@@ -206,160 +192,50 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
         }
     };
 
-    return (
-        <div className="pb-20">
-            <LoadingOverlay isLoading={loading} />
+    if (data) {
+        return (
+            <div className="pb-20">
+                <LoadingOverlay isLoading={loading} />
 
-            <SecurityAdminModal
-                isOpen={isAuthModalOpen}
-                onClose={() => setIsAuthModalOpen(false)}
-                onSuccess={handleAuthSuccess}
-            />
+                <SecurityAdminModal
+                    isOpen={isAuthModalOpen}
+                    onClose={() => setIsAuthModalOpen(false)}
+                    onSuccess={handleAuthSuccess}
+                />
 
-            <AdminQuoteModal
-                isOpen={isAdminModalOpen}
-                onClose={() => setIsAdminModalOpen(false)}
-                vehicleData={data}
-                transportCost={transportCost}
-                transportDistance={transportDistance}
-            />
+                <AdminQuoteModal
+                    isOpen={isAdminModalOpen}
+                    onClose={() => setIsAdminModalOpen(false)}
+                    vehicleData={data}
+                    transportCost={transportCost}
+                    transportDistance={transportDistance}
+                />
 
-            <MonetizationModal
-                isOpen={isMonetizationOpen}
-                onClose={() => setIsMonetizationOpen(false)}
-                onSelectFree={handleDownloadPdf}
-            />
+                <MonetizationModal
+                    isOpen={isMonetizationOpen}
+                    onClose={() => setIsMonetizationOpen(false)}
+                    onSelectFree={handleDownloadPdf}
+                />
 
-            <FinancingModal
-                isOpen={isFinancingOpen}
-                onClose={() => setIsFinancingOpen(false)}
-                vehiclePrice={publicTotalCost}
-            />
+                <FinancingModal
+                    isOpen={isFinancingOpen}
+                    onClose={() => setIsFinancingOpen(false)}
+                    vehiclePrice={publicTotalCost}
+                />
 
-            <RedirectModal
-                isOpen={isRedirectOpen}
-                onClose={() => setIsRedirectOpen(false)}
-                targetUrl={url}
-                vehicleData={data}
-            />
+                <RedirectModal
+                    isOpen={isRedirectOpen}
+                    onClose={() => setIsRedirectOpen(false)}
+                    targetUrl={url}
+                    vehicleData={data}
+                />
 
-            <div className="container mx-auto px-4 relative z-10 pt-32">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                    className={`text-center transition-all duration-500 ${data ? 'mb-12' : 'mb-20'}`}
-                >
-                    <span
-                        onClick={(e) => {
-                            if (e.detail === 3) {
-                                setIsAuthModalOpen(true);
-                            }
-                        }}
-                        className="inline-block py-1.5 px-4 rounded-full bg-blue-600/10 text-blue-600 text-[10px] font-bold uppercase tracking-[0.2em] mb-6 border border-blue-200/50 cursor-pointer select-none backdrop-blur-sm"
-                        title="Professional Import Calculator"
-                    >
-                        Herramienta de Importación Profesional
-                    </span>
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-black text-slate-900 mb-8 tracking-tighter leading-tight">
-                        Importar <span className="text-blue-600">España</span>
-                    </h1>
-                    <p className="text-lg md:text-2xl text-slate-500 max-w-3xl mx-auto font-medium leading-relaxed opacity-80">
-                        Analiza impuestos, calcula transporte y gestiona tu importación con precisión absoluta y rapidez.
-                    </p>
-                </motion.div>
-
-                {/* Search Bar */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2, duration: 0.8 }}
-                    className="max-w-2xl mx-auto"
-                >
-                    <form onSubmit={handleAnalyze} className="relative group">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition duration-700 animate-pulse-slow"></div>
-                        <div className="relative flex items-center bg-white/80 backdrop-blur-xl rounded-2xl p-2.5 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] border border-slate-200/50">
-                            <Search className="ml-5 text-slate-400 w-6 h-6" />
-                            <input
-                                type="text"
-                                placeholder="Pega el enlace de mobile.de o AutoScout24..."
-                                className="w-full bg-transparent border-none focus:ring-0 text-slate-900 px-5 py-5 text-xl placeholder-slate-400 font-semibold"
-                                value={url}
-                                onChange={(e) => setUrl(e.target.value)}
-                            />
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="bg-blue-600 text-white hover:bg-blue-700 font-bold py-4 px-10 rounded-xl transition-all duration-500 min-w-[160px] flex justify-center items-center shadow-xl shadow-blue-600/20 active:scale-95"
-                            >
-                                {loading ? (
-                                    <div className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
-                                ) : (
-                                    <span className="flex items-center text-lg">Analizar <ArrowRight size={20} className="ml-2" /></span>
-                                )}
-                            </button>
-                        </div>
-                    </form>
-                    {error && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="mt-4 p-4 bg-red-50 border border-red-100 rounded-xl text-red-600 flex items-center justify-center text-sm font-medium"
-                        >
-                            <AlertTriangle className="mr-2" size={18} />
-                            {error}
-                        </motion.div>
-                    )}
-                </motion.div>
-
-                {/* Recent Searches */}
-                <AnimatePresence>
-                    {!data && recentSearches.length > 0 && (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="max-w-2xl mx-auto mt-8 flex flex-wrap justify-center gap-2"
-                        >
-                            {recentSearches.map((search, idx) => (
-                                <button
-                                    key={search.timestamp}
-                                    onClick={() => loadRecentSearch(search.url)}
-                                    className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-full text-xs font-medium text-slate-600 hover:border-blue-300 hover:text-blue-600 transition-colors shadow-sm"
-                                >
-                                    <Car size={12} />
-                                    {search.make} {search.model}
-                                </button>
-                            ))}
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-
-                {/* Feature Cards */}
-                {!data && (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mt-16">
-                        {[
-                            { icon: Zap, title: "Análisis Instantáneo", desc: "Extracción de datos en tiempo real mediante IA avanzada." },
-                            { icon: Calculator, title: "Impuestos Precisos", desc: "Cálculo del IEDMT basado en emisiones CO2 y tablas de Hacienda." },
-                            { icon: FileText, title: "Informes PDF", desc: "Genera dossiers profesionales listos para presentar." }
-                        ].map((item, index) => (
-                            <div key={index} className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-                                <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-6 text-slate-900">
-                                    <item.icon size={24} />
-                                </div>
-                                <h3 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h3>
-                                <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                )}
-
-                {/* Vehicle Data Display */}
-                {data && (
+                <div className="container mx-auto px-4 relative z-10 pt-20">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="mt-16"
+                        className="mt-4"
                     >
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                             {/* Main Vehicle Info (8 cols) */}
@@ -484,7 +360,6 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                                 <span className="font-bold text-slate-900">
                                                     {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(taxData.amount)}
                                                 </span>
-                                                {/* Manual BOE Value Input */}
                                                 <div className="flex items-center gap-1 mt-1">
                                                     <span className="text-[10px] text-slate-400">Base:</span>
                                                     <input
@@ -493,20 +368,13 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                                         className="w-20 text-[10px] p-1 border border-slate-200 rounded bg-white text-right focus:ring-1 focus:ring-blue-500 outline-none"
                                                         onChange={(e) => {
                                                             const val = parseFloat(e.target.value);
-                                                            if (!isNaN(val)) {
-                                                                setBoeBaseValue(val);
-                                                            } else {
-                                                                setBoeBaseValue(null);
-                                                            }
+                                                            if (!isNaN(val)) setBoeBaseValue(val);
+                                                            else setBoeBaseValue(null);
                                                         }}
                                                     />
                                                 </div>
                                             </div>
                                         </div>
-
-
-
-
 
                                         <div className="flex justify-between items-center p-3 bg-slate-50 rounded-xl">
                                             <span className="text-sm text-slate-600 font-medium">Transporte (Estimado)</span>
@@ -533,14 +401,10 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                         <p className="text-xs text-center text-slate-400 mt-4 leading-relaxed">
                                             * Tasas de tráfico e ITV no incluidas. <button onClick={handleDownloadPdf} className="text-blue-600 hover:text-blue-700 font-bold decoration-blue-600/30 underline underline-offset-4">Descarga el Informe PDF Gratis</button>
                                         </p>
-
-
                                     </div>
-
 
                                     <TaxBrackets currentCo2={data.co2} />
 
-                                    {/* Action Buttons at the bottom */}
                                     <div className="grid grid-cols-2 gap-3 mt-6">
                                         <button
                                             onClick={handleDownloadPdf}
@@ -559,11 +423,118 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                             </div>
                         </div>
                     </motion.div>
-                )}
-            </div>
+                </div>
 
-            <ImportWizard isOpen={isWizardOpen} onClose={() => setIsWizardOpen(false)} vehicleData={data} />
-        </div >
+                <ImportWizard isOpen={isWizardOpen} onClose={() => setIsWizardOpen(false)} vehicleData={data} />
+            </div>
+        );
+    }
+
+    return (
+        <div className="pb-20">
+            <LoadingOverlay isLoading={loading} />
+
+            <SecurityAdminModal
+                isOpen={isAuthModalOpen}
+                onClose={() => setIsAuthModalOpen(false)}
+                onSuccess={handleAuthSuccess}
+            />
+
+            <div className="container mx-auto px-4 relative z-10 pt-32">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-center mb-16"
+                >
+                    <span
+                        onClick={(e) => {
+                            if (e.detail === 3) setIsAuthModalOpen(true);
+                        }}
+                        className="inline-block py-1.5 px-4 rounded-full bg-blue-600/10 text-blue-600 text-[10px] font-bold uppercase tracking-[0.2em] mb-6 border border-blue-200/50 cursor-pointer select-none backdrop-blur-sm"
+                    >
+                        Herramienta de Importación Profesional
+                    </span>
+                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-black text-slate-900 mb-8 tracking-tighter leading-tight">
+                        Importar <span className="text-blue-600">España</span>
+                    </h1>
+                    <p className="text-lg md:text-2xl text-slate-500 max-w-3xl mx-auto font-medium leading-relaxed opacity-80">
+                        Analiza impuestos, calcula transporte y gestiona tu importación con precisión absoluta y rapidez.
+                    </p>
+                </motion.div>
+
+                <div className="max-w-2xl mx-auto">
+                    <form onSubmit={handleAnalyze} className="relative group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition duration-700 animate-pulse-slow"></div>
+                        <div className="relative flex items-center bg-white/80 backdrop-blur-xl rounded-2xl p-2.5 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] border border-slate-200/50">
+                            <Search className="ml-5 text-slate-400 w-6 h-6" />
+                            <input
+                                type="text"
+                                placeholder="Pega el enlace de mobile.de o AutoScout24..."
+                                className="w-full bg-transparent border-none focus:ring-0 text-slate-900 px-5 py-5 text-xl placeholder-slate-400 font-semibold"
+                                value={url}
+                                onChange={(e) => setUrl(e.target.value)}
+                            />
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="bg-blue-600 text-white hover:bg-blue-700 font-bold py-4 px-10 rounded-xl transition-all duration-500 min-w-[160px] flex justify-center items-center shadow-xl shadow-blue-600/20 active:scale-95"
+                            >
+                                {loading ? (
+                                    <div className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                ) : (
+                                    <span className="flex items-center text-lg">Analizar <ArrowRight size={20} className="ml-2" /></span>
+                                )}
+                            </button>
+                        </div>
+                    </form>
+                    {error && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="mt-4 p-4 bg-red-50 border border-red-100 rounded-xl text-red-600 flex items-center justify-center text-sm font-medium"
+                        >
+                            <AlertTriangle className="mr-2" size={18} />
+                            {error}
+                        </motion.div>
+                    )}
+                </div>
+
+                {recentSearches.length > 0 && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="max-w-2xl mx-auto mt-8 flex flex-wrap justify-center gap-2"
+                    >
+                        {recentSearches.map((search) => (
+                            <button
+                                key={search.timestamp}
+                                onClick={() => loadRecentSearch(search.url)}
+                                className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-full text-xs font-medium text-slate-600 hover:border-blue-300 hover:text-blue-600 transition-colors shadow-sm"
+                            >
+                                <Car size={12} />
+                                {search.make} {search.model}
+                            </button>
+                        ))}
+                    </motion.div>
+                )}
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mt-16">
+                    {[
+                        { icon: Zap, title: "Análisis Instantáneo", desc: "Extracción de datos en tiempo real mediante IA avanzada." },
+                        { icon: Calculator, title: "Impuestos Precisos", desc: "Cálculo del IEDMT basado en emisiones CO2 y tablas de Hacienda." },
+                        { icon: FileText, title: "Informes PDF", desc: "Genera dossiers profesionales listos para presentar." }
+                    ].map((item, index) => (
+                        <div key={index} className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-6 text-slate-900">
+                                <item.icon size={24} />
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h3>
+                            <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
     );
 };
 
