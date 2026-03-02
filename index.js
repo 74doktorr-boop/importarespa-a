@@ -23,7 +23,7 @@ app.use('/api/subscribe', subscribeRoutes);
 
 // Health check
 app.get('/', (req, res) => {
-    res.send('Vehicle Analyzer Backend is running');
+    res.send('Vehicle Analyzer Backend v1.1.0 (AI Verdict Enabled) is running');
 });
 
 // Start server
