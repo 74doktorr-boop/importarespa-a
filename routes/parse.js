@@ -495,6 +495,9 @@ router.post('/', async (req, res) => {
         if (vehicleData.make === 'Unknown') vehicleData.make = 'Vehículo';
         if (vehicleData.model === 'Unknown') vehicleData.model = 'Detectado';
 
+        const { getVehicleVerdict } = require('../utils/aiService');
+        vehicleData.aiVerdict = await getVehicleVerdict(vehicleData);
+
         res.json(vehicleData);
 
     } catch (error) {

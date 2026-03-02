@@ -7,6 +7,7 @@ import AnimatedGauge from '../components/AnimatedGauge';
 import TaxBrackets from '../components/TaxBrackets';
 import TransportCard from '../components/TransportCard';
 import ProfitabilityCard from '../components/ProfitabilityCard';
+import AiVerdictCard from '../components/AiVerdictCard';
 import axios from 'axios';
 import LoadingOverlay from '../components/LoadingOverlay';
 import HowItWorks from '../components/HowItWorks';
@@ -288,6 +289,13 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                         <StatCard icon={Settings} label="Cambio" value={data.transmission || 'Manual'} delay={0.4} />
                                     </div>
                                 </div>
+
+                                {/* AI Verdict Section */}
+                                {data.aiVerdict && (
+                                    <div className="lg:col-span-12">
+                                        <AiVerdictCard verdict={data.aiVerdict} />
+                                    </div>
+                                )}
 
                                 {/* Actions */}
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
