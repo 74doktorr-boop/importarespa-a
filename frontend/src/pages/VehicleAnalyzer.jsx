@@ -237,27 +237,27 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                             {/* Main Vehicle Info (8 cols) */}
                             <div className="lg:col-span-8 space-y-6">
-                                <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
+                                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 shadow-sm">
                                     <div className="flex flex-col md:flex-row justify-between items-start mb-8 gap-4">
                                         <div>
                                             <div className="flex items-center space-x-2 mb-3">
-                                                <span className="px-2.5 py-1 rounded-md bg-slate-100 text-[10px] font-bold uppercase tracking-widest text-slate-600">
+                                                <span className="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-[10px] font-bold uppercase tracking-widest text-slate-600 dark:text-slate-400">
                                                     {data.make}
                                                 </span>
-                                                <span className="px-2.5 py-1 rounded-md bg-blue-50 text-[10px] font-bold uppercase tracking-widest text-blue-600">
+                                                <span className="px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-900/30 text-[10px] font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">
                                                     Importación
                                                 </span>
                                             </div>
-                                            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2 leading-tight">
+                                            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-2 leading-tight">
                                                 {data.model}
                                             </h2>
-                                            <div className="flex items-center gap-4 text-slate-500 text-sm font-medium">
+                                            <div className="flex items-center gap-4 text-slate-500 dark:text-slate-400 text-sm font-medium">
                                                 <div className="flex items-center">
-                                                    <MapPin size={16} className="mr-1.5 text-slate-400" />
+                                                    <MapPin size={16} className="mr-1.5 text-slate-400 dark:text-slate-500" />
                                                     {data.location}, {data.country}
                                                 </div>
                                                 {dgtLabel && (
-                                                    <div className="flex items-center gap-2 pl-4 border-l border-slate-200">
+                                                    <div className="flex items-center gap-2 pl-4 border-l border-slate-200 dark:border-slate-700">
                                                         <span className="text-[10px] uppercase tracking-wider font-bold">Etiqueta</span>
                                                         <DgtBadge label={dgtLabel} />
                                                     </div>
@@ -265,10 +265,10 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                             </div>
                                         </div>
                                         <div className="text-right">
-                                            <div className="text-3xl font-bold text-slate-900 tracking-tight">
+                                            <div className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
                                                 {new Intl.NumberFormat('de-DE', { style: 'currency', currency: data.currency }).format(data.price)}
                                             </div>
-                                            <div className="text-xs text-slate-400 uppercase tracking-widest mt-1 font-bold">Precio Origen</div>
+                                            <div className="text-xs text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1 font-bold">Precio Origen</div>
                                         </div>
                                     </div>
 
@@ -293,7 +293,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                     <button
                                         onClick={() => setIsRedirectOpen(true)}
-                                        className="btn-secondary flex items-center justify-center gap-2"
+                                        className="btn-secondary flex items-center justify-center gap-2 dark:bg-slate-800 dark:text-white dark:border-slate-700 dark:hover:bg-slate-700"
                                     >
                                         <ExternalLink size={18} /> Ver Anuncio
                                     </button>
@@ -316,28 +316,28 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
 
                             {/* Sidebar (4 cols) */}
                             <div className="lg:col-span-4 space-y-6">
-                                <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm sticky top-24">
+                                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm sticky top-24">
                                     <div className="flex items-center justify-between mb-6">
                                         <div className="flex items-center">
-                                            <div className="p-2.5 bg-slate-900 rounded-xl mr-3 text-white">
+                                            <div className="p-2.5 bg-slate-900 dark:bg-blue-600 rounded-xl mr-3 text-white">
                                                 <Calculator size={20} />
                                             </div>
-                                            <h3 className="text-xl font-bold text-slate-900">Desglose</h3>
+                                            <h3 className="text-xl font-bold text-slate-900 dark:text-white">Desglose</h3>
                                         </div>
                                     </div>
 
                                     <div className="space-y-4">
-                                        <div className="flex justify-between items-center p-3 bg-slate-50 rounded-xl">
-                                            <span className="text-sm text-slate-600 font-medium">Precio Vehículo</span>
-                                            <span className="font-bold text-slate-900">
+                                        <div className="flex justify-between items-center p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
+                                            <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Precio Vehículo</span>
+                                            <span className="font-bold text-slate-900 dark:text-white">
                                                 {new Intl.NumberFormat('de-DE', { style: 'currency', currency: data.currency }).format(data.price)}
                                             </span>
                                         </div>
 
-                                        <div className="flex justify-between items-center p-3 bg-slate-50 rounded-xl">
+                                        <div className="flex justify-between items-center p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
                                             <div className="flex flex-col">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-sm text-slate-600 font-medium">Impuesto Matriculación</span>
+                                                    <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Impuesto Matriculación</span>
                                                     <button
                                                         onClick={() => {
                                                             const query = `site:boe.es valor venal ${data.make} ${data.model} 2025`;
@@ -349,20 +349,20 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                                         <Search size={14} />
                                                     </button>
                                                 </div>
-                                                <span className="text-[10px] text-slate-400">
+                                                <span className="text-[10px] text-slate-400 dark:text-slate-500">
                                                     {taxData.rate}% (CO2: {data.co2} g/km)
                                                 </span>
                                             </div>
                                             <div className="flex flex-col items-end">
-                                                <span className="font-bold text-slate-900">
+                                                <span className="font-bold text-slate-900 dark:text-white">
                                                     {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(taxData.amount)}
                                                 </span>
                                                 <div className="flex items-center gap-1 mt-1">
-                                                    <span className="text-[10px] text-slate-400">Base:</span>
+                                                    <span className="text-[10px] text-slate-400 dark:text-slate-500">Base:</span>
                                                     <input
                                                         type="number"
                                                         placeholder="Valor BOE"
-                                                        className="w-20 text-[10px] p-1 border border-slate-200 rounded bg-white text-right focus:ring-1 focus:ring-blue-500 outline-none"
+                                                        className="w-20 text-[10px] p-1 border border-slate-200 dark:border-slate-700 rounded bg-white dark:bg-slate-800 text-right focus:ring-1 focus:ring-blue-500 outline-none dark:text-white"
                                                         onChange={(e) => {
                                                             const val = parseFloat(e.target.value);
                                                             if (!isNaN(val)) setBoeBaseValue(val);
@@ -373,18 +373,18 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                             </div>
                                         </div>
 
-                                        <div className="flex justify-between items-center p-3 bg-slate-50 rounded-xl">
-                                            <span className="text-sm text-slate-600 font-medium">Transporte (Estimado)</span>
-                                            <span className="font-bold text-slate-900">
+                                        <div className="flex justify-between items-center p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
+                                            <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Transporte (Estimado)</span>
+                                            <span className="font-bold text-slate-900 dark:text-white">
                                                 {transportCost > 0 ? new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(transportCost) : 'Consultar'}
                                             </span>
                                         </div>
 
-                                        <div className="h-px bg-slate-200 my-4"></div>
+                                        <div className="h-px bg-slate-200 dark:bg-slate-800 my-4"></div>
 
                                         <div className="flex justify-between items-end">
-                                            <span className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">Total Estimado</span>
-                                            <span className="text-3xl font-black text-slate-900 tracking-tight">
+                                            <span className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Total Estimado</span>
+                                            <span className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
                                                 {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(publicTotalCost)}
                                             </span>
                                         </div>
@@ -405,7 +405,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                         </button>
                                         <button
                                             onClick={handleAddToGarage}
-                                            className="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 px-4 rounded-xl transition-colors text-sm"
+                                            className="flex items-center justify-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold py-2 px-4 rounded-xl transition-colors text-sm"
                                         >
                                             <Save size={16} /> Guardar
                                         </button>
@@ -441,14 +441,14 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                         onClick={(e) => {
                             if (e.detail === 3) setIsAuthModalOpen(true);
                         }}
-                        className="inline-block py-1.5 px-4 rounded-full bg-blue-600/10 text-blue-600 text-[10px] font-bold uppercase tracking-[0.2em] mb-6 border border-blue-200/50 cursor-pointer select-none backdrop-blur-sm"
+                        className="inline-block py-1.5 px-4 rounded-full bg-blue-600/10 dark:bg-blue-600/20 text-blue-600 dark:text-blue-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-6 border border-blue-200/50 dark:border-blue-900/50 cursor-pointer select-none backdrop-blur-sm"
                     >
                         Herramienta de Importación Profesional
                     </span>
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-black text-slate-900 mb-8 tracking-tighter leading-tight">
-                        Importar <span className="text-blue-600">España</span>
+                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-black text-slate-900 dark:text-white mb-8 tracking-tighter leading-tight">
+                        Importar <span className="text-blue-600 dark:text-blue-500">España</span>
                     </h1>
-                    <p className="text-lg md:text-2xl text-slate-500 max-w-3xl mx-auto font-medium leading-relaxed opacity-80">
+                    <p className="text-lg md:text-2xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto font-medium leading-relaxed opacity-80">
                         Analiza impuestos, calcula transporte y gestiona tu importación con precisión absoluta y rapidez.
                     </p>
                 </motion.div>
@@ -461,7 +461,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                             <input
                                 type="text"
                                 placeholder="Pega el enlace de mobile.de o AutoScout24..."
-                                className="w-full bg-transparent border-none focus:ring-0 text-slate-900 px-5 py-5 text-xl placeholder-slate-400 font-semibold"
+                                className="w-full bg-transparent border-none focus:ring-0 text-slate-900 dark:text-white px-5 py-5 text-xl placeholder-slate-400 dark:placeholder-slate-500 font-semibold"
                                 value={url}
                                 onChange={(e) => setUrl(e.target.value)}
                             />
@@ -500,7 +500,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                             <button
                                 key={search.timestamp}
                                 onClick={() => loadRecentSearch(search.url)}
-                                className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-full text-xs font-medium text-slate-600 hover:border-blue-300 hover:text-blue-600 transition-colors shadow-sm"
+                                className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-xs font-medium text-slate-600 dark:text-slate-400 hover:border-blue-300 dark:hover:border-blue-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors shadow-sm"
                             >
                                 <Car size={12} />
                                 {search.make} {search.model}
@@ -515,12 +515,12 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                         { icon: Calculator, title: "Impuestos Precisos", desc: "Cálculo del IEDMT basado en emisiones CO2 y tablas de Hacienda." },
                         { icon: FileText, title: "Informes PDF", desc: "Genera dossiers profesionales listos para presentar." }
                     ].map((item, index) => (
-                        <div key={index} className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-                            <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-6 text-slate-900">
+                        <div key={index} className="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md dark:shadow-none transition-shadow">
+                            <div className="w-12 h-12 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-center mb-6 text-slate-900 dark:text-blue-400">
                                 <item.icon size={24} />
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h3>
-                            <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">{item.title}</h3>
+                            <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">{item.desc}</p>
                         </div>
                     ))}
                 </div>

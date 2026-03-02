@@ -36,12 +36,12 @@ const ProfitabilityCard = ({ importPrice, vehicleData }) => {
     };
 
     return (
-        <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm relative overflow-hidden group hover:shadow-md dark:shadow-none transition-shadow">
             <div className="flex items-center mb-6 mt-2 relative z-10">
-                <div className="p-2 bg-green-50 rounded-lg mr-3">
-                    <TrendingUp className="text-green-600" size={20} />
+                <div className="p-2 bg-green-50 dark:bg-green-900/30 rounded-lg mr-3">
+                    <TrendingUp className="text-green-600 dark:text-green-400" size={20} />
                 </div>
-                <h3 className="text-xl font-bold tracking-tight text-slate-900">Rentabilidad</h3>
+                <h3 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Rentabilidad</h3>
             </div>
 
             <div className="space-y-4">
@@ -58,7 +58,7 @@ const ProfitabilityCard = ({ importPrice, vehicleData }) => {
                             value={spainPrice}
                             onChange={(e) => setSpainPrice(e.target.value)}
                             placeholder="Ej: 25000"
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all font-mono text-lg"
+                            className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-10 pr-4 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 dark:focus:border-green-400 transition-all font-mono text-lg"
                         />
                     </div>
 
@@ -79,7 +79,7 @@ const ProfitabilityCard = ({ importPrice, vehicleData }) => {
 
                     <button
                         onClick={handleSmartSearch}
-                        className="w-full py-2 px-4 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl text-slate-600 text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 group shadow-sm"
+                        className="w-full py-2 px-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl text-slate-600 dark:text-slate-300 text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 group shadow-sm dark:shadow-none"
                     >
                         <span>🔍 Buscar Comparables</span>
                         <ExternalLink size={12} className="group-hover:translate-x-0.5 transition-transform" />
@@ -87,10 +87,10 @@ const ProfitabilityCard = ({ importPrice, vehicleData }) => {
                 </div>
 
                 {/* Calculation Details */}
-                <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
+                <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-slate-100 dark:border-slate-800">
                     <div className="flex justify-between items-center">
-                        <span className="text-sm font-bold text-slate-700">Coste Total Importación</span>
-                        <span className="font-bold text-slate-900 font-mono">{formatCurrency(totalImportCost)}</span>
+                        <span className="text-sm font-bold text-slate-700 dark:text-slate-300">Coste Total Importación</span>
+                        <span className="font-bold text-slate-900 dark:text-white font-mono">{formatCurrency(totalImportCost)}</span>
                     </div>
                 </div>
 

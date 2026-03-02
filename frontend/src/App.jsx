@@ -74,7 +74,7 @@ const AppContent = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col">
+        <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col dark:bg-slate-950 dark:text-slate-100">
             <Navbar
                 onOpenGarage={() => setIsGarageOpen(true)}
                 garageCount={garageVehicles.length}

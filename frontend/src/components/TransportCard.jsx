@@ -54,14 +54,14 @@ const TransportCard = ({ originCity, onCostCalculated }) => {
     };
 
     return (
-        <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm relative overflow-hidden group hover:shadow-md dark:shadow-none transition-shadow">
             <div className="flex items-center mb-6 relative z-10">
-                <div className="p-3 bg-blue-50 rounded-xl mr-4 text-blue-600">
+                <div className="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-xl mr-4 text-blue-600 dark:text-blue-400">
                     <Truck size={24} />
                 </div>
                 <div>
-                    <h3 className="text-xl font-bold tracking-tight text-slate-900">Transporte a España</h3>
-                    <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Logística Integral</p>
+                    <h3 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Transporte a España</h3>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Logística Integral</p>
                 </div>
             </div>
 
@@ -70,32 +70,32 @@ const TransportCard = ({ originCity, onCostCalculated }) => {
                     <div className="space-y-5">
                         {/* Route Visual */}
                         <div className="flex items-center justify-between px-2 relative">
-                            <div className="absolute left-4 right-4 top-1/2 h-0.5 bg-slate-100 -z-10"></div>
+                            <div className="absolute left-4 right-4 top-1/2 h-0.5 bg-slate-100 dark:bg-slate-800 -z-10"></div>
 
-                            <div className="flex flex-col items-center bg-white p-2 rounded-lg border border-slate-100 shadow-sm">
+                            <div className="flex flex-col items-center bg-white dark:bg-slate-800 p-2 rounded-lg border border-slate-100 dark:border-slate-700 shadow-sm">
                                 <MapPin size={16} className="text-slate-400 mb-1" />
-                                <span className="text-[10px] font-bold text-slate-600 uppercase">{originCity ? originCity.substring(0, 3) : 'DE'}</span>
+                                <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase">{originCity ? originCity.substring(0, 3) : 'DE'}</span>
                             </div>
 
-                            <div className="bg-slate-50 p-1.5 rounded-full border border-slate-100">
+                            <div className="bg-slate-50 dark:bg-slate-700 p-1.5 rounded-full border border-slate-100 dark:border-slate-600">
                                 <ArrowRight size={14} className="text-slate-400" />
                             </div>
 
-                            <div className="flex flex-col items-center bg-white p-2 rounded-lg border border-slate-100 shadow-sm">
+                            <div className="flex flex-col items-center bg-white dark:bg-slate-800 p-2 rounded-lg border border-slate-100 dark:border-slate-700 shadow-sm">
                                 <MapPin size={16} className="text-blue-500 mb-1" />
-                                <span className="text-[10px] font-bold text-blue-600 uppercase">ES</span>
+                                <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase">ES</span>
                             </div>
                         </div>
 
                         <div className="relative group/input">
                             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <span className="text-slate-400 text-xs font-bold uppercase tracking-wider">CP Destino</span>
+                                <span className="text-slate-400 dark:text-slate-500 text-xs font-bold uppercase tracking-wider">CP Destino</span>
                             </div>
                             <input
                                 type="text"
                                 placeholder="28001"
                                 maxLength={5}
-                                className="w-full bg-slate-50 border border-slate-200 rounded-xl py-4 pl-24 pr-12 text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none font-mono text-lg tracking-widest"
+                                className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl py-4 pl-24 pr-12 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 dark:focus:border-blue-400 transition-all outline-none font-mono text-lg tracking-widest"
                                 value={zipCode}
                                 onChange={(e) => {
                                     setZipCode(e.target.value.replace(/\D/g, ''));
@@ -105,7 +105,7 @@ const TransportCard = ({ originCity, onCostCalculated }) => {
                             <button
                                 type="submit"
                                 disabled={loading || !originCity}
-                                className="absolute right-2 top-2 bottom-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg px-4 flex items-center justify-center transition-all shadow-lg hover:shadow-slate-900/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+                                className="absolute right-2 top-2 bottom-2 bg-slate-900 dark:bg-blue-600 hover:bg-slate-800 dark:hover:bg-blue-500 text-white rounded-lg px-4 flex items-center justify-center transition-all shadow-lg hover:shadow-slate-900/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
                             >
                                 {loading ? <Loader2 size={20} className="animate-spin" /> : <ArrowRight size={20} />}
                             </button>
@@ -129,19 +129,19 @@ const TransportCard = ({ originCity, onCostCalculated }) => {
 
                     <div className="flex justify-between items-center px-2 mb-4">
                         <div className="flex flex-col items-center">
-                            <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold mb-1">Distancia</span>
-                            <span className="text-slate-900 font-mono font-bold">{result.distanceKm} km</span>
+                            <span className="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-wider font-bold mb-1">Distancia</span>
+                            <span className="text-slate-900 dark:text-white font-mono font-bold">{result.distanceKm} km</span>
                         </div>
-                        <div className="w-px h-8 bg-slate-200"></div>
+                        <div className="w-px h-8 bg-slate-200 dark:bg-slate-800"></div>
                         <div className="flex flex-col items-center">
-                            <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold mb-1">Tiempo</span>
-                            <span className="text-slate-900 font-mono font-bold">~{result.durationDays} días</span>
+                            <span className="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-wider font-bold mb-1">Tiempo</span>
+                            <span className="text-slate-900 dark:text-white font-mono font-bold">~{result.durationDays} días</span>
                         </div>
                     </div>
 
                     <button
                         onClick={() => { setResult(null); if (onCostCalculated) onCostCalculated({ cost: 0, distance: 0 }); }}
-                        className="w-full py-3 rounded-xl border border-slate-200 text-xs font-bold text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-all uppercase tracking-wider"
+                        className="w-full py-3 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-all uppercase tracking-wider"
                     >
                         Recalcular Ruta
                     </button>
