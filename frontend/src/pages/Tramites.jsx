@@ -1,11 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import ProcedureAssistant from '../components/ProcedureAssistant';
+import SEO from '../components/SEO';
 import { ShieldCheck, ArrowRight } from 'lucide-react';
 
 const Tramites = () => {
     return (
         <div className="min-h-screen pt-32 pb-20 bg-slate-50 dark:bg-slate-950">
+            <SEO
+                title="Trámites de Importación"
+                description="Guía paso a paso para legalizar tu coche importado en España: ITV, Impuesto de Matriculación, DGT y placas nuevas."
+            />
             <div className="container mx-auto px-4 max-w-4xl">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

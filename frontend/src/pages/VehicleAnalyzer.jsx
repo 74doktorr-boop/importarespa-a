@@ -17,7 +17,9 @@ import TrustSection from '../components/TrustSection';
 import { generateVehicleReportV2 } from '../utils/pdfGenerator';
 import { getDgtLabel } from '../utils/dgtLogic';
 import DgtBadge from '../components/DgtBadge';
+import SEO from '../components/SEO';
 import ImportServicePromo from '../components/ImportServicePromo';
+import AdSpace from '../components/AdSpace';
 import ImportWizard from '../components/ImportWizard';
 import ImageGallery from '../components/ImageGallery';
 import AdminQuoteModal from '../components/AdminQuoteModal';
@@ -201,6 +203,10 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
     if (data) {
         return (
             <div className="pb-20">
+                <SEO
+                    title={data.make + ' ' + data.model}
+                    description={`Análisis detallado de importación para ${data.make} ${data.model}. Cálculo de impuestos, transporte y mantenimiento en España.`}
+                />
                 <LoadingOverlay isLoading={loading} />
 
                 <SecurityAdminModal
@@ -342,7 +348,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                         </div>
                                     </div>
 
-                                    <div className="space-y-4">
+                                    <div className="space-y-4 mb-8">
                                         <div className="flex justify-between items-center p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
                                             <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Precio Vehículo</span>
                                             <span className="font-bold text-slate-900 dark:text-white">
@@ -426,6 +432,11 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                             <Save size={16} /> Guardar
                                         </button>
                                     </div>
+
+                                    {/* Sidebar Ad Space */}
+                                    <div className="pt-6 border-t border-slate-100 dark:border-slate-800">
+                                        <AdSpace type="vertical" label="Seguro Recomendado" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -439,6 +450,10 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
 
     return (
         <div className="pb-20">
+            <SEO
+                title="Analizador de Importación"
+                description="Calcula el coste total de importar tu coche de Alemania a España: impuestos, transporte, matriculación e IA de veredicto."
+            />
             <LoadingOverlay isLoading={loading} />
 
             <SecurityAdminModal

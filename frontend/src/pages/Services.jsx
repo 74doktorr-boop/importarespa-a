@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Truck } from 'lucide-react';
 import ServiceCard from '../components/ServiceCard';
+import SEO from '../components/SEO';
 
 const Services = ({ onOpenContact }) => {
     const services = [
@@ -18,6 +19,10 @@ const Services = ({ onOpenContact }) => {
 
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+            <SEO
+                title="Servicios Premium de Importación"
+                description="Gestión integral de importación de vehículos: revisión en origen, transporte asegurado y matriculación profesional."
+            />
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-16">
                     <motion.h1
