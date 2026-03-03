@@ -1,28 +1,60 @@
 import React from 'react';
-import { Sparkles, Info } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Info, Sparkles } from 'lucide-react';
 
-const AdSpace = ({ type = 'horizontal', label = 'Espacio Patrocinado' }) => {
+/**
+ * AdSpace Component
+ * Used to display premium ads or in-house services promotion.
+ */
+const AdSpace = ({ type = 'horizontal', className = '', id = '' }) => {
     const isHorizontal = type === 'horizontal';
 
     return (
-        <div className={`relative group overflow-hidden bg-slate-50 dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-2xl flex items-center justify-center transition-all hover:bg-white dark:hover:bg-slate-850 ${isHorizontal ? 'w-full h-24 mb-6' : 'w-full h-64 h-full aspect-square'
-            }`}>
-            {/* Ad Placeholder Visual */}
-            <div className="absolute inset-0 opacity-[0.03] dark:opacity-10 pointer-events-none p-1 bg-[radial-gradient(#2563eb_0.5px,transparent_0.5px)] [background-size:12px_12px]"></div>
-
-            <div className="flex flex-col items-center gap-2 relative z-10 text-slate-300 dark:text-slate-700">
-                <div className="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg">
-                    <Sparkles size={isHorizontal ? 20 : 32} className="opacity-50" />
+        <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className={`w-full overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 group cursor-pointer ${className}`}
+            id={id}
+        >
+            <div className={`relative flex flex-col md:flex-row items-center p-6 gap-6 ${isHorizontal ? 'md:flex-row' : 'md:flex-col'}`}>
+                {/* Visual Accent */}
+                <div className={`shrink-0 w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-white shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform duration-500`}>
+                    <Sparkles size={40} />
                 </div>
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-40">{label}</span>
+
+                {/* Content */}
+                <div className="flex-1 text-center md:text-left">
+                    <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded">Recomendado</span>
+                        <Info size={14} className="text-slate-400" />
+                    </div>
+                    <h4 className="text-xl font-bold text-slate-900 dark:text-white mb-2 leading-tight">
+                        ¿Buscas el coche perfecto sin moverte de casa?
+                    </h4>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 max-w-xl">
+                        Contrata nuestro servicio de **Revisión Premium** en Alemania. Un técnico experto inspeccionará el coche por ti antes de que pagues un céntimo.
+                    </p>
+                </div>
+
+                {/* CTA Button */}
+                <div className="shrink-0">
+                    <button className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold px-8 py-4 rounded-2xl hover:bg-blue-600 dark:hover:bg-blue-500 dark:hover:text-white transition-all shadow-xl active:scale-95 text-sm uppercase tracking-wider">
+                        Ver Detalles
+                    </button>
+                </div>
+
+                {/* Background Decoration */}
+                <div className="absolute top-0 right-0 p-8 opacity-[0.02] dark:opacity-[0.05] pointer-events-none transform translate-x-1/4 -translate-y-1/4 group-hover:scale-125 transition-transform duration-1000">
+                    <Sparkles size={180} />
+                </div>
             </div>
 
-            {/* Premium Touch */}
-            <div className="absolute bottom-2 right-3 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                <Info size={10} className="text-blue-500" />
-                <span className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter">Anúnciate aquí</span>
+            {/* Disclaimer for SEO/Legal */}
+            <div className="bg-slate-50 dark:bg-slate-800/50 px-6 py-2 border-t border-slate-100 dark:border-slate-800 text-[10px] text-slate-400 dark:text-slate-500 font-medium">
+                Contenido patrocinado • www.importarespaña.com selecciona cuidadosamente sus aliados.
             </div>
-        </div>
+        </motion.div>
     );
 };
 

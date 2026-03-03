@@ -410,3 +410,117 @@ export const generateVehicleReportV2 = async (data, transportCost = 0, isClientQ
         doc.save(filename);
     }
 };
+
+/**
+ * Generates one of the free static guides offered by the site.
+ * @param {string} type - 'guia' | 'checklist' | 'contrato'
+ */
+export const generateStaticGuide = async (type) => {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 20;
+    const contentWidth = pageWidth - (margin * 2);
+
+    const COLORS = {
+        primary: [10, 25, 41],
+        accent: [59, 130, 246],
+        text: [30, 41, 59],
+        muted: [100, 116, 139],
+        bg: [248, 250, 252]
+    };
+
+    const drawHeader = (title) => {
+        doc.setFillColor(...COLORS.primary);
+        doc.rect(0, 0, pageWidth, 40, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(22);
+        doc.setTextColor(255, 255, 255);
+        doc.text('IMPORTAR ESPAÑA', margin, 20);
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(150, 150, 150);
+        doc.text(title.toUpperCase(), margin, 28);
+    };
+
+    if (type === 'guia') {
+        drawHeader('La Biblia del Importador');
+        let y = 60;
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(16);
+        doc.setTextColor(...COLORS.primary);
+        doc.text('Guía Maestra Paso a Paso', margin, y);
+        y += 15;
+
+        const steps = [
+            { t: '1. Búsqueda y Filtro', d: 'Busca en Mobile.de o Autoscout24. Filtra por vendedores profesionales y verifica que el IVA sea deducible (MwSt. ausweisbar).' },
+            { t: '2. Verificación Inicial', d: 'Pide el historial (VIN) y el COC (Certificado de Conformidad). Si no hay COC, necesitarás una Ficha Reducida en España.' },
+            { t: '3. Compra y Pago', d: 'Realiza siempre transferencia bancaria internacional SEPA. Nunca pagues en efectivo cantidades grandes en el extranjero.' },
+            { t: '4. Transporte', d: 'Contrata un portavehículos profesional. Asegúrate de recibir la documentación original (Teil I y Teil II).' },
+            { t: '5. Matriculación', d: 'ITV de importación, Modelo 576 (Hacienda) y Tasa de Tráfico (DGT).' }
+        ];
+
+        steps.forEach(step => {
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(11);
+            doc.setTextColor(...COLORS.accent);
+            doc.text(step.t, margin, y);
+            y += 6;
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(9);
+            doc.setTextColor(...COLORS.text);
+            const splitText = doc.splitTextToSize(step.d, contentWidth);
+            doc.text(splitText, margin, y);
+            y += (splitText.length * 5) + 5;
+        });
+
+        doc.save('Guia_Maestra_Importacion_IE.pdf');
+    }
+
+    if (type === 'checklist') {
+        drawHeader('Checklist de Inspección de Vehículo');
+        let y = 60;
+        doc.setFontSize(14);
+        doc.setTextColor(...COLORS.primary);
+        doc.text('Puntos Críticos a Revisar in-situ o vía vídeo', margin, y);
+        y += 15;
+
+        const items = [
+            '[ ] Libro de mantenimiento sellado o digital completo',
+            '[ ] Estado de neumáticos y discos de freno',
+            '[ ] Desgaste de volante y pedales (¿coincide con los km?)',
+            '[ ] Humo del escape (blanco o azulado es señal de peligro)',
+            '[ ] Alineación de paneles (huecos no uniformes = posible golpe)',
+            '[ ] Funcionamiento del AA y toda la electrónica',
+            '[ ] Número de bastidor (VIN) coincide con los papeles'
+        ];
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        items.forEach(item => {
+            doc.text(item, margin, y);
+            y += 10;
+        });
+
+        doc.save('Checklist_Inspeccion_IE.pdf');
+    }
+
+    if (type === 'contrato') {
+        drawHeader('Modelo de Contrato Bilingüe (Simplificado)');
+        let y = 60;
+        doc.setFontSize(10);
+        doc.setTextColor(...COLORS.text);
+        const text = "Este es un extracto del contrato de compraventa bilingüe. Al comprar fuera de España, el contrato debe incluir: \\n\\n" +
+            "- Datos completos del vendedor (Vendedor/Verkäufer)\\n" +
+            "- Datos completos del comprador (Comprador/Käufer)\\n" +
+            "- Datos del vehículo: Marca, Modelo, VIN, KM, Precio.\\n" +
+            "- Cláusula de accidente: 'Unfallfrei' (Libre de accidentes).\\n" +
+            "- Firma y sello del establecimiento.\\n\\n" +
+            "Recomendamos usar siempre el contrato oficial alemán 'Kaufvertrag' facilitado por el vendedor profesional.";
+
+        const splitText = doc.splitTextToSize(text, contentWidth);
+        doc.text(splitText, margin, y);
+
+        doc.save('Informacion_Contrato_Bilingue.pdf');
+    }
+};

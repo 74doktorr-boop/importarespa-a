@@ -90,7 +90,11 @@ const SuccessPage = () => {
                             <h3 className="font-bold text-white mb-1">{item.title}</h3>
                             <p className="text-xs text-gray-500 mb-4">{item.desc}</p>
                             <button
-                                onClick={() => alert("En una app real, esto descargaría el archivo. Como es una demo, asegúrate de tener los archivos en la carpeta public/assets.")}
+                                onClick={async () => {
+                                    const { generateStaticGuide } = await import('../utils/pdfGenerator');
+                                    const types = ['guia', 'checklist', 'contrato'];
+                                    generateStaticGuide(types[index]);
+                                }}
                                 className="w-full py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white text-sm font-bold transition-colors"
                             >
                                 Descargar

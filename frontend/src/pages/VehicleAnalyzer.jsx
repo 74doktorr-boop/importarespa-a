@@ -339,6 +339,11 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                     <MaintenanceCalculator vehicleData={data} />
                                 </div>
 
+                                {/* Inline Ad Space - High Conversion Area */}
+                                <div className="mt-8">
+                                    <AdSpace type="horizontal" id="main-ad-revision" />
+                                </div>
+
                                 {/* Import Procedures Guide */}
                                 <div className="mt-8">
                                     <ProcedureAssistant />
