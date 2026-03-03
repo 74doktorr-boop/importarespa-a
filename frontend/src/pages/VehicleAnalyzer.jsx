@@ -7,6 +7,7 @@ import AnimatedGauge from '../components/AnimatedGauge';
 import TaxBrackets from '../components/TaxBrackets';
 import TransportCard from '../components/TransportCard';
 import ProfitabilityCard from '../components/ProfitabilityCard';
+import MaintenanceCalculator from '../components/MaintenanceCalculator';
 import AiVerdictCard from '../components/AiVerdictCard';
 import axios from 'axios';
 import LoadingOverlay from '../components/LoadingOverlay';
@@ -315,10 +316,11 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                     </button>
                                 </div>
 
-                                {/* Transport & Profitability */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {/* Transport, Profitability & Maintenance */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                     <TransportCard originCity={data.location} onCostCalculated={handleTransportCalculated} />
                                     <ProfitabilityCard importPrice={publicTotalCost} vehicleData={data} />
+                                    <MaintenanceCalculator vehicleData={data} />
                                 </div>
                             </div>
 
