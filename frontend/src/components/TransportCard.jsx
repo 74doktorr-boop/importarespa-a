@@ -122,7 +122,9 @@ const TransportCard = ({ originCity, onCostCalculated }) => {
                 >
                     <div className="bg-slate-900 dark:bg-blue-600 rounded-2xl p-6 shadow-lg mb-6 relative overflow-hidden text-center group/price">
                         <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover/price:opacity-100 transition-opacity duration-500"></div>
-                        <span className="text-slate-400 dark:text-blue-100 text-[10px] font-bold uppercase tracking-[0.2em] mb-1 block relative z-10">Coste Total Logística</span>
+                        <span className="text-slate-400 dark:text-blue-100 text-[10px] font-bold uppercase tracking-[0.2em] mb-1 block relative z-10">
+                            Coste Estimado a {zipCode === '28001' ? 'Madrid' : `CP ${zipCode}`}
+                        </span>
                         <span className="text-4xl font-black text-white tracking-tight relative z-10">
                             {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(result.cost)}
                         </span>
@@ -145,14 +147,14 @@ const TransportCard = ({ originCity, onCostCalculated }) => {
                             </div>
                             <div className="text-center flex-1">
                                 <div className="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-widest font-bold mb-1">Destino</div>
-                                <div className="text-blue-600 dark:text-blue-400 font-bold">España ({zipCode})</div>
+                                <div className="text-blue-600 dark:text-blue-400 font-bold">ES {zipCode === '28001' ? '(Madrid)' : ''}</div>
                             </div>
                         </div>
 
                         {/* Logistics Timeline */}
                         <div className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-4 border border-slate-100 dark:border-slate-800">
                             <h4 className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                <CheckCircle size={10} /> Etapas de Entrega
+                                <CheckCircle size={10} /> Etapas de Entrega (~{result.durationDays} días)
                             </h4>
                             <div className="space-y-4">
                                 {[
@@ -180,12 +182,31 @@ const TransportCard = ({ originCity, onCostCalculated }) => {
                         </div>
                     </div>
 
-                    <button
-                        onClick={() => { setResult(null); if (onCostCalculated) onCostCalculated({ cost: 0, distance: 0 }); }}
-                        className="w-full py-3 rounded-xl border border-slate-200 dark:border-slate-800 text-[10px] font-bold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-all uppercase tracking-[0.2em]"
-                    >
-                        Nueva Simulación
-                    </button>
+                    <div className="flex flex-col gap-3">
+                        <div className="relative group/mini-input">
+                            <input
+                                type="text"
+                                placeholder="Cambiar CP (ej: 08001)"
+                                maxLength={5}
+                                className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-4 pr-24 text-[11px] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 outline-none focus:border-blue-500/50 transition-all font-mono"
+                                value={zipCode}
+                                onChange={(e) => setZipCode(e.target.value.replace(/\D/g, ''))}
+                            />
+                            <button
+                                onClick={handleCalculate}
+                                disabled={loading}
+                                className="absolute right-1 top-1 bottom-1 bg-slate-900 dark:bg-slate-700 hover:bg-blue-600 dark:hover:bg-blue-600 text-white text-[9px] font-bold uppercase tracking-wider px-3 rounded-lg transition-all flex items-center gap-1"
+                            >
+                                {loading ? <Loader2 size={12} className="animate-spin" /> : 'Actualizar'}
+                            </button>
+                        </div>
+                        <button
+                            onClick={() => { setResult(null); if (onCostCalculated) onCostCalculated({ cost: 0, distance: 0 }); }}
+                            className="text-[9px] text-slate-400 hover:text-red-400 transition-colors uppercase font-bold tracking-[0.2em] py-1"
+                        >
+                            Reiniciar cálculo
+                        </button>
+                    </div>
                 </motion.div>
             )}
         </div >
