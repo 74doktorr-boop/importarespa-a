@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Wallet, Fuel, Shield, Tool, Info, ChevronRight } from 'lucide-react';
+import { Wallet, Fuel, Shield, Wrench, Info, ChevronRight } from 'lucide-react';
 
 const MaintenanceCalculator = ({ vehicleData }) => {
     const [annualKm, setAnnualKm] = useState(15000);
@@ -120,8 +120,8 @@ const MaintenanceCalculator = ({ vehicleData }) => {
 
                 <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/30 rounded-xl border border-slate-100 dark:border-slate-800/50">
                     <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400 flex items-center justify-center">
-                            <Tool size={16} />
+                        <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-orange-400 flex items-center justify-center">
+                            <Wrench size={16} />
                         </div>
                         <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Revisiones y Neumáticos</span>
                     </div>
