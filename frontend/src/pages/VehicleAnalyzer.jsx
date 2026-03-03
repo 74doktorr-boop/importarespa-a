@@ -8,6 +8,7 @@ import TaxBrackets from '../components/TaxBrackets';
 import TransportCard from '../components/TransportCard';
 import ProfitabilityCard from '../components/ProfitabilityCard';
 import MaintenanceCalculator from '../components/MaintenanceCalculator';
+import ProcedureAssistant from '../components/ProcedureAssistant';
 import AiVerdictCard from '../components/AiVerdictCard';
 import axios from 'axios';
 import LoadingOverlay from '../components/LoadingOverlay';
@@ -321,6 +322,11 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                                     <TransportCard originCity={data.location} onCostCalculated={handleTransportCalculated} />
                                     <ProfitabilityCard importPrice={publicTotalCost} vehicleData={data} />
                                     <MaintenanceCalculator vehicleData={data} />
+                                </div>
+
+                                {/* Import Procedures Guide */}
+                                <div className="mt-8">
+                                    <ProcedureAssistant />
                                 </div>
                             </div>
 
