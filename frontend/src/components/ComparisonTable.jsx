@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Check, Award, TrendingUp, Gauge, Calendar, Euro, Shield } from 'lucide-react';
+import { X, Check, Award, TrendingUp, Gauge, Calendar, Wallet, Shield } from 'lucide-react';
 
 const ComparisonTable = ({ isOpen, onClose, selectedVehicles }) => {
     if (!selectedVehicles || selectedVehicles.length === 0) return null;
@@ -22,7 +22,7 @@ const ComparisonTable = ({ isOpen, onClose, selectedVehicles }) => {
     const bestYear = findBest('year', false);
 
     const rows = [
-        { label: 'Precio Origen', field: 'price', icon: Euro, formatter: (val) => `${val.toLocaleString()}€`, best: bestPrice },
+        { label: 'Precio Origen', field: 'price', icon: Wallet, formatter: (val) => `${val.toLocaleString()}€`, best: bestPrice },
         { label: 'Kilometraje', field: 'mileage', icon: Gauge, formatter: (val) => `${val.toLocaleString()} km`, best: bestMileage },
         { label: 'Año', field: 'year', icon: Calendar, formatter: (val) => val, best: bestYear },
         { label: 'Ahorro Est. España', field: 'savings', icon: TrendingUp, formatter: (val) => `${val.toLocaleString()}€`, best: bestSavings },
@@ -78,30 +78,35 @@ const ComparisonTable = ({ isOpen, onClose, selectedVehicles }) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {rows.map((row, rowIndex) => (
-                                        <tr key={row.field} className={rowIndex % 2 === 0 ? 'bg-slate-50/50 dark:bg-slate-800/20' : ''}>
-                                            <td className="p-6 font-bold text-slate-500 dark:text-slate-400 text-sm">
-                                                <div className="flex items-center gap-2">
-                                                    <row.icon size={16} />
-                                                    {row.label}
-                                                </div>
-                                            </td>
-                                            {selectedVehicles.map(vehicle => {
-                                                const isBest = row.best?.id === vehicle.id;
-                                                return (
-                                                    <td key={vehicle.id} className="p-6 text-center">
-                                                        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${isBest
+                                    {rows.map((row, rowIndex) => {
+                                        const RowIcon = row.icon;
+                                        const isValidIcon = RowIcon && (typeof RowIcon === 'function' || typeof RowIcon === 'object');
+
+                                        return (
+                                            <tr key={row.field} className={rowIndex % 2 === 0 ? 'bg-slate-50/50 dark:bg-slate-800/20' : ''}>
+                                                <td className="p-6 font-bold text-slate-500 dark:text-slate-400 text-sm">
+                                                    <div className="flex items-center gap-2">
+                                                        {isValidIcon ? <RowIcon size={16} /> : <Check size={16} />}
+                                                        {row.label}
+                                                    </div>
+                                                </td>
+                                                {selectedVehicles.map(vehicle => {
+                                                    const isBest = row.best?.id === vehicle.id;
+                                                    return (
+                                                        <td key={vehicle.id} className="p-6 text-center">
+                                                            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${isBest
                                                                 ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 font-bold ring-2 ring-green-500/20'
                                                                 : 'text-slate-900 dark:text-white font-medium'
-                                                            }`}>
-                                                            {row.formatter(vehicle[row.field])}
-                                                            {isBest && <Award size={14} className="animate-bounce" />}
-                                                        </div>
-                                                    </td>
-                                                );
-                                            })}
-                                        </tr>
-                                    ))}
+                                                                }`}>
+                                                                {row.formatter(vehicle[row.field])}
+                                                                {isBest && <Award size={14} className="animate-bounce" />}
+                                                            </div>
+                                                        </td>
+                                                    );
+                                                })}
+                                            </tr>
+                                        );
+                                    })}
                                     {/* Final Verdict Row */}
                                     <tr>
                                         <td className="p-6 font-bold text-blue-600 dark:text-blue-400 text-sm">

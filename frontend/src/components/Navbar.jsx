@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Car, Info, Mail, Home, Warehouse, Menu, X, BookOpen, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { Car, Info, Mail, Home, Warehouse, Menu, X, BookOpen, ShieldCheck, CheckCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import ThemeToggle from './ThemeToggle';
 
@@ -52,7 +52,7 @@ const Navbar = ({ onOpenGarage, garageCount, onOpenAbout, onReset, onOpenContact
                             <NavButton icon={ShieldCheck} label="Servicios" onClick={() => { }} isScrolled={isScrolled} />
                         </Link>
                         <Link to="/tramites">
-                            <NavButton icon={CheckCircle2} label="Trámites" onClick={() => { }} isScrolled={isScrolled} />
+                            <NavButton icon={CheckCircle} label="Trámites" onClick={() => { }} isScrolled={isScrolled} />
                         </Link>
                         <NavButton icon={Info} label="Sobre Nosotros" onClick={onOpenAbout} isScrolled={isScrolled} />
                         <NavButton icon={Mail} label="Contacto" onClick={onOpenContact} isScrolled={isScrolled} />
@@ -109,7 +109,7 @@ const Navbar = ({ onOpenGarage, garageCount, onOpenAbout, onReset, onOpenContact
                                 <MobileNavButton icon={ShieldCheck} label="Servicios" onClick={() => { }} />
                             </Link>
                             <Link to="/tramites" onClick={() => setIsMobileMenuOpen(false)}>
-                                <MobileNavButton icon={CheckCircle2} label="Trámites" onClick={() => { }} />
+                                <MobileNavButton icon={CheckCircle} label="Trámites" onClick={() => { }} />
                             </Link>
                             <MobileNavButton icon={Warehouse} label={`Garaje (${garageCount})`} onClick={() => { onOpenGarage(); setIsMobileMenuOpen(false); }} active />
                             <MobileNavButton icon={Info} label="Sobre Nosotros" onClick={() => { onOpenAbout(); setIsMobileMenuOpen(false); }} />
@@ -122,30 +122,36 @@ const Navbar = ({ onOpenGarage, garageCount, onOpenAbout, onReset, onOpenContact
     );
 };
 
-const NavButton = ({ icon: Icon, label, onClick, isScrolled }) => (
-    <button
-        onClick={onClick}
-        className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all font-medium text-sm ${isScrolled
-            ? 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
-            : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/50 dark:hover:bg-slate-800/50'
-            }`}
-    >
-        <Icon size={16} />
-        <span>{label}</span>
-    </button>
-);
+const NavButton = ({ icon: Icon, label, onClick, isScrolled }) => {
+    const isValidIcon = Icon && (typeof Icon === 'function' || typeof Icon === 'object');
+    return (
+        <button
+            onClick={onClick}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all font-medium text-sm ${isScrolled
+                ? 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
+                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/50 dark:hover:bg-slate-800/50'
+                }`}
+        >
+            {isValidIcon ? <Icon size={16} /> : <div className="w-4 h-4" />}
+            <span>{label}</span>
+        </button>
+    );
+};
 
-const MobileNavButton = ({ icon: Icon, label, onClick, active }) => (
-    <button
-        onClick={onClick}
-        className={`flex items-center gap-4 p-4 rounded-2xl text-lg font-bold transition-all ${active
-            ? 'bg-slate-100 dark:bg-slate-800 text-blue-600 dark:text-blue-400'
-            : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
-            }`}
-    >
-        <Icon size={24} />
-        <span>{label}</span>
-    </button>
-);
+const MobileNavButton = ({ icon: Icon, label, onClick, active }) => {
+    const isValidIcon = Icon && (typeof Icon === 'function' || typeof Icon === 'object');
+    return (
+        <button
+            onClick={onClick}
+            className={`flex items-center gap-4 p-4 rounded-2xl text-lg font-bold transition-all ${active
+                ? 'bg-slate-100 dark:bg-slate-800 text-blue-600 dark:text-blue-400'
+                : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
+                }`}
+        >
+            {isValidIcon ? <Icon size={24} /> : <div className="w-6 h-6" />}
+            <span>{label}</span>
+        </button>
+    );
+};
 
 export default Navbar;

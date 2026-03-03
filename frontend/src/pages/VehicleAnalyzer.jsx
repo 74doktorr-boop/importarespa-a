@@ -1,35 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useSearchParams } from 'react-router-dom';
-import { Search, Car, MapPin, Calendar, DollarSign, Activity, AlertTriangle, CheckCircle, CheckCircle2, XCircle, FileText, ExternalLink, Zap, ShieldCheck, Clock, Info, Fuel, Gauge, Calculator, AlertCircle, ArrowRight, Settings, Warehouse, Plus, Save, Share2, Mail, Home, Menu, X, Eye, EyeOff } from 'lucide-react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import {
+    Search, Car, MapPin, Calendar, DollarSign, Activity, AlertTriangle,
+    CheckCircle, XCircle, FileText, ExternalLink, Zap,
+    ShieldCheck, Clock, Info, Fuel, Gauge, Calculator, AlertCircle,
+    ArrowRight, Settings, Warehouse, Plus, Save, Share2, Mail,
+    Home, Menu, X, Eye, EyeOff
+} from 'lucide-react';
+import axios from 'axios';
+import { generateVehicleReportV2 } from '../utils/pdfGenerator';
+import { getDgtLabel } from '../utils/dgtLogic';
+
+// Componentes Core
 import StatCard from '../components/StatCard';
-import AnimatedGauge from '../components/AnimatedGauge';
 import TaxBrackets from '../components/TaxBrackets';
 import TransportCard from '../components/TransportCard';
 import ProfitabilityCard from '../components/ProfitabilityCard';
 import MaintenanceCalculator from '../components/MaintenanceCalculator';
 import ProcedureAssistant from '../components/ProcedureAssistant';
 import AiVerdictCard from '../components/AiVerdictCard';
-import axios from 'axios';
 import LoadingOverlay from '../components/LoadingOverlay';
 import HowItWorks from '../components/HowItWorks';
 import TrustSection from '../components/TrustSection';
-import { generateVehicleReportV2 } from '../utils/pdfGenerator';
-import { getDgtLabel } from '../utils/dgtLogic';
 import DgtBadge from '../components/DgtBadge';
 import SEO from '../components/SEO';
-import ImportServicePromo from '../components/ImportServicePromo';
 import AdSpace from '../components/AdSpace';
 import ImportWizard from '../components/ImportWizard';
 import ImageGallery from '../components/ImageGallery';
+
+// Modales
 import AdminQuoteModal from '../components/AdminQuoteModal';
 import SecurityAdminModal from '../components/SecurityAdminModal';
 import MonetizationModal from '../components/MonetizationModal';
-import FinancingModal from '../components/FinancingModal';
 import RedirectModal from '../components/RedirectModal';
+import FinancingModal from '../components/FinancingModal';
 
 const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) => {
     const [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate();
     const [url, setUrl] = useState('');
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState(null);
@@ -204,7 +213,7 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
         return (
             <div className="pb-20">
                 <SEO
-                    title={data.make + ' ' + data.model}
+                    title={`${data.make} ${data.model} - Analizador de Importación`}
                     description={`Análisis detallado de importación para ${data.make} ${data.model}. Cálculo de impuestos, transporte y mantenimiento en España.`}
                 />
                 <LoadingOverlay isLoading={loading} />
@@ -544,21 +553,26 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                     {[
                         { icon: Zap, title: "Análisis Instantáneo", desc: "Extracción de datos en tiempo real mediante IA avanzada." },
                         { icon: Calculator, title: "Impuestos Precisos", desc: "Cálculo del IEDMT basado en emisiones CO2 y tablas de Hacienda." },
-                        { icon: CheckCircle2, title: "Guía de Trámites", desc: "Acompañamiento paso a paso desde la compra hasta la matrícula.", link: "/tramites" }
-                    ].map((item, index) => (
-                        <div key={index}
-                            onClick={() => item.link && navigate(item.link)}
-                            className={`bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md dark:shadow-none transition-all ${item.link ? 'cursor-pointer hover:border-blue-300 dark:hover:border-blue-700 group' : ''}`}>
-                            <div className="w-12 h-12 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-center mb-6 text-slate-900 dark:text-blue-400 group-hover:scale-110 transition-transform">
-                                <item.icon size={24} />
+                        { icon: CheckCircle, title: "Guía de Trámites", desc: "Acompañamiento paso a paso desde la compra hasta la matrícula.", link: "/tramites" }
+                    ].map((item, index) => {
+                        const Icon = item.icon;
+                        const isValidIcon = Icon && (typeof Icon === 'function' || typeof Icon === 'object');
+
+                        return (
+                            <div key={index}
+                                onClick={() => item.link && navigate(item.link)}
+                                className={`bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md dark:shadow-none transition-all ${item.link ? 'cursor-pointer hover:border-blue-300 dark:hover:border-blue-700 group' : ''}`}>
+                                <div className="w-12 h-12 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-center mb-6 text-slate-900 dark:text-blue-400 group-hover:scale-110 transition-transform">
+                                    {isValidIcon ? <Icon size={24} /> : <div className="w-6 h-6 bg-slate-200 rounded-full animate-pulse" />}
+                                </div>
+                                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+                                    {item.title}
+                                    {item.link && <ArrowRight size={16} className="text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />}
+                                </h3>
+                                <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">{item.desc}</p>
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
-                                {item.title}
-                                {item.link && <ArrowRight size={16} className="text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />}
-                            </h3>
-                            <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">{item.desc}</p>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </div>

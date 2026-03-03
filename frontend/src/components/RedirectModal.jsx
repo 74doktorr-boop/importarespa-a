@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, ShieldAlert, ArrowRight, Loader } from 'lucide-react';
+import { ExternalLink, ShieldAlert, ArrowRight, Loader2 } from 'lucide-react';
 
 const RedirectModal = ({ isOpen, onClose, targetUrl, vehicleData }) => {
     const [countdown, setCountdown] = useState(3);
@@ -59,7 +59,7 @@ const RedirectModal = ({ isOpen, onClose, targetUrl, vehicleData }) => {
                 >
                     <div className="p-8 text-center">
                         <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                            <Loader className="text-blue-600 animate-spin" size={32} />
+                            <Loader2 className="text-blue-600 animate-spin" size={32} />
                         </div>
 
                         <h2 className="text-2xl font-bold text-slate-900 mb-2">Redirigiendo al Anuncio...</h2>

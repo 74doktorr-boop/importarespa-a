@@ -81,13 +81,16 @@ const MonetizationModal = ({ isOpen, onClose, onSelectFree }) => {
     );
 };
 
-const FeatureItem = ({ text, highlight = false, icon: Icon = Check }) => (
-    <li className={`flex items-start gap-3 ${highlight ? 'text-white' : 'text-gray-400'}`}>
-        <div className={`mt-1 flex-shrink-0 ${highlight ? 'text-blue-400' : 'text-gray-600'}`}>
-            <Icon size={18} />
-        </div>
-        <span className={`text-sm font-medium ${highlight ? 'text-blue-50' : ''}`}>{text}</span>
-    </li>
-);
+const FeatureItem = ({ text, highlight = false, icon: Icon = Check }) => {
+    const isValidIcon = Icon && (typeof Icon === 'function' || typeof Icon === 'object');
+    return (
+        <li className={`flex items-start gap-3 ${highlight ? 'text-white' : 'text-gray-400'}`}>
+            <div className={`mt-1 flex-shrink-0 ${highlight ? 'text-blue-400' : 'text-gray-600'}`}>
+                {isValidIcon ? <Icon size={18} /> : <Check size={18} />}
+            </div>
+            <span className={`text-sm font-medium ${highlight ? 'text-blue-50' : ''}`}>{text}</span>
+        </li>
+    );
+};
 
 export default MonetizationModal;

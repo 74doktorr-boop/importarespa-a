@@ -62,7 +62,11 @@ const LoadingOverlay = ({ isLoading }) => {
                                 className="absolute inset-0 rounded-full border-4 border-slate-100 border-t-blue-600"
                             />
                             <div className="absolute inset-0 flex items-center justify-center text-blue-600">
-                                {React.createElement(steps[step].icon, { size: 32 })}
+                                {(() => {
+                                    const CurrentIcon = steps[step].icon;
+                                    const isValid = CurrentIcon && (typeof CurrentIcon === 'function' || typeof CurrentIcon === 'object');
+                                    return isValid ? React.createElement(CurrentIcon, { size: 32 }) : <Search size={32} />;
+                                })()}
                             </div>
                         </div>
 

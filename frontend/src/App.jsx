@@ -150,11 +150,15 @@ const AppContent = () => {
     );
 };
 
+import ErrorBoundary from './components/ErrorBoundary';
+
 function App() {
     return (
-        <Router>
-            <AppContent />
-        </Router>
+        <ErrorBoundary>
+            <Router>
+                <AppContent />
+            </Router>
+        </ErrorBoundary>
     );
 }
 

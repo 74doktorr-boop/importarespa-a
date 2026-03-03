@@ -11,7 +11,10 @@ const ServiceCard = ({ icon: Icon, title, description, buttonText, link, recomme
             )}
 
             <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 ${recommended ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : 'bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}`}>
-                <Icon size={28} />
+                {(() => {
+                    const isValidIcon = Icon && (typeof Icon === 'function' || typeof Icon === 'object');
+                    return isValidIcon ? <Icon size={28} /> : <div className="w-7 h-7 bg-slate-200 rounded-full animate-pulse" />;
+                })()}
             </div>
 
             <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">{title}</h3>

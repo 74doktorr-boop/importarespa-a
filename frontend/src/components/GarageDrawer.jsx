@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ComparisonTable from './ComparisonTable';
-import { X, Trash2, ExternalLink, TrendingUp, TrendingDown, Car, Calendar, Gauge, Euro, Settings, Check } from 'lucide-react';
+import { X, Trash2, ExternalLink, TrendingUp, TrendingDown, Car, Calendar, Gauge, Wallet, Settings, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const GarageDrawer = ({ isOpen, onClose, vehicles = [], onRemove, onClear }) => {
@@ -77,8 +77,8 @@ const GarageDrawer = ({ isOpen, onClose, vehicles = [], onRemove, onClear }) => 
                                         onClick={() => selectedIds.length > 1 && setIsComparing(true)}
                                         disabled={selectedIds.length < 2}
                                         className={`px-6 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition-all ${selectedIds.length > 1
-                                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40 hover:scale-105 active:scale-95'
-                                                : 'bg-white/5 text-white/20 cursor-not-allowed'
+                                            ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40 hover:scale-105 active:scale-95'
+                                            : 'bg-white/5 text-white/20 cursor-not-allowed'
                                             }`}
                                     >
                                         Comparar ahora
@@ -131,13 +131,13 @@ const GarageDrawer = ({ isOpen, onClose, vehicles = [], onRemove, onClear }) => 
                                             <div
                                                 onClick={() => toggleSelection(vehicle.id)}
                                                 className={`absolute inset-0 z-20 cursor-pointer transition-all duration-300 ${selectedIds.includes(vehicle.id)
-                                                        ? 'ring-4 ring-blue-500 ring-inset bg-blue-500/10'
-                                                        : 'hover:bg-white/5'
+                                                    ? 'ring-4 ring-blue-500 ring-inset bg-blue-500/10'
+                                                    : 'hover:bg-white/5'
                                                     }`}
                                             >
                                                 <div className={`absolute top-4 left-4 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${selectedIds.includes(vehicle.id)
-                                                        ? 'bg-blue-500 border-blue-500'
-                                                        : 'bg-black/20 border-white/40 group-hover:border-white'
+                                                    ? 'bg-blue-500 border-blue-500'
+                                                    : 'bg-black/20 border-white/40 group-hover:border-white'
                                                     }`}>
                                                     {selectedIds.includes(vehicle.id) && <Check size={14} className="text-white" />}
                                                 </div>

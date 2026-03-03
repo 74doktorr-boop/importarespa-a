@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TrendingUp, TrendingDown, Euro, Info, ExternalLink, ShieldAlert } from 'lucide-react';
+import { TrendingUp, TrendingDown, Wallet, Info, ExternalLink, ShieldAlert } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const ProfitabilityCard = ({ importPrice, vehicleData }) => {
@@ -51,7 +51,7 @@ const ProfitabilityCard = ({ importPrice, vehicleData }) => {
                     </label>
                     <div className="relative group mb-3">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <Euro className="text-slate-400" size={18} />
+                            <Wallet className="text-slate-400" size={18} />
                         </div>
                         <input
                             type="number"
