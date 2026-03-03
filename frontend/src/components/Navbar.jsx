@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Car, Info, Mail, Home, Warehouse, Menu, X, BookOpen, ShieldCheck } from 'lucide-react';
+import { Car, Info, Mail, Home, Warehouse, Menu, X, BookOpen, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import ThemeToggle from './ThemeToggle';
 
@@ -50,6 +50,9 @@ const Navbar = ({ onOpenGarage, garageCount, onOpenAbout, onReset, onOpenContact
                         </Link>
                         <Link to="/servicios">
                             <NavButton icon={ShieldCheck} label="Servicios" onClick={() => { }} isScrolled={isScrolled} />
+                        </Link>
+                        <Link to="/tramites">
+                            <NavButton icon={CheckCircle2} label="Trámites" onClick={() => { }} isScrolled={isScrolled} />
                         </Link>
                         <NavButton icon={Info} label="Sobre Nosotros" onClick={onOpenAbout} isScrolled={isScrolled} />
                         <NavButton icon={Mail} label="Contacto" onClick={onOpenContact} isScrolled={isScrolled} />
@@ -104,6 +107,9 @@ const Navbar = ({ onOpenGarage, garageCount, onOpenAbout, onReset, onOpenContact
                             </Link>
                             <Link to="/servicios" onClick={() => setIsMobileMenuOpen(false)}>
                                 <MobileNavButton icon={ShieldCheck} label="Servicios" onClick={() => { }} />
+                            </Link>
+                            <Link to="/tramites" onClick={() => setIsMobileMenuOpen(false)}>
+                                <MobileNavButton icon={CheckCircle2} label="Trámites" onClick={() => { }} />
                             </Link>
                             <MobileNavButton icon={Warehouse} label={`Garaje (${garageCount})`} onClick={() => { onOpenGarage(); setIsMobileMenuOpen(false); }} active />
                             <MobileNavButton icon={Info} label="Sobre Nosotros" onClick={() => { onOpenAbout(); setIsMobileMenuOpen(false); }} />

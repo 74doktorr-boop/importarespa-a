@@ -6,6 +6,7 @@ import SuccessPage from './pages/SuccessPage';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Services from './pages/Services';
+import Tramites from './pages/Tramites';
 
 import PrivacyPolicy from './pages/Legal/PrivacyPolicy';
 import TermsOfService from './pages/Legal/TermsOfService';
@@ -99,6 +100,7 @@ const AppContent = () => {
                     <Route path="/privacy" element={<PrivacyPolicy />} />
                     <Route path="/terms" element={<TermsOfService />} />
                     <Route path="/cookies" element={<CookiesPolicy />} />
+                    <Route path="/tramites" element={<Tramites />} />
                 </Routes>
             </main>
 

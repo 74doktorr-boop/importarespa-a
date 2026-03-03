@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSearchParams } from 'react-router-dom';
-import { Search, Car, MapPin, Calendar, DollarSign, Activity, AlertTriangle, CheckCircle, XCircle, FileText, ExternalLink, Zap, ShieldCheck, Clock, Info, Fuel, Gauge, Calculator, AlertCircle, ArrowRight, Settings, Warehouse, Plus, Save, Share2, Mail, Home, Menu, X, Eye, EyeOff } from 'lucide-react';
+import { Search, Car, MapPin, Calendar, DollarSign, Activity, AlertTriangle, CheckCircle, CheckCircle2, XCircle, FileText, ExternalLink, Zap, ShieldCheck, Clock, Info, Fuel, Gauge, Calculator, AlertCircle, ArrowRight, Settings, Warehouse, Plus, Save, Share2, Mail, Home, Menu, X, Eye, EyeOff } from 'lucide-react';
 import StatCard from '../components/StatCard';
 import AnimatedGauge from '../components/AnimatedGauge';
 import TaxBrackets from '../components/TaxBrackets';
@@ -529,13 +529,18 @@ const VehicleAnalyzer = ({ onAddToGarage, onOpenContact, onOpenMonetization }) =
                     {[
                         { icon: Zap, title: "Análisis Instantáneo", desc: "Extracción de datos en tiempo real mediante IA avanzada." },
                         { icon: Calculator, title: "Impuestos Precisos", desc: "Cálculo del IEDMT basado en emisiones CO2 y tablas de Hacienda." },
-                        { icon: FileText, title: "Informes PDF", desc: "Genera dossiers profesionales listos para presentar." }
+                        { icon: CheckCircle2, title: "Guía de Trámites", desc: "Acompañamiento paso a paso desde la compra hasta la matrícula.", link: "/tramites" }
                     ].map((item, index) => (
-                        <div key={index} className="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md dark:shadow-none transition-shadow">
-                            <div className="w-12 h-12 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-center mb-6 text-slate-900 dark:text-blue-400">
+                        <div key={index}
+                            onClick={() => item.link && navigate(item.link)}
+                            className={`bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md dark:shadow-none transition-all ${item.link ? 'cursor-pointer hover:border-blue-300 dark:hover:border-blue-700 group' : ''}`}>
+                            <div className="w-12 h-12 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-center mb-6 text-slate-900 dark:text-blue-400 group-hover:scale-110 transition-transform">
                                 <item.icon size={24} />
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">{item.title}</h3>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+                                {item.title}
+                                {item.link && <ArrowRight size={16} className="text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />}
+                            </h3>
                             <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">{item.desc}</p>
                         </div>
                     ))}
