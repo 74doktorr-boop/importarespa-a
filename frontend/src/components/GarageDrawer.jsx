@@ -1,8 +1,19 @@
-import React from 'react';
-import { X, Trash2, ExternalLink, TrendingUp, TrendingDown, Car, Calendar, Gauge, Euro, Settings } from 'lucide-react';
+import React, { useState } from 'react';
+import ComparisonTable from './ComparisonTable';
+import { X, Trash2, ExternalLink, TrendingUp, TrendingDown, Car, Calendar, Gauge, Euro, Settings, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const GarageDrawer = ({ isOpen, onClose, vehicles = [], onRemove, onClear }) => {
+    const [selectedIds, setSelectedIds] = React.useState([]);
+    const [isComparing, setIsComparing] = React.useState(false);
+
+    const toggleSelection = (id) => {
+        setSelectedIds(prev =>
+            prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+        );
+    };
+
+    const selectedVehicles = vehicles.filter(v => selectedIds.includes(v.id));
     const formatCurrency = (val) => {
         return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(val);
     };
@@ -56,6 +67,25 @@ const GarageDrawer = ({ isOpen, onClose, vehicles = [], onRemove, onClear }) => 
                                 </div>
                             </div>
 
+                            {/* Comparison Action Bar */}
+                            {vehicles.length > 1 && (
+                                <div className="mb-6 p-4 bg-blue-600/10 border border-blue-500/20 rounded-2xl flex items-center justify-between">
+                                    <div className="text-sm font-bold text-blue-400">
+                                        {selectedIds.length} seleccionados para comparar
+                                    </div>
+                                    <button
+                                        onClick={() => selectedIds.length > 1 && setIsComparing(true)}
+                                        disabled={selectedIds.length < 2}
+                                        className={`px-6 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition-all ${selectedIds.length > 1
+                                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40 hover:scale-105 active:scale-95'
+                                                : 'bg-white/5 text-white/20 cursor-not-allowed'
+                                            }`}
+                                    >
+                                        Comparar ahora
+                                    </button>
+                                </div>
+                            )}
+
                             {vehicles.length === 0 ? (
                                 <div className="flex flex-col items-center justify-center h-[60vh] text-center opacity-50">
                                     <Car size={64} className="text-gray-600 mb-4" />
@@ -96,6 +126,22 @@ const GarageDrawer = ({ isOpen, onClose, vehicles = [], onRemove, onClear }) => 
                                             >
                                                 <X size={14} />
                                             </button>
+
+                                            {/* Selection Overlay */}
+                                            <div
+                                                onClick={() => toggleSelection(vehicle.id)}
+                                                className={`absolute inset-0 z-20 cursor-pointer transition-all duration-300 ${selectedIds.includes(vehicle.id)
+                                                        ? 'ring-4 ring-blue-500 ring-inset bg-blue-500/10'
+                                                        : 'hover:bg-white/5'
+                                                    }`}
+                                            >
+                                                <div className={`absolute top-4 left-4 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${selectedIds.includes(vehicle.id)
+                                                        ? 'bg-blue-500 border-blue-500'
+                                                        : 'bg-black/20 border-white/40 group-hover:border-white'
+                                                    }`}>
+                                                    {selectedIds.includes(vehicle.id) && <Check size={14} className="text-white" />}
+                                                </div>
+                                            </div>
 
                                             {/* Image & Header */}
                                             <div className="h-40 relative overflow-hidden">
@@ -178,6 +224,12 @@ const GarageDrawer = ({ isOpen, onClose, vehicles = [], onRemove, onClear }) => 
                     </motion.div>
                 </>
             )}
+
+            <ComparisonTable
+                isOpen={isComparing}
+                onClose={() => setIsComparing(false)}
+                selectedVehicles={selectedVehicles}
+            />
         </AnimatePresence >
     );
 };
