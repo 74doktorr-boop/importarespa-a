@@ -15,7 +15,7 @@ const BlogPost = () => {
     }
 
     return (
-        <div className="min-h-screen bg-white pt-32 pb-20">
+        <div className="min-h-screen bg-white dark:bg-slate-950 pt-32 pb-20 transition-colors duration-300">
             <Helmet>
                 <title>{post.title} | ImportarEspaña</title>
                 <meta name="description" content={post.metaDescription} />
@@ -29,7 +29,7 @@ const BlogPost = () => {
             <article className="container mx-auto px-4 max-w-4xl">
                 <Link
                     to="/blog"
-                    className="inline-flex items-center text-slate-500 hover:text-blue-600 transition-colors mb-8 font-medium"
+                    className="inline-flex items-center text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors mb-8 font-medium"
                 >
                     <ArrowLeft size={20} className="mr-2" /> Volver al Blog
                 </Link>
@@ -38,11 +38,11 @@ const BlogPost = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                 >
-                    <h1 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 mb-6 leading-tight">
+                    <h1 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 dark:text-white mb-6 leading-tight">
                         {post.title}
                     </h1>
 
-                    <div className="flex flex-wrap items-center gap-6 text-slate-500 text-sm mb-8 border-b border-slate-100 pb-8">
+                    <div className="flex flex-wrap items-center gap-6 text-slate-500 dark:text-slate-400 text-sm mb-8 border-b border-slate-100 dark:border-slate-800 pb-8">
                         <span className="flex items-center gap-2">
                             <Calendar size={16} /> {post.date}
                         </span>
@@ -54,7 +54,7 @@ const BlogPost = () => {
                         </span>
                     </div>
 
-                    <div className="relative h-[400px] w-full rounded-3xl overflow-hidden mb-12 shadow-lg">
+                    <div className="relative h-[400px] w-full rounded-3xl overflow-hidden mb-12 shadow-xl ring-1 ring-slate-200 dark:ring-slate-800">
                         <img
                             src={post.image}
                             alt={post.title}
@@ -63,25 +63,25 @@ const BlogPost = () => {
                     </div>
 
                     <div
-                        className="prose prose-lg prose-slate max-w-none prose-headings:font-serif prose-headings:font-bold prose-a:text-blue-600 hover:prose-a:text-blue-800 prose-img:rounded-2xl"
+                        className="prose prose-lg prose-slate dark:prose-invert max-w-none prose-headings:font-serif prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:text-blue-800 dark:hover:prose-a:text-blue-300 prose-img:rounded-2xl"
                         dangerouslySetInnerHTML={{ __html: post.content }}
                     />
 
                     {/* Share & Feedback Section */}
-                    <div className="mt-16 pt-8 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div className="mt-16 pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6">
                         <div className="flex items-center gap-4">
-                            <span className="font-bold text-slate-900">¿Te ha sido útil?</span>
+                            <span className="font-bold text-slate-900 dark:text-white">¿Te ha sido útil?</span>
                             {!hasVoted ? (
                                 <div className="flex gap-2">
                                     <button
                                         onClick={() => setHasVoted(true)}
-                                        className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-green-100 text-slate-600 hover:text-green-700 font-bold transition-colors"
+                                        className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-green-100 dark:hover:bg-green-900/30 text-slate-600 dark:text-slate-400 hover:text-green-700 dark:hover:text-green-400 font-bold transition-colors"
                                     >
                                         Sí
                                     </button>
                                     <button
                                         onClick={() => setHasVoted(true)}
-                                        className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-red-100 text-slate-600 hover:text-red-700 font-bold transition-colors"
+                                        className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-red-100 dark:hover:bg-red-900/30 text-slate-600 dark:text-slate-400 hover:text-red-700 dark:hover:text-red-400 font-bold transition-colors"
                                     >
                                         No
                                     </button>
@@ -90,7 +90,7 @@ const BlogPost = () => {
                                 <motion.span
                                     initial={{ opacity: 0, x: -10 }}
                                     animate={{ opacity: 1, x: 0 }}
-                                    className="text-green-600 font-bold bg-green-50 px-3 py-1 rounded-lg border border-green-100"
+                                    className="text-green-600 dark:text-green-400 font-bold bg-green-50 dark:bg-green-900/20 px-3 py-1 rounded-lg border border-green-100 dark:border-green-800"
                                 >
                                     ¡Gracias por tu opinión!
                                 </motion.span>
@@ -107,7 +107,7 @@ const BlogPost = () => {
                                     });
                                 }
                             }}
-                            className="flex items-center gap-2 bg-blue-50 text-blue-600 px-6 py-3 rounded-xl font-bold hover:bg-blue-100 transition-colors w-full md:w-auto justify-center"
+                            className="flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-6 py-3 rounded-xl font-bold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors w-full md:w-auto justify-center"
                         >
                             <Share2 size={18} /> Compartir Artículo
                         </button>

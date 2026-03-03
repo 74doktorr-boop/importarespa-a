@@ -17,13 +17,13 @@ const Services = ({ onOpenContact }) => {
     ];
 
     return (
-        <div className="min-h-screen bg-slate-50 pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-24 pb-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-16">
                     <motion.h1
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-4xl font-black text-slate-900 mb-4"
+                        className="text-4xl font-black text-slate-900 dark:text-white mb-4"
                     >
                         Servicios Extra para tu Importación
                     </motion.h1>
@@ -31,7 +31,7 @@ const Services = ({ onOpenContact }) => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.1 }}
-                        className="text-xl text-slate-600 max-w-2xl mx-auto"
+                        className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto"
                     >
                         Herramientas y servicios seleccionados para que tu compra sea segura y rentable.
                     </motion.p>
@@ -53,17 +53,20 @@ const Services = ({ onOpenContact }) => {
                     ))}
                 </div>
 
-                <div className="mt-16 bg-blue-600 rounded-3xl p-8 md:p-12 text-center text-white shadow-xl shadow-blue-900/20">
-                    <h2 className="text-3xl font-bold mb-4">¿Necesitas ayuda personalizada?</h2>
-                    <p className="text-blue-100 mb-8 max-w-2xl mx-auto text-lg">
-                        Si prefieres que nos encarguemos de todo (negociación, transporte, matriculación), contrata nuestro servicio llave en mano.
-                    </p>
-                    <button
-                        onClick={onOpenContact}
-                        className="inline-block bg-white text-blue-600 font-bold py-3 px-8 rounded-xl hover:bg-blue-50 transition-colors shadow-lg"
-                    >
-                        Contactar con el Equipo
-                    </button>
+                <div className="mt-16 bg-blue-600 rounded-3xl p-8 md:p-12 text-center text-white shadow-xl shadow-blue-900/20 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+                    <div className="relative z-10">
+                        <h2 className="text-3xl font-bold mb-4">¿Necesitas ayuda personalizada?</h2>
+                        <p className="text-blue-100 mb-8 max-w-2xl mx-auto text-lg leading-relaxed">
+                            Si prefieres que nos encarguemos de todo (negociación, transporte, matriculación), contrata nuestro servicio llave en mano.
+                        </p>
+                        <button
+                            onClick={onOpenContact}
+                            className="inline-block bg-white text-blue-600 font-bold py-3 px-8 rounded-xl hover:bg-blue-50 transition-colors shadow-lg"
+                        >
+                            Contactar con el Equipo
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

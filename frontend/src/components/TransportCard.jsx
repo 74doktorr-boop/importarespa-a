@@ -120,30 +120,71 @@ const TransportCard = ({ originCity, onCostCalculated }) => {
                     animate={{ opacity: 1, scale: 1 }}
                     className="relative z-10"
                 >
-                    <div className="bg-slate-900 rounded-2xl p-6 shadow-lg mb-5 relative overflow-hidden text-center">
-                        <span className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 block">Coste Estimado</span>
-                        <span className="text-4xl font-bold text-white tracking-tight">
+                    <div className="bg-slate-900 dark:bg-blue-600 rounded-2xl p-6 shadow-lg mb-6 relative overflow-hidden text-center group/price">
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover/price:opacity-100 transition-opacity duration-500"></div>
+                        <span className="text-slate-400 dark:text-blue-100 text-[10px] font-bold uppercase tracking-[0.2em] mb-1 block relative z-10">Coste Total Logística</span>
+                        <span className="text-4xl font-black text-white tracking-tight relative z-10">
                             {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(result.cost)}
                         </span>
                     </div>
 
-                    <div className="flex justify-between items-center px-2 mb-4">
-                        <div className="flex flex-col items-center">
-                            <span className="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-wider font-bold mb-1">Distancia</span>
-                            <span className="text-slate-900 dark:text-white font-mono font-bold">{result.distanceKm} km</span>
+                    {/* Enhanced Route Info */}
+                    <div className="space-y-6 mb-8">
+                        <div className="flex items-center justify-between px-2">
+                            <div className="text-center flex-1">
+                                <div className="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-widest font-bold mb-1">Origen</div>
+                                <div className="text-slate-900 dark:text-white font-bold truncate max-w-[100px] mx-auto">{originCity || 'Europa'}</div>
+                            </div>
+                            <div className="flex-[2] px-4 flex flex-col items-center">
+                                <div className="w-full h-px bg-slate-200 dark:bg-slate-800 relative">
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-slate-900 px-2 flex items-center gap-1">
+                                        <Truck size={12} className="text-blue-500 animate-pulse" />
+                                        <span className="text-[9px] font-mono text-slate-400">{result.distanceKm}km</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="text-center flex-1">
+                                <div className="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-widest font-bold mb-1">Destino</div>
+                                <div className="text-blue-600 dark:text-blue-400 font-bold">España ({zipCode})</div>
+                            </div>
                         </div>
-                        <div className="w-px h-8 bg-slate-200 dark:bg-slate-800"></div>
-                        <div className="flex flex-col items-center">
-                            <span className="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-wider font-bold mb-1">Tiempo</span>
-                            <span className="text-slate-900 dark:text-white font-mono font-bold">~{result.durationDays} días</span>
+
+                        {/* Logistics Timeline */}
+                        <div className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-4 border border-slate-100 dark:border-slate-800">
+                            <h4 className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <CheckCircle size={10} /> Etapas de Entrega
+                            </h4>
+                            <div className="space-y-4">
+                                {[
+                                    { label: 'Recogida y Carga', desc: 'Verificación de documentos', time: 'Día 1-2' },
+                                    { label: 'Tránsito Internacional', desc: 'Transporte asegurado', time: 'Día 3-5' },
+                                    { label: 'Entrega en Destino', desc: 'Descarga y entrega de llaves', time: `~Día ${result.durationDays}` }
+                                ].map((step, i) => (
+                                    <div key={i} className="flex gap-3">
+                                        <div className="flex flex-col items-center">
+                                            <div className="w-4 h-4 rounded-full bg-blue-500/20 border border-blue-500 flex items-center justify-center">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                                            </div>
+                                            {i < 2 && <div className="w-px h-full bg-slate-200 dark:bg-slate-700 mt-1"></div>}
+                                        </div>
+                                        <div className="flex-1 pb-1">
+                                            <div className="flex justify-between items-start">
+                                                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">{step.label}</span>
+                                                <span className="text-[9px] font-mono text-slate-400">{step.time}</span>
+                                            </div>
+                                            <p className="text-[10px] text-slate-500 dark:text-slate-400">{step.desc}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
 
                     <button
                         onClick={() => { setResult(null); if (onCostCalculated) onCostCalculated({ cost: 0, distance: 0 }); }}
-                        className="w-full py-3 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-all uppercase tracking-wider"
+                        className="w-full py-3 rounded-xl border border-slate-200 dark:border-slate-800 text-[10px] font-bold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-all uppercase tracking-[0.2em]"
                     >
-                        Recalcular Ruta
+                        Nueva Simulación
                     </button>
                 </motion.div>
             )}
